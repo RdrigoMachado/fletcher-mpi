@@ -12,6 +12,7 @@ for backend in OpenMP; do
 	echo "-----------------------------------------------------"
 	make clean
 	make backend=$backend
-	mv ModelagemFletcher.exe ../exp/bin/original.$backend.`hostname`.x
+	mv ModelagemFletcher.exe ../exp/bin/original.$backend.x
+	make clean
 done
 cd ..
