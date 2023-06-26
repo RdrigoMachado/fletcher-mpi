@@ -8,9 +8,9 @@
 FILE* abrirArquivo(char* nome){
   char nome_arquivo[128];
 
-  strcpy(fileName, FNAMEBINARYPATH);
-  strcat(fileName,nome);
-  strcat(fileName,".rsf@");
+  strcpy(nome_arquivo, FNAMEBINARYPATH);
+  strcat(nome_arquivo,nome);
+  strcat(nome_arquivo,".rsf@");
 
   return fopen(nome_arquivo, "w+");
 }

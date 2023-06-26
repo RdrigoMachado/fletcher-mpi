@@ -1,2 +1,4 @@
-exp/bin/
-.vscode/
+/exp/bin/
+/.vscode/
+/original/*.o
+/original/OpenMP/*.o
