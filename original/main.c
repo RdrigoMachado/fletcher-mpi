@@ -118,7 +118,6 @@ int main(int argc, char** argv) {
   // number of time iterations
 
   st=ceil(tmax/dt);
-  printf("****** st = %d => ceiling of %.02f / %.02f\n", st, tmax, dt);
   // source position
 
   ixSource=sx/2;

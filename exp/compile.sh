@@ -3,6 +3,7 @@
 #set -o errexit -o nounset -o pipefail -o posix
 
 mkdir -p bin/
+rm -r bin/*
 cd ../
 
 cd original

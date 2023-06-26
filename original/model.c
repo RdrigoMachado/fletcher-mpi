@@ -164,7 +164,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
 
-  int terminador = -1;
+  int terminador = FLAG_FINALIZAR;
   MPI_Ssend(&terminador, 1, MPI_INT, 1, MSG_CONTROLE, MPI_COMM_WORLD);  	
 
 }
