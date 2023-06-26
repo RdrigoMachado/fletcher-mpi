@@ -1,5 +1,85 @@
 #include "utils.h"
-    
+
+
+
+//##########################    MPI  RECEIVE   ##################################
+//###############################################################################
+
+FILE* abrirArquivo(char* nome){
+  char nome_arquivo[128];
+
+  strcpy(fileName, FNAMEBINARYPATH);
+  strcat(fileName,nome);
+  strcat(fileName,".rsf@");
+
+  return fopen(nome_arquivo, "w+");
+}
+
+void receberOnda(float *onda, int tamanho, FILE *arquivo) {
+
+  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+  fwrite((void *) onda, sizeof(float), tamanho, arquivo);
+  printf("***RANK1: Onda escrita em disco!\n");
+
+}
+
+void finalizar(FILE *arquivo){
+  fclose(arquivo);
+  MPI_Finalize();
+  exit(0);
+}
+
+void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo)
+{
+    int flag = 0;
+    int tamanho = sx * sy * sz;
+    float *onda = malloc(sizeof(float) * tamanho); 
+    FILE *arquivo = abrirArquivo(nome_arquivo);
+
+    while(1) {
+      MPI_Recv(&flag, 1, MPI_INT, 0, MSG_CONTROLE, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+      if(flag == FLAG_FINALIZAR)
+        finalizar(arquivo);
+
+      receberOnda(onda, tamanho, arquivo);
+    }
+}
+
+//#############################    MPI  SEND   ##################################
+//###############################################################################
+
+float* empacotar(int sx, int sy, int sz,
+		   float *ondaPtr, SlicePtr p, int tamanho){
+
+  float *onda = malloc(sizeof(float) * tamanho);
+
+  for (int iz=p->izStart; iz<=p->izEnd; iz++)
+    for (int iy=p->iyStart; iy<=p->iyEnd; iy++)
+        for (int ix=p->ixStart; ix<=p->ixEnd; ix++)
+          onda[ind(p->ixStart,iy,iz) + ix] = *(ondaPtr+ind(p->ixStart,iy,iz) + ix);
+
+  return onda;
+}
+
+void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) {
+
+  printf("###RANK0 - enviando copia da onda\n");
+
+  int tamanho = sx * sy * sz;
+  float *onda = empacotar(sx, sy, sz, ondaPtr, p, tamanho);
+
+  int envio_onda = FLAG_ONDA;
+  MPI_Ssend(&envio_onda, 1, MPI_INT, 1, MSG_CONTROLE, MPI_COMM_WORLD);
+  MPI_Ssend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
+
+  p->itCnt++;
+}
+
+//###############################################################################
+//###############################################################################
+
+
 
 // DumpFieldToFile: dumps array into a file using RFS format
 
@@ -146,56 +226,6 @@ void DumpSliceFile(int sx, int sy, int sz,
   // increase it count
   
   p->itCnt++;
-}
-
-
-float* empacotar(int sx, int sy, int sz,
-		   float *arrP, SlicePtr p, int tamanho){
-  float *onda;
-  int iy, iz, ix;
-  printf("Primeio endereco a ser escrito %d\n", ind(p->ixStart,iy,iz));
-
-  onda = malloc(sizeof(float) * tamanho);
-  for (iz=p->izStart; iz<=p->izEnd; iz++)
-    for (iy=p->iyStart; iy<=p->iyEnd; iy++){
-        // printf("Escrevendo na posicao %d do vetor\n", ind(p->ixStart,iy,iz) + ix);
-        // printf("Escrevendo %d em disco\n", p->ixEnd -  p->ixStart + 1);
-        for (ix=p->ixStart; ix<=p->ixEnd; ix++){
-          onda[ind(p->ixStart,iy,iz) + ix] = *(arrP+ind(p->ixStart,iy,iz) + ix);
-        }
-    }
-
-  return onda;
-}
-
-void SendDumpSliceFile(int sx, int sy, int sz,
-		   float *arrP, SlicePtr p) {
-  
-  int tamanho = sx * sy * sz;
-  float *onda = empacotar(sx, sy, sz, arrP, p, tamanho);
-
-  MPI_Ssend((void *) onda, tamanho , MPI_FLOAT, 1, 101, MPI_COMM_WORLD);  
-  printf("###RANK0: Onda de tamanho %d enviada\n", tamanho);
-  p->itCnt++;
-}
-
-
-
-
-void RecvDumpSliceFile(int sx, int sy, int sz,
-		   float *arrP, SlicePtr p) {
-
-  int iy, iz;
-  int tamanho = sx * sy * sz;
-  float *onda;
-  onda = (float *) malloc(sizeof(float) * tamanho); 
-
-  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 101, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-  printf("***RANK1: recebida onda de tamanho %d!\n", tamanho);
-
-  fwrite((void *) onda, sizeof(float), tamanho, p->fpBinary);
-  printf("***RANK1: Onda escrita em disco!\n");
- 
 }
 
 

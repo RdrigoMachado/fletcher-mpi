@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
+#include <utils.h>
 #include <mpi.h>
 
 void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr, 

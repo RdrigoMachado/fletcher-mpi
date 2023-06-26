@@ -99,10 +99,8 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
       DRIVER_Update_pointers(sx,sy,sz,pc);
       int modelFlag = 1;
-      MPI_Ssend(&modelFlag, 1, MPI_INT, 1, 100, MPI_COMM_WORLD);
 
-      printf("###RANK0 - enviando copia da onda\n");
-      SendDumpSliceFile(sx,sy,sz,pc,sPtr);
+      enviarOnda(sx,sy,sz,pc,sPtr);
 
       tOut=(++nOut)*dtOutput;
 #ifdef _DUMP
@@ -167,7 +165,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   DRIVER_Finalize();
 
   int terminador = -1;
-  MPI_Ssend(&terminador, 1, MPI_INT, 1, 100, MPI_COMM_WORLD);  	
+  MPI_Ssend(&terminador, 1, MPI_INT, 1, MSG_CONTROLE, MPI_COMM_WORLD);  	
 
 }
 

@@ -8,6 +8,10 @@
 #include "map.h"
 #include <mpi.h>
 
+#define MSG_ONDA      101
+#define MSG_CONTROLE  100
+#define FLAG_FINALIZAR -1
+#define FLAG_ONDA 1
 
 // DumpFieldToFile: dumps array into a file using RFS format
 
@@ -74,11 +78,9 @@ void DumpSliceFile(int sx, int sy, int sz,
 
 
 //------------------- MPI -----------------------------
-void SendDumpSliceFile(int sx, int sy, int sz,
-		   float *arrP, SlicePtr p);
+void MPI_enviar_onda(int sx, int sy, int sz, float *arrP, SlicePtr p);
 
-void RecvDumpSliceFile(int sx, int sy, int sz,
-		   float *arrP, SlicePtr p);
+void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo);
 //------------------- --- -----------------------------
 
 

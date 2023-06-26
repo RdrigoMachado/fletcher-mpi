@@ -12,28 +12,9 @@
 
 #include <mpi.h>
 #include <unistd.h>
-#define EXIT_FLAG -1
+
 
 enum Form {ISO, VTI, TTI};
-
-void MPI_escrita_disco(int sx, int sy, int sz,
-		   float *arrP, SlicePtr sPtr, float * restrict pc)
-{
-    int flag = 0;
-
-    while(1) {
-      printf("***RANK1 - Esperando mensagem\n");
-      MPI_Recv(&flag, 1, MPI_INT, 0, 100, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-      if(flag == EXIT_FLAG)
-      {
-        CloseSliceFile(sPtr);
-        MPI_Finalize();
-        exit(0);
-      }
-      RecvDumpSliceFile(sx,sy,sz,pc,sPtr);
-    }
-
-}
 
 
 int main(int argc, char** argv) {
@@ -103,6 +84,7 @@ int main(int argc, char** argv) {
   tmax=atof(argv[10]);
 
 
+
   // verify problem formulation
 
   if (strcmp(fNameSec,"ISO")==0) {
@@ -125,6 +107,13 @@ int main(int argc, char** argv) {
   sx=nx+2*bord+2*absorb;
   sy=ny+2*bord+2*absorb;
   sz=nz+2*bord+2*absorb;
+
+  //MPI ESCRITA
+  if(rank == 1){
+    MPI_escrita_disco(sx, sy, sz, fNameSec);
+  }
+
+
 
   // number of time iterations
 
@@ -269,16 +258,8 @@ int main(int argc, char** argv) {
         dx, dy, dz, dt,
         fNameSec);
 
-
-  if(rank == 1){
-    MPI_escrita_disco(sx,sy,sz,pc,sPtr, pc);
-  }
-  
-  int modelFlag = 1;
-  MPI_Ssend(&modelFlag, 1, MPI_INT, 1, 100, MPI_COMM_WORLD);
-
-  printf("###RANK0 - enviando copia da onda\n");
-  SendDumpSliceFile(sx,sy,sz,pc,sPtr);
+  //###### ENVIAR ONDA MPI
+  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
       
   // Model do:
   // - Initialize
