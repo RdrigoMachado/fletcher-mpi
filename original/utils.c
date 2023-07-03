@@ -54,27 +54,13 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
 //#############################    MPI  SEND   ##################################
 //###############################################################################
 
-float* empacotar(int sx, int sy, int sz,
-		   float *ondaPtr, SlicePtr p, int tamanho){
-
-  float *onda = malloc(sizeof(float) * tamanho);
-
-  for (int iz=p->izStart; iz<=p->izEnd; iz++)
-    for (int iy=p->iyStart; iy<=p->iyEnd; iy++)
-        for (int ix=p->ixStart; ix<=p->ixEnd; ix++)
-          onda[ind(p->ixStart,iy,iz) + ix] = *(ondaPtr+ind(p->ixStart,iy,iz) + ix);
-
-  return onda;
-}
-
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) {
 
   printf("###RANK0 - enviando copia da onda\n");
 
   int tamanho = sx * sy * sz;
-  float *onda = empacotar(sx, sy, sz, ondaPtr, p, tamanho);
 
-  MPI_Ssend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
+  MPI_Ssend((void *) ondaPtr, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
 
   p->itCnt++;
 }
