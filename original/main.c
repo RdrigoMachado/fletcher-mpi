@@ -109,17 +109,20 @@ int main(int argc, char** argv) {
   sy=ny+2*bord+2*absorb;
   sz=nz+2*bord+2*absorb;
 
-  //MPI ESCRITA
-  if(rank == 1){
-    MPI_escrita_disco(sx, sy, sz, fNameSec);
-  }
-
+  
 
 
   // number of time iterations
 
   st=ceil(tmax/dt);
   // source position
+
+//MPI ESCRITA
+  if(rank == 1){
+    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt);
+  }
+
+
 
   ixSource=sx/2;
   iySource=sy/2;

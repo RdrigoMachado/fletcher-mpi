@@ -1,7 +1,6 @@
 #include "utils.h"
 
 
-
 //##########################    MPI  RECEIVE   ##################################
 //###############################################################################
 
@@ -15,35 +14,41 @@ FILE* abrirArquivo(char* nome){
   return fopen(nome_arquivo, "w+");
 }
 
-void receberOnda(float *onda, int tamanho, FILE *arquivo) {
-
-  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-  fwrite((void *) onda, sizeof(float), tamanho, arquivo);
-  printf("***RANK1: Onda escrita em disco!\n");
-
-}
-
 void finalizar(FILE *arquivo){
   fclose(arquivo);
   MPI_Finalize();
   exit(0);
 }
 
-void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo)
+void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
+                const int st,  const float dtOutput, const float dt)
 {
-    int flag = 0;
-    int tamanho = sx * sy * sz;
-    float *onda = malloc(sizeof(float) * tamanho); 
-    FILE *arquivo = abrirArquivo(nome_arquivo);
+  int tamanho = sx * sy * sz;
+  float *onda = malloc(sizeof(float) * tamanho); 
+  FILE *arquivo = abrirArquivo(nome_arquivo);
 
-    while(1) {
-      MPI_Recv(&flag, 1, MPI_INT, 0, MSG_CONTROLE, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-      if(flag == FLAG_FINALIZAR)
-        finalizar(arquivo);
+  float tSim=0.0;
+  int nOut=1;
+  float tOut=nOut*dtOutput;
 
-      receberOnda(onda, tamanho, arquivo);
+
+  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+  fwrite((void *) onda, sizeof(float), tamanho, arquivo);
+
+
+  for (int it=1; it<=st; it++) {
+    tSim=it*dt;
+    if (tSim >= tOut) {
+
+      MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      fwrite((void *) onda, sizeof(float), tamanho, arquivo);
+
+      tOut=(++nOut)*dtOutput;
     }
+  }
+
+  finalizar(arquivo);
 }
 
 //#############################    MPI  SEND   ##################################
@@ -69,8 +74,6 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) {
   int tamanho = sx * sy * sz;
   float *onda = empacotar(sx, sy, sz, ondaPtr, p, tamanho);
 
-  int envio_onda = FLAG_ONDA;
-  MPI_Ssend(&envio_onda, 1, MPI_INT, 1, MSG_CONTROLE, MPI_COMM_WORLD);
   MPI_Ssend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
 
   p->itCnt++;
