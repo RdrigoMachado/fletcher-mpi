@@ -12,6 +12,7 @@
 
 #include <mpi.h>
 #include <unistd.h>
+#include <sys/time.h>
 
 
 enum Form {ISO, VTI, TTI};
@@ -257,6 +258,8 @@ int main(int argc, char** argv) {
         dx, dy, dz, dt,
         fNameSec);
 
+  struct timeval start, end;
+  gettimeofday(&start, NULL);
   //###### ENVIAR ONDA MPI
   MPI_enviar_onda(sx,sy,sz,pc,sPtr);
       
@@ -278,4 +281,7 @@ int main(int argc, char** argv) {
   CloseSliceFile(sPtr);
 
   MPI_Finalize();
+  gettimeofday(&end, NULL);
+  printf("Tempo = %ld\n", 
+  ((end.tv_sec * 1000000 + end.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec)));
 }
