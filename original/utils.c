@@ -56,8 +56,6 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
 
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) {
 
-  printf("###RANK0 - enviando copia da onda\n");
-
   int tamanho = sx * sy * sz;
 
   MPI_Ssend((void *) ondaPtr, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
