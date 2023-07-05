@@ -4,6 +4,8 @@
 #include "fletcher.h"
 #include "walltime.h"
 #include "model.h"
+#include "comunicacao.mpi.h"
+
 #ifdef PAPI
 #include "ModPAPI.h"
 #endif

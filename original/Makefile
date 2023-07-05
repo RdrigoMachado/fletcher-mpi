@@ -11,6 +11,7 @@ include $(arch)/flags.mk
 OBJ1=\
 	source.o \
 	utils.o \
+	comunicacao.mpi.o \
 	boundary.o \
 	walltime.o \
 	model.o \
@@ -38,6 +39,9 @@ boundary.o:	boundary.c boundary.h  map.o
 
 source.o:	source.c source.h
 	$(CC) -c $(CFLAGS) source.c
+
+comunicacao.mpi.o:	comunicacao.mpi.c comunicacao.mpi.h
+	$(CC) -c $(CFLAGS) comunicacao.mpi.c
 
 utils.o:	utils.c utils.h map.o source.o
 	$(CC) -c $(CFLAGS) utils.c

@@ -9,8 +9,8 @@
 #include "driver.h"
 #include "fletcher.h"
 #include "model.h"
+#include "comunicacao.mpi.h"
 
-#include <mpi.h>
 #include <unistd.h>
 #include <sys/time.h>
 
@@ -285,6 +285,7 @@ int main(int argc, char** argv) {
 
   MPI_Finalize();
   gettimeofday(&end, NULL);
-  printf("Tempo = %ld\n", 
-  ((end.tv_sec * 1000000 + end.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec)));
+  long seconds = (end.tv_sec - start.tv_sec);
+  printf("Tempo = %ld\n", seconds);
+  
 }
