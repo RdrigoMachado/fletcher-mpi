@@ -99,8 +99,8 @@ SlicePtr OpenSliceFile(int ixStart, int ixEnd,
 
   // create header and binary files in rsf format
   
-  ret->fpHead=fopen(ret->fNameHeader, "w+");
-  ret->fpBinary=fopen(ret->fNameBinary, "w+");
+ // ret->fpHead=fopen(ret->fNameHeader, "w+");
+ // ret->fpBinary=fopen(ret->fNameBinary, "w+");
   ret->ixStart=ixStart;
   ret->ixEnd=ixEnd;
   ret->iyStart=iyStart;

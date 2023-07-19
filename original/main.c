@@ -119,7 +119,7 @@ int main(int argc, char** argv) {
 
 //MPI ESCRITA
   if(rank == 1){
-    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt);
+    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dx, dy, dz, dt);
   }
 
 
@@ -264,7 +264,7 @@ int main(int argc, char** argv) {
   struct timeval start, end;
   gettimeofday(&start, NULL);
   //###### ENVIAR ONDA MPI
-  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+  MPI_enviar_onda(sx,sy,sz,pc);
       
   // Model do:
   // - Initialize

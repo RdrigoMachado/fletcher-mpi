@@ -71,14 +71,6 @@ void DumpSliceFile(int sx, int sy, int sz,
 		   float *arrP, SlicePtr p);
 
 
-//------------------- MPI -----------------------------
-void MPI_enviar_onda(int sx, int sy, int sz, float *arrP, SlicePtr p);
-
-void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
-                const int st,  const float dtOutput, const float dt);
-//------------------- --- -----------------------------
-
-
 // CloseSliceFile: close file in RFS format that has been continuously appended
 
 
