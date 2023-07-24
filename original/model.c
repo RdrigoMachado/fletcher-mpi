@@ -70,6 +70,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
   
   double walltime=0.0;
+  int temp = 0;
   for (int it=1; it<=st; it++) {
 
     // Calculate / obtain source value on i timestep
@@ -98,12 +99,10 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
     tSim=it*dt;
     if (tSim >= tOut) {
-
+      temp++;
       DRIVER_Update_pointers(sx,sy,sz,pc);
-      int modelFlag = 1;
-
+      //DumpSliceFile(sx,sy,sz,pc,sPtr);
       MPI_enviar_onda(sx,sy,sz,pc);
-
       tOut=(++nOut)*dtOutput;
 #ifdef _DUMP
       DRIVER_Update_pointers(sx,sy,sz,pc);
@@ -165,5 +164,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
+
 }
 

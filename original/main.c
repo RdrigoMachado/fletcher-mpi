@@ -9,6 +9,8 @@
 #include "driver.h"
 #include "fletcher.h"
 #include "model.h"
+#include "walltime.h"
+
 #include "comunicacao.mpi.h"
 
 #include <unistd.h>
@@ -28,16 +30,16 @@ int main(int argc, char** argv) {
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 
-  //Pra confirmar que esta rodando em mais de uma maquina
-  char hostbuffer[256];
-  struct hostent *host_entry;
-  int hostname;
-  hostname = gethostname(hostbuffer, sizeof(hostbuffer));
+  // //Pra confirmar que esta rodando em mais de uma maquina
+  // char hostbuffer[256];
+  // struct hostent *host_entry;
+  // int hostname;
+  // hostname = gethostname(hostbuffer, sizeof(hostbuffer));
   
-  if (hostname != -1) {
-    printf("***RANK1 Hostname: %s\n", hostbuffer);
-  }
-  //----------------------------------------------------
+  // if (hostname != -1) {
+  //   printf("***RANK1 Hostname: %s\n", hostbuffer);
+  // }
+  // //----------------------------------------------------
 
   enum Form prob;        // problem formulation
   int nx;                // grid points in x
@@ -119,7 +121,8 @@ int main(int argc, char** argv) {
 
 //MPI ESCRITA
   if(rank == 1){
-    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dx, dy, dz, dt);
+
+    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
   }
 
 
@@ -264,6 +267,7 @@ int main(int argc, char** argv) {
   struct timeval start, end;
   gettimeofday(&start, NULL);
   //###### ENVIAR ONDA MPI
+  printf("enviando onda 0\n");
   MPI_enviar_onda(sx,sy,sz,pc);
       
   // Model do:
@@ -274,6 +278,10 @@ int main(int argc, char** argv) {
   // - calls InsertSource
   // - do AbsorbingBoundary and DumpSliceFile, if needed
   // - Finalize
+
+
+  double walltime=0.0;
+  const double t0=wtime();
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
         dx,     dy,      dz,       dt,   it, 
@@ -281,11 +289,10 @@ int main(int argc, char** argv) {
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
 
-  CloseSliceFile(sPtr);
+  //CloseSliceFile(sPtr);
 
   MPI_Finalize();
-  gettimeofday(&end, NULL);
-  long seconds = (end.tv_sec - start.tv_sec);
-  printf("Tempo = %ld\n", seconds);
-  
+  walltime+=wtime()-t0;
+  printf("Tempo = %lf\n", walltime);
+
 }

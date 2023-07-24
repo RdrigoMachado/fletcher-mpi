@@ -15,9 +15,16 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr) {
 //##########################    MPI  RECEIVE   ##################################
 
 void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, int izStart, int izEnd, 
-		       float dx, float dy, float dz, float dt, int itCnt, char* nome_arquivo){
+		       float dx, float dy, float dz, float dt, int itCnt, char* nome){
   
+   char nome_arquivo[128];
+
+  strcpy(nome_arquivo, FNAMEBINARYPATH);
+  strcat(nome_arquivo,nome);
+  strcat(nome_arquivo,".rsf");
+
   FILE* arquivo = fopen(nome_arquivo, "w+");
+
   enum sliceDirection direcao;
 
   if (ixStart==ixEnd)
@@ -29,7 +36,6 @@ void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, i
   else {
     direcao=FULL;
   }
-
   
   fprintf(arquivo,"in=\"%s\"\n", nome_arquivo);
   fprintf(arquivo,"data_format=\"native_float\"\n");
@@ -71,6 +77,7 @@ void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, i
     break;
   }
   fclose(arquivo);
+
 }
 
 FILE* abrirArquivo(char* nome){
@@ -109,22 +116,20 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
   float tOut=nOut*dtOutput;
   int itCnt = 1;
 
+ 
   MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
   fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
-
   for (int it=1; it<=st; it++) {
+
     tSim=it*dt;
     if (tSim >= tOut) {
-
       MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
-
       tOut=(++nOut)*dtOutput;
       itCnt++;
     }
   }
-
   salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
   finalizar(arquivo);
 }
