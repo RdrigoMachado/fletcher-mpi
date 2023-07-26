@@ -5,11 +5,12 @@
 mkdir -p bin/
 rm -r bin/*
 cd ../
+backend=OpenMP
 
 cd original
 for comunicao in nocontrol control; do
 	for empacotamento in packing nopacking; do
-		versao="$comunicao.$empacotamento"
+		versao="$comunicao-$empacotamento"
 		echo "-----------------------------------------------------"
 		echo "  OpenMP - $versao"
 		echo "-----------------------------------------------------"

@@ -3,7 +3,7 @@
 
 //#############################    MPI  SEND   ##################################
 
-void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr) {
+void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
 
   int tamanho = sx * sy * sz;
 

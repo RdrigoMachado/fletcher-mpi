@@ -46,17 +46,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   const long samplesPropagate=(long)(sx-2*bord)*(long)(sy-2*bord)*(long)(sz-2*bord);
   const long totalSamples=samplesPropagate*(long)st;
 
-#ifdef PAPI
-  long long values[NCOUNTERS];
-  long long ThisValues[NCOUNTERS];
-  for (int i=0; i<NCOUNTERS; i++) {
-    values[i]=0LL;
-    ThisValues[i]=0LL;
-  }
-
-  const int eventset=InitPAPI_CreateCounters();
-#endif
-
 #define MODEL_INITIALIZE
 #include "precomp.h"
 #undef MODEL_INITIALIZE
@@ -78,10 +67,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     
     DRIVER_InsertSource(dt,it-1,iSource,pc,qc,src);
 
-#ifdef PAPI
-    StartCounters(eventset);
-#endif
-
     const double t0=wtime();
     DRIVER_Propagate(  sx,   sy,   sz,   bord,
 		       dx,   dy,   dz,   dt,   it,
@@ -90,75 +75,15 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     SwapArrays(&pp, &pc, &qp, &qc);
     walltime+=wtime()-t0;
 
-#ifdef PAPI
-    StopReadCounters(eventset, ThisValues);
-    for (int i=0; i<NCOUNTERS; i++) {
-      values[i]+=ThisValues[i];
-    }
-#endif
-
     tSim=it*dt;
     if (tSim >= tOut) {
       temp++;
       DRIVER_Update_pointers(sx,sy,sz,pc);
       //DumpSliceFile(sx,sy,sz,pc,sPtr);
-      MPI_enviar_onda(sx,sy,sz,pc);
+      MPI_enviar_onda(sx,sy,sz,pc,sPtr);
       tOut=(++nOut)*dtOutput;
-#ifdef _DUMP
-      DRIVER_Update_pointers(sx,sy,sz,pc);
-      //      DumpSliceSummary(sx,sy,sz,sPtr,dt,it,pc,src);
-#endif
     }
   }
-
-  // get HWM data
-
-#define MEGA 1.0e-6
-#define GIGA 1.0e-9
-  const char StringHWM[6]="VmHWM";
-  char line[256], title[12],HWMUnit[8];
-  const long HWM;
-  const double MSamples=(MEGA*(double)totalSamples)/walltime;
-  
-  FILE *fp=fopen("/proc/self/status","r");
-  while (fgets(line, 256, fp) != NULL){
-    if (strncmp(line, StringHWM, 5) == 0) {
-      sscanf(line+6,"%ld %s", &HWM, HWMUnit);
-      break;
-    }
-  }
-  fclose(fp);
-
-  // Dump Execution Metrics
-  
-  printf ("Execution time (s) is %lf\n", walltime);
-  printf ("MSamples/s %.0lf\n", MSamples);
-  printf ("Memory High Water Mark is %ld %s\n",HWM, HWMUnit);
-
-  // Dump Execution Metrics in CSV
-  
-  FILE *fr=NULL;
-  const char fName[]="Report.csv";
-  fr=fopen(fName,"w");
-
-  // report problem size
-
-  ReportProblemSizeCSV(sx, sy, sz,
-		       bord, st, 
-		       fr);
-
-  // report collected metrics
-
-  ReportMetricsCSV(walltime, MSamples,
-		   HWM, HWMUnit, fr);
-  
-  // report PAPI metrics
-
-#ifdef PAPI
-  ReportRawCountersCSV (values, fr);
-#endif
-  
-  fclose(fr);
 
   fflush(stdout);
 

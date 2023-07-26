@@ -264,24 +264,11 @@ int main(int argc, char** argv) {
         dx, dy, dz, dt,
         fNameSec);
 
-  struct timeval start, end;
-  gettimeofday(&start, NULL);
-  //###### ENVIAR ONDA MPI
-  printf("enviando onda 0\n");
-  MPI_enviar_onda(sx,sy,sz,pc);
-      
-  // Model do:
-  // - Initialize
-  // - time loop
-  // - calls Propagate
-  // - calls TimeForward
-  // - calls InsertSource
-  // - do AbsorbingBoundary and DumpSliceFile, if needed
-  // - Finalize
-
-
   double walltime=0.0;
   const double t0=wtime();
+  //###### ENVIAR ONDA MPI
+  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
         dx,     dy,      dz,       dt,   it, 
@@ -289,10 +276,8 @@ int main(int argc, char** argv) {
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
 
-  //CloseSliceFile(sPtr);
-
   MPI_Finalize();
   walltime+=wtime()-t0;
-  printf("Tempo = %lf\n", walltime);
+  printf("%lf\n", walltime);
 
 }

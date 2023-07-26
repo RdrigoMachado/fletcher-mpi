@@ -10,4 +10,4 @@
 
 void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo, const int st,  const float dtOutput, const float dt, float dx, float dy, float dz);
 
-void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr);
+void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p);
