@@ -1,4 +1,4 @@
-#include "comunicacao.mpi.h"
+#include "../comunicacao.mpi.h"
 
 
 //#############################    MPI  SEND   ##################################

@@ -7,13 +7,16 @@ rm -r bin/*
 cd ../
 
 cd original
-for backend in OpenMP; do
-	echo "-----------------------------------------------------"
-	echo "  Original - $backend"
-	echo "-----------------------------------------------------"
-	make clean
-	make backend=$backend
-	mv ModelagemFletcher.exe ../exp/bin/nocontrol.nopacking.original.$backend.x
-	make clean
+for comunicao in nocontrol control; do
+	for empacotamento in packing nopacking; do
+		versao="$comunicao.$empacotamento"
+		echo "-----------------------------------------------------"
+		echo "  OpenMP - $versao"
+		echo "-----------------------------------------------------"
+		make clean
+		make versao=$versao
+		mv ModelagemFletcher.exe ../exp/bin/$versao.$backend.x
+		make clean
+	done
 done
 cd ..
