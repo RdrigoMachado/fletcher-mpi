@@ -4,11 +4,12 @@
 
 mkdir -p bin/
 rm -r bin/*
-cd ../
 backend=OpenMP
 
-cd original
+cd ../original/
 for comunicao in nocontrol control; do
+	cd $comunicao
+	pwd
 	for empacotamento in packing nopacking; do
 		versao="$comunicao-$empacotamento"
 		echo "-----------------------------------------------------"
@@ -16,8 +17,9 @@ for comunicao in nocontrol control; do
 		echo "-----------------------------------------------------"
 		make clean
 		make versao=$versao
-		mv ModelagemFletcher.exe ../exp/bin/$versao.$backend.x
+		mv ModelagemFletcher.exe ../../exp/bin/$versao.$backend.x
 		make clean
 	done
+	cd ..
 done
 cd ..

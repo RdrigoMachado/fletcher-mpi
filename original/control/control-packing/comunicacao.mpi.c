@@ -143,7 +143,6 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
       
       receberOnda(onda, tamanho, arquivo);
       itCnt++;
-
     }
 
 }
