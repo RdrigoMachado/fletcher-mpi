@@ -12,7 +12,7 @@ output_file="output.csv"
 # Limpa o conte  do do arquivo antes de executar o programa
 echo -n "" > "$output_file"
 #cabecalho
-echo "num_threads;tamanho;tempo" > "$output_file"
+echo "versao;num_threads;tamanho;tempo" > "$output_file"
 backend=OpenMP
 
 # Loop para executar o programa com diferentes par  metros
@@ -28,8 +28,8 @@ for num_threads in 16 32; do
                 tempo=$(mpirun -np 2 ./$versao.$backend.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07)
                 tempo_formatado=$(replace_dot_with_comma)
 
-                printf "%s;%s;%s\n" \
-                            "$num_threads" "$tamanho" "$tempo_formatado" >> "$output_file"
+                printf "%s;%s;%s;%s\n" \
+                            "$versao" "$num_threads" "$tamanho" "$tempo_formatado" >> "$output_file"
 
             done
 
