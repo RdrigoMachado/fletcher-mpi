@@ -7,7 +7,7 @@ rm -r bin/*
 backend=OpenMP
 
 cd ../original/
-for comunicao in nocontrol control; do
+for comunicao in nocontrol control i_nocontrol; do
 	cd $comunicao
 	pwd
 	for empacotamento in packing nopacking; do

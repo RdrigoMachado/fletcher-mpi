@@ -22,12 +22,12 @@ enum Form {ISO, VTI, TTI};
 
 int main(int argc, char** argv) {
   //Inicia MPI
-  // MPI_Init(&argc, &argv);
-  // int rank, cluser_size;  
-  // //quantidade de processos do cluster
-  // MPI_Comm_size(MPI_COMM_WORLD, &cluser_size);
-  // //rank do procsso atual
-  // MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  MPI_Init(&argc, &argv);
+  int rank, cluser_size;  
+  //quantidade de processos do cluster
+  MPI_Comm_size(MPI_COMM_WORLD, &cluser_size);
+  //rank do procsso atual
+  MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
 
   // //Pra confirmar que esta rodando em mais de uma maquina
@@ -119,11 +119,11 @@ int main(int argc, char** argv) {
   st=ceil(tmax/dt);
   // source position
 
-// //MPI ESCRITA
-//   if(rank == 1){
+//MPI ESCRITA
+  if(rank == 1){
 
-//     MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
-//   }
+    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
+  }
 
 
 
@@ -267,7 +267,7 @@ int main(int argc, char** argv) {
   double walltime=0.0;
   const double t0=wtime();
   //###### ENVIAR ONDA MPI
-  //MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
 
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
@@ -275,7 +275,7 @@ int main(int argc, char** argv) {
         pp,     pc,      qp,       qc,
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
-
+  
   MPI_Finalize();
   walltime+=wtime()-t0;
   printf("%lf\n", walltime);

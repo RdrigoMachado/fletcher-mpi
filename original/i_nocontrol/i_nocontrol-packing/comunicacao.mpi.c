@@ -1,8 +1,8 @@
 #include "../comunicacao.mpi.h"
 
 //#############################    MPI  SEND   ##################################
-MPI_Request request;
-MPI_Status  status;
+MPI_Request *request = NULL;
+MPI_Status  *status = NULL;
 float* empacotar(int sx, int sy, int sz,
 		   float *ondaPtr, SlicePtr p){
 
@@ -19,16 +19,23 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) {
   float *onda = empacotar(sx, sy, sz, ondaPtr, p);
   int livre;
   
-  if(request != NULL)
+  printf("test\n");
+  if(request!=NULL)
   {
-    MPI_Test(&request, &livre, &status);
-
+    MPI_Test(request, &livre, status);
     if(!livre)
-      MPI_Wait(&request, &status);
+    {
+      printf("wait\n");
+      MPI_Wait(request, status);
+    }
+  } 
+  else 
+  {
+    request = (MPI_Request*) malloc(sizeof(MPI_Request));
+    status = (MPI_Status*) malloc(sizeof(MPI_Request));
   }
-
-  MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD, &request);  
-
+  MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD, request);  
+  printf("isend %d\n", p->itCnt);
   p->itCnt++;
 }
 

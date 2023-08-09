@@ -67,7 +67,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     
     DRIVER_InsertSource(dt,it-1,iSource,pc,qc,src);
 
-    double t0=wtime();
+    const double t0=wtime();
     DRIVER_Propagate(  sx,   sy,   sz,   bord,
 		       dx,   dy,   dz,   dt,   it,
 		       pp,    pc,    qp,    qc);
@@ -76,16 +76,11 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     walltime+=wtime()-t0;
 
     tSim=it*dt;
-
     if (tSim >= tOut) {
       temp++;
       DRIVER_Update_pointers(sx,sy,sz,pc);
-      t0=wtime();
-      DumpSliceFile(sx,sy,sz,pc,sPtr);
-      walltime+=wtime()-t0;
-      printf("%lf\n", walltime);
-
-      //MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+      //DumpSliceFile(sx,sy,sz,pc,sPtr);
+      MPI_enviar_onda(sx,sy,sz,pc,sPtr);
       tOut=(++nOut)*dtOutput;
     }
   }
@@ -94,7 +89,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
-  printf("%lf\n", walltime);
 
 }
 
