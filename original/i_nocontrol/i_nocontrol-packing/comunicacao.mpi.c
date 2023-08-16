@@ -1,8 +1,9 @@
 #include "../comunicacao.mpi.h"
 
+MPI_Request *request;
+MPI_Status  *status;
+
 //#############################    MPI  SEND   ##################################
-MPI_Request *request = NULL;
-MPI_Status  *status = NULL;
 float* empacotar(int sx, int sy, int sz,
 		   float *ondaPtr, SlicePtr p){
 
@@ -19,26 +20,25 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) {
   float *onda = empacotar(sx, sy, sz, ondaPtr, p);
   int livre;
   
-  printf("test\n");
   if(request!=NULL)
   {
-    MPI_Test(request, &livre, status);
-    if(!livre)
-    {
-      printf("wait\n");
       MPI_Wait(request, status);
-    }
   } 
   else 
   {
     request = (MPI_Request*) malloc(sizeof(MPI_Request));
     status = (MPI_Status*) malloc(sizeof(MPI_Request));
   }
+
   MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD, request);  
-  printf("isend %d\n", p->itCnt);
   p->itCnt++;
 }
 
+void  finalizar_comunicacao()
+{
+  MPI_Wait(request, status);
+  MPI_Finalize();
+}
 
 //##########################    MPI  RECEIVE   ##################################
 
@@ -64,7 +64,7 @@ void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, i
   else {
     direcao=FULL;
   }
-  
+  strcat(nome_arquivo,"@");
   fprintf(arquivo,"in=\"%s\"\n", nome_arquivo);
   fprintf(arquivo,"data_format=\"native_float\"\n");
   fprintf(arquivo,"esize=%lu\n", sizeof(float)); 
@@ -145,24 +145,24 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
   float tOut=nOut*dtOutput;
   int itCnt = 1;
 
-
   MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+  printf("recebida 0\n");
   fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
-
+  int temp = 1;
   for (int it=1; it<=st; it++) {
     tSim=it*dt;
     if (tSim >= tOut) {
 
       MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+      printf("recebida %d\n",temp);
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
       tOut=(++nOut)*dtOutput;
       itCnt++;
+      temp++;
     }
   }
-
   salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
   finalizar(arquivo);
 }
-

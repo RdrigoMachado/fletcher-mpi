@@ -7,10 +7,10 @@ rm -r bin/*
 backend=OpenMP
 
 cd ../original/
-for comunicao in nocontrol control; do
+for comunicao in i_nocontrol; do
 	cd $comunicao
 	pwd
-	for empacotamento in packing nopacking; do
+	for empacotamento in packing; do
 		versao="$comunicao-$empacotamento"
 		echo "-----------------------------------------------------"
 		echo "  OpenMP - $versao"

@@ -121,7 +121,6 @@ int main(int argc, char** argv) {
 
 //MPI ESCRITA
   if(rank == 1){
-
     MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
   }
 
@@ -268,7 +267,7 @@ int main(int argc, char** argv) {
   const double t0=wtime();
   //###### ENVIAR ONDA MPI
   MPI_enviar_onda(sx,sy,sz,pc,sPtr);
-
+  
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
         dx,     dy,      dz,       dt,   it, 
@@ -276,7 +275,7 @@ int main(int argc, char** argv) {
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
   
-  MPI_Finalize();
+  finalizar_comunicacao();
   walltime+=wtime()-t0;
   printf("%lf\n", walltime);
 
