@@ -146,7 +146,6 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
   int itCnt = 1;
 
   MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-  printf("recebida 0\n");
   fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
   int temp = 1;
@@ -155,7 +154,6 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
     if (tSim >= tOut) {
 
       MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-      printf("recebida %d\n",temp);
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
       tOut=(++nOut)*dtOutput;
