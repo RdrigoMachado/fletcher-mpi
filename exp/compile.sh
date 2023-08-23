@@ -4,7 +4,8 @@
 
 clear
 mkdir -p bin/
-rm bin/*
+rm bin/*.x
+rm bin/*.rsf*
 backend=OpenMP
 
 
