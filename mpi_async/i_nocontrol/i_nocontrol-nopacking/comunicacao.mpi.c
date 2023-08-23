@@ -50,6 +50,7 @@ void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, i
     direcao=FULL;
   }
   
+  strcat(nome_arquivo,"@");  
   fprintf(arquivo,"in=\"%s\"\n", nome_arquivo);
   fprintf(arquivo,"data_format=\"native_float\"\n");
   fprintf(arquivo,"esize=%lu\n", sizeof(float)); 

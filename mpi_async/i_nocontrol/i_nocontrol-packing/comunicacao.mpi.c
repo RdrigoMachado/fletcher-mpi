@@ -7,7 +7,7 @@ MPI_Status  *status;
 float* empacotar(int sx, int sy, int sz,
 		   float *ondaPtr, SlicePtr p){
 
-  int tamanho = sx * sy * sz;
+  int tamanho = sx * sy * sz * sizeof(float);
   float *onda = malloc(sizeof(float) * tamanho);
 
   memcpy(onda, ondaPtr, tamanho);
