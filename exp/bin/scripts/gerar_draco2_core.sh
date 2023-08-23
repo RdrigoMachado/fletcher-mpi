@@ -24,7 +24,7 @@ for tamanho in 56 180 344; do
         for comunicao in nocontrol control; do
         for empacotamento in packing nopacking; do
             versao="$comunicao-$empacotamento"
-            tempo=$(mpirun -np 2 --rankfile rankfile_1_maquina ./$versao.$backend.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07)
+            tempo=$(mpirun -np 2 --rankfile rankfile_1_maquina ../$versao.$backend.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07)
             tempo_formatado=$(replace_dot_with_comma)
             linha="$linha;$tempo_formatado"
         done

@@ -21,7 +21,7 @@ for tamanho in 56 180 344; do
     for i in 1 2 3; do
         linha="$tamanho"
         versao="i_nocontrol-packing"
-        tempo=$(mpirun -host draco2,draco3 -np 2 --use-hwthread-cpus --rankfile rankfile_2_maquinas_hwthread ./$versao.$backend.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07)
+        tempo=$(mpirun -host draco2,draco3 -np 2 --use-hwthread-cpus --rankfile rankfile_2_maquinas_hwthread ../$versao.$backend.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07)
         tempo_formatado=$(replace_dot_with_comma)
         linha="$linha;$tempo_formatado"
         echo "$linha" >> "$output_file"
