@@ -38,10 +38,10 @@ echo "-----------------------------------------------------"
 echo "MPI_ASYNC"
 echo "-----------------------------------------------------"
 
-for comunicao in i_nocontrol; do
+for comunicao in i_nocontrol i_control; do
 	cd $comunicao
 	pwd
-	for empacotamento in packing nopacking; do
+	for empacotamento in packing; do
 		versao="$comunicao-$empacotamento"
 		echo "-----------------------------------------------------"
 		echo "  OpenMP - $versao"

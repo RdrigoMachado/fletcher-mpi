@@ -4,19 +4,37 @@ MPI_Request *request;
 MPI_Status  *status;
 
 //#############################    MPI  SEND   ##################################
+float* empacotar(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
+{
 
-void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
+  int tamanho = sx * sy * sz * sizeof(float);
+  float *onda = malloc(sizeof(float) * tamanho);
+
+  memcpy(onda, ondaPtr, tamanho);
+  return onda;
+}
+
+void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) 
+{
 
   int tamanho = sx * sy * sz;
-
-  if(request==NULL)
+  float *onda = empacotar(sx, sy, sz, ondaPtr, p);
+  int livre;
+  
+  if(request!=NULL)
+  {
+      MPI_Wait(request, status);
+  } 
+  else 
   {
     request = (MPI_Request*) malloc(sizeof(MPI_Request));
     status = (MPI_Status*) malloc(sizeof(MPI_Request));
   }
-  MPI_Isend((void *) ondaPtr, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD, request);  
-  MPI_Wait(request, status);
-
+  int envio_onda = FLAG_ONDA;
+  MPI_Send(&envio_onda, 1, MPI_INT, 1, MSG_CONTROLE, MPI_COMM_WORLD);
+ 
+  MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD, request);  
+  p->itCnt++;
 }
 
 void  finalizar_comunicacao()
@@ -28,7 +46,8 @@ void  finalizar_comunicacao()
 //##########################    MPI  RECEIVE   ##################################
 
 void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, int izStart, int izEnd, 
-		       float dx, float dy, float dz, float dt, int itCnt, char* nome){
+		       float dx, float dy, float dz, float dt, int itCnt, char* nome)
+{
   
    char nome_arquivo[128];
 
@@ -49,8 +68,7 @@ void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, i
   else {
     direcao=FULL;
   }
-  
-  strcat(nome_arquivo,"@");  
+  strcat(nome_arquivo,"@");
   fprintf(arquivo,"in=\"%s\"\n", nome_arquivo);
   fprintf(arquivo,"data_format=\"native_float\"\n");
   fprintf(arquivo,"esize=%lu\n", sizeof(float)); 
@@ -94,7 +112,8 @@ void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, i
 
 }
 
-FILE* abrirArquivo(char* nome){
+FILE* abrirArquivo(char* nome)
+{
   char nome_arquivo[128];
 
   strcpy(nome_arquivo, FNAMEBINARYPATH);
@@ -104,47 +123,45 @@ FILE* abrirArquivo(char* nome){
   return fopen(nome_arquivo, "w+");
 }
 
-
-
-void finalizar(FILE *arquivo){
+void finalizar(FILE *arquivo)
+{
   fclose(arquivo);
   MPI_Finalize();
   exit(0);
 }
 
+void receberOnda(float *onda, int tamanho, FILE *arquivo) 
+{
+  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+  fwrite((void *) onda, sizeof(float), tamanho, arquivo);
+}
+
 void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
                 const int st,  const float dtOutput, const float dt, float dx, float dy, float dz)
 {
-  int tamanho = sx * sy * sz;
-  float *onda = malloc(sizeof(float) * tamanho); 
-  FILE *arquivo = abrirArquivo(nome_arquivo);
-  int ixStart=0;
-  int ixEnd=sx-1;
-  int iyStart=0;
-  int iyEnd=sy-1;
-  int izStart=0;
-  int izEnd=sz-1;
+    int flag = 0;
+    int tamanho = sx * sy * sz;
+    float *onda = malloc(sizeof(float) * tamanho); 
+    FILE *arquivo = abrirArquivo(nome_arquivo);
+    int ixStart=0;
+    int ixEnd=sx-1;
+    int iyStart=0;
+    int iyEnd=sy-1;
+    int izStart=0;
+    int izEnd=sz-1;
+    int itCnt = 0;
 
-  float tSim=0.0;
-  int nOut=1;
-  float tOut=nOut*dtOutput;
-  int itCnt = 1;
+    while(1) {
+      MPI_Recv(&flag, 1, MPI_INT, 0, MSG_CONTROLE, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
- 
-  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-  fwrite((void *) onda, sizeof(float), tamanho, arquivo);
-
-  for (int it=1; it<=st; it++) {
-
-    tSim=it*dt;
-    if (tSim >= tOut) {
-      MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-      fwrite((void *) onda, sizeof(float), tamanho, arquivo);
-      tOut=(++nOut)*dtOutput;
+      if(flag == FLAG_FINALIZAR)
+      {
+        salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
+        finalizar(arquivo);
+      }
+      
+      receberOnda(onda, tamanho, arquivo);
       itCnt++;
     }
-  }
-  salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
-  finalizar(arquivo);
-}
 
+}
