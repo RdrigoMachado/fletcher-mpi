@@ -275,11 +275,8 @@ int main(int argc, char** argv) {
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
   
-
-  MPI_Wait(request, status);
-  int flag_finalizar = FLAG_FINALIZAR;
-  MPI_Ssend(&flag_finalizar, 1, MPI_INT, 1, MSG_CONTROLE, MPI_COMM_WORLD);
-  MPI_Finalize();
+  
+  finalizar_comunicacao();
   walltime+=wtime()-t0;
   printf("%lf\n", walltime);
 

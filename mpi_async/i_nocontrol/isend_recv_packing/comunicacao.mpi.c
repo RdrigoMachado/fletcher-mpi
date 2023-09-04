@@ -1,12 +1,11 @@
 #include "../comunicacao.mpi.h"
 
-MPI_Request *request;
-MPI_Status  *status;
+MPI_Request request = MPI_REQUEST_NULL;
+MPI_Status  status;
 
 //#############################    MPI  SEND   ##################################
-float* empacotar(int sx, int sy, int sz,
-		   float *ondaPtr, SlicePtr p){
-
+float* empacotar(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
+{
   int tamanho = sx * sy * sz * sizeof(float);
   float *onda = malloc(sizeof(float) * tamanho);
 
@@ -14,36 +13,29 @@ float* empacotar(int sx, int sy, int sz,
   return onda;
 }
 
-void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) {
+void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p) 
+{
 
   int tamanho = sx * sy * sz;
   float *onda = empacotar(sx, sy, sz, ondaPtr, p);
   int livre;
   
-  if(request!=NULL)
-  {
-      MPI_Wait(request, status);
-  } 
-  else 
-  {
-    request = (MPI_Request*) malloc(sizeof(MPI_Request));
-    status = (MPI_Status*) malloc(sizeof(MPI_Request));
-  }
-
-  MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD, request);  
+  MPI_Wait(&request, &status);
+  MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD, &request);  
   p->itCnt++;
 }
 
 void  finalizar_comunicacao()
 {
-  MPI_Wait(request, status);
+  MPI_Wait(&request, &status);
   MPI_Finalize();
 }
 
 //##########################    MPI  RECEIVE   ##################################
 
 void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, int izStart, int izEnd, 
-		       float dx, float dy, float dz, float dt, int itCnt, char* nome){
+		       float dx, float dy, float dz, float dt, int itCnt, char* nome)
+{
   
    char nome_arquivo[128];
 
@@ -108,7 +100,8 @@ void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, i
 
 }
 
-FILE* abrirArquivo(char* nome){
+FILE* abrirArquivo(char* nome)
+{
   char nome_arquivo[128];
 
   strcpy(nome_arquivo, FNAMEBINARYPATH);

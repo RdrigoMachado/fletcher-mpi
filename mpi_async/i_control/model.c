@@ -66,7 +66,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     float src = Source(dt, it-1);
     
     DRIVER_InsertSource(dt,it-1,iSource,pc,qc,src);
-    MPI_Wait(request, status);
 
     const double t0=wtime();
     DRIVER_Propagate(  sx,   sy,   sz,   bord,
