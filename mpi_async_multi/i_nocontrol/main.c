@@ -266,6 +266,8 @@ int main(int argc, char** argv) {
   double walltime=0.0;
   const double t0=wtime();
   //###### ENVIAR ONDA MPI
+
+  init(sx, sy, sz);
   MPI_enviar_onda(sx,sy,sz,pc,sPtr);
   
   Model(st,     iSource, dtOutput, sPtr,
