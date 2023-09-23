@@ -15,7 +15,7 @@ int tamanho;
 
 void init(int sx, int sy, int sz)
 {
-  tamanho = sx * sy * sz * sizeof(float);
+  tamanho = sx * sy * sz;
 
   ordem = 1;
 
@@ -32,11 +32,9 @@ void init(int sx, int sy, int sz)
 //#############################    MPI  SEND   ##################################
 float* empacotar(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
 {
-
-  int tamanho = sx * sy * sz * sizeof(float);
   float *onda = malloc(sizeof(float) * tamanho);
 
-  memcpy(onda, ondaPtr, tamanho);
+  memcpy(onda, ondaPtr, tamanho * sizeof(float));
   buffers[ordem-1] = onda;
   return onda;
 }
@@ -45,10 +43,9 @@ float* empacotar(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
 {
 
-  int tamanho = sx * sy * sz;
   float *onda = empacotar(sx, sy, sz, ondaPtr, p);
   int livre;
-  
+
   MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, ordem, MPI_COMM_WORLD, &(requests[ordem-1]));
   ordem++;
   p->itCnt++;
@@ -147,14 +144,13 @@ FILE* abrirArquivo(char* nome)
 void escreve_em_disco(int id_request)
 {  
   char nome_arquivo[128];
-  strcpy(nome_arquivo, FNAMEBINARYPATH);
+  strcpy(nome_arquivo, "TTI.rsf");
   
   char parte[3];
   sprintf(parte, "%d", posicao[id_request]);
   
   strcat(nome_arquivo,".part");
   strcat(nome_arquivo, parte);
-  
   FILE *arquivo = abrirArquivo(nome_arquivo); 
   fwrite((void *) buffers[id_request], sizeof(float), tamanho, arquivo);
   fclose(arquivo);
@@ -181,9 +177,9 @@ int get_indice_nova_comunicacao()
 		if(requests[i] == MPI_REQUEST_NULL && estatus_conexao[i] == LIVRE)
 			return i;
     
-    int proximo_indice;
-    MPI_Status *status_temp;
-    MPI_Waitany(MAX_CONEXOES, requests, &proximo_indice, status_temp);
+  int proximo_indice;
+  MPI_Status *status_temp;
+  MPI_Waitany(MAX_CONEXOES, requests, &proximo_indice, status_temp);
 	
     return proximo_indice;
 }
@@ -193,7 +189,7 @@ void nova_transferencia(int id_request, int ordem)
     estatus_conexao[id_request]   = TRANSFERINDO;    
     posicao[id_request]  = ordem;
     buffers[id_request] = malloc(sizeof(float) * tamanho); 
-    MPI_Irecv((void *) buffers[id_request], tamanho, MPI_FLOAT, ordem, ordem, MPI_COMM_WORLD, &(requests[id_request]));
+    MPI_Irecv((void *) buffers[id_request], tamanho, MPI_FLOAT, 0, ordem, MPI_COMM_WORLD, &(requests[id_request]));
 }
 
 void finalizar(FILE *arquivo)

@@ -16,5 +16,5 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo, const int st,
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p);
 
 void finalizar_comunicacao();
-void init();
+void init(int sx, int sy, int sz);
 #endif

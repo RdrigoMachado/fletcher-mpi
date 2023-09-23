@@ -5,10 +5,10 @@
 float* empacotar(int sx, int sy, int sz,
 		   float *ondaPtr, SlicePtr p){
 
-  int tamanho = sx * sy * sz * sizeof(float);
+  int tamanho = sx * sy * sz;
   float *onda = malloc(sizeof(float) * tamanho);
 
-  memcpy(onda, ondaPtr, tamanho);
+  memcpy(onda, ondaPtr, tamanho * sizeof(float));
   return onda;
 }
 

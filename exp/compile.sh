@@ -18,12 +18,13 @@ echo "-----------------------------------------------------"
 for comunicao in nocontrol control; do
 	cd $comunicao
 	pwd
+	
 	for empacotamento in packing nopacking; do
 		versao="$comunicao-$empacotamento"
 		echo "-----------------------------------------------------"
 		echo "  OpenMP - $versao"
 		echo "-----------------------------------------------------"
-		make clean
+		#make clean
 		make versao=$versao
 		mv ModelagemFletcher.exe ../../exp/bin/$versao.$backend.x
 		make clean
