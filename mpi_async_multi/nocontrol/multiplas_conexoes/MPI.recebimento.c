@@ -1,65 +1,17 @@
-#include "../comunicacao.mpi.h"
-#define MAX_CONEXOES    10
-#define LIVRE            0
-#define TRANSFERINDO     1
+#include "MPI.recebimento.h"
 
-#define CHEIO           -1
+//Vars
+int recebimento_ordem;
+int tamanho_onda;
+int tamanho_buffer_recebimento;
 
-int estatus_conexao[MAX_CONEXOES];
-int posicao[MAX_CONEXOES];
-float* buffers[MAX_CONEXOES];
-MPI_Request requests[MAX_CONEXOES];
-MPI_Status  status[MAX_CONEXOES];
-int ordem;
-int tamanho;
-
-void init(int sx, int sy, int sz)
-{
-  tamanho = sx * sy * sz;
-
-  ordem = 1;
-
-  for(int i = 0; i < MAX_CONEXOES; i++)
-	{
-    estatus_conexao[i] = LIVRE;
-    posicao[i]  = 0;
-    buffers[i]  = NULL;
-    requests[i] = MPI_REQUEST_NULL;
-	}
-}
+//Arrays
+int *estatus_conexao;
+int *recebimento_posicao;
+float** recebimento_buffers;
+MPI_Request *recebimento_requests;
 
 
-//#############################    MPI  SEND   ##################################
-float* empacotar(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
-{
-  float *onda = malloc(sizeof(float) * tamanho);
-
-  memcpy(onda, ondaPtr, tamanho * sizeof(float));
-  buffers[ordem-1] = onda;
-  return onda;
-}
-
-
-void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
-{
-
-  float *onda = empacotar(sx, sy, sz, ondaPtr, p);
-  int livre;
-
-  MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, ordem, MPI_COMM_WORLD, &(requests[ordem-1]));
-  ordem++;
-  p->itCnt++;
-}
-
-void  finalizar_comunicacao()
-{
-  MPI_Waitall(MAX_CONEXOES, requests, status);
-  MPI_Finalize();
-  for(int i =0; i<ordem; i++)
-  {
-    free(buffers[i]);  
-  }
-}
 
 //##########################    MPI  RECEIVE   ##################################
 
@@ -147,65 +99,75 @@ void escreve_em_disco(int id_request)
   strcpy(nome_arquivo, "TTI.rsf");
   
   char parte[3];
-  sprintf(parte, "%d", posicao[id_request]);
+  sprintf(parte, "%d", recebimento_posicao[id_request]);
   
   strcat(nome_arquivo,".part");
   strcat(nome_arquivo, parte);
   FILE *arquivo = abrirArquivo(nome_arquivo); 
-  fwrite((void *) buffers[id_request], sizeof(float), tamanho, arquivo);
+  fwrite((void *) recebimento_buffers[id_request], sizeof(float), tamanho_onda, arquivo);
   fclose(arquivo);
-  free(buffers[id_request]);
-}
-
-void atualiza_status()
-{
-    for(int i = 0; i < MAX_CONEXOES; i++)
-    {
-		if(requests[i] == MPI_REQUEST_NULL && estatus_conexao[i] == TRANSFERINDO)
-        {
-            escreve_em_disco(i);
-            estatus_conexao[i] = LIVRE;           
-        }
-    }
-}
-
-int get_indice_nova_comunicacao()
-{
-    atualiza_status();
-
-	for(int i = 0; i < MAX_CONEXOES; i++)
-		if(requests[i] == MPI_REQUEST_NULL && estatus_conexao[i] == LIVRE)
-			return i;
-    
-  int proximo_indice;
-  MPI_Status *status_temp;
-  MPI_Waitany(MAX_CONEXOES, requests, &proximo_indice, status_temp);
-	
-    return proximo_indice;
+  free(recebimento_buffers[id_request]);
+  estatus_conexao[id_request] = LIVRE;
 }
 
 void nova_transferencia(int id_request, int ordem)
 {
     estatus_conexao[id_request]   = TRANSFERINDO;    
-    posicao[id_request]  = ordem;
-    buffers[id_request] = malloc(sizeof(float) * tamanho); 
-    MPI_Irecv((void *) buffers[id_request], tamanho, MPI_FLOAT, 0, ordem, MPI_COMM_WORLD, &(requests[id_request]));
+    recebimento_posicao[id_request] = ordem;
+    recebimento_buffers[id_request] = malloc(sizeof(float) * tamanho_onda); 
+    MPI_Irecv((void *) recebimento_buffers[id_request], tamanho_onda, MPI_FLOAT, 0, ordem, MPI_COMM_WORLD, &(recebimento_requests[id_request]));
 }
 
-void finalizar(FILE *arquivo)
-{
-  MPI_Waitall(MAX_CONEXOES, requests, status);
-  atualiza_status();
-  MPI_Finalize();
-  exit(0);
+void atualiza_estatus()
+{  
+  for(int i = 0; i < tamanho_buffer_recebimento; i++)
+  {
+    if(recebimento_requests[i] == MPI_REQUEST_NULL && estatus_conexao[i] == TRANSFERINDO)
+      escreve_em_disco(i);
+  }
 }
 
-
-void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
-                const int st,  const float dtOutput, const float dt, float dx, float dy, float dz)
+int posicao_conexao_recebimento()
 {
-  init(sx, sy, sz);
-  float *onda = malloc(sizeof(float) * tamanho); 
+  atualiza_estatus();
+
+	for(int i = 0; i < tamanho_buffer_recebimento; i++)
+  {
+		if(recebimento_requests[i] == MPI_REQUEST_NULL && estatus_conexao[i] == LIVRE)
+			return i;
+  }
+
+  int proximo_indice;
+  MPI_Waitany(tamanho_buffer_recebimento, recebimento_requests, &proximo_indice, MPI_STATUS_IGNORE);
+  escreve_em_disco(proximo_indice);
+  return proximo_indice;
+}
+
+void inicializar_recebimento(int sx, int sy, int sz, int tamanho_buffer)
+{
+  tamanho_onda = sx * sy * sz;
+  recebimento_ordem = 1;
+  tamanho_buffer_recebimento = tamanho_buffer;
+
+  recebimento_buffers   = malloc(tamanho_buffer * sizeof(float*));
+  recebimento_requests  = malloc(tamanho_buffer * sizeof(MPI_Request));
+  recebimento_posicao   = malloc(tamanho_buffer * sizeof(int));
+  estatus_conexao       = malloc(tamanho_buffer * sizeof(int));
+
+  for(int i = 0; i < tamanho_buffer; i++)
+	{
+    estatus_conexao[i] = LIVRE;
+    recebimento_posicao[i]  = 0;
+    recebimento_buffers[i]  = NULL;
+    recebimento_requests[i] = MPI_REQUEST_NULL;
+	}
+}
+
+void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
+                const int st,  const float dtOutput, const float dt, float dx, float dy, float dz, int tamanho_buffer)
+{
+  inicializar_recebimento(sx, sy, sz, tamanho_buffer);
+  float *onda = malloc(sizeof(float) * tamanho_onda); 
   FILE *arquivo = abrirArquivo(nome_arquivo);
   int ixStart=0;
   int ixEnd=sx-1;
@@ -219,18 +181,19 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
   float tOut=nOut*dtOutput;
   int itCnt = 1;
 
-  int id_request_atual = get_indice_nova_comunicacao();
-  nova_transferencia(id_request_atual, ordem);
-  ordem++;
+  int id_request_atual = posicao_conexao_recebimento();
+  
+  nova_transferencia(id_request_atual, recebimento_ordem);
+  recebimento_ordem++;
 
   int temp = 1;
   for (int it=1; it<=st; it++) {
     tSim=it*dt;
     if (tSim >= tOut) {
-
-      id_request_atual = get_indice_nova_comunicacao();
-      nova_transferencia(id_request_atual, ordem);
-      ordem++;
+  
+      id_request_atual = posicao_conexao_recebimento();
+      nova_transferencia(id_request_atual, recebimento_ordem);
+      recebimento_ordem++;
 
       tOut=(++nOut)*dtOutput;
       itCnt++;
@@ -238,5 +201,13 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
     }
   }
   salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
-  finalizar(arquivo);
+  finalizar_recebimento();
+}
+
+void finalizar_recebimento()
+{
+  MPI_Waitall(tamanho_buffer_recebimento, recebimento_requests, MPI_STATUSES_IGNORE);
+  atualiza_estatus();
+  MPI_Finalize();
+  exit(0);
 }

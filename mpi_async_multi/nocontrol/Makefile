@@ -11,7 +11,8 @@ include $(arch)/flags.mk
 OBJ1=\
 	source.o \
 	utils.o \
-	comunicacao.mpi.o \
+	MPI.envio.o \
+	MPI.recebimento.o \
 	boundary.o \
 	walltime.o \
 	model.o \
@@ -40,8 +41,11 @@ boundary.o:	boundary.c boundary.h  map.o
 source.o:	source.c source.h
 	$(CC) -c $(CFLAGS) source.c
 
-comunicacao.mpi.o:	$(versao)/comunicacao.mpi.c comunicacao.mpi.h
-	$(CC) -c $(CFLAGS) $(versao)/comunicacao.mpi.c
+MPI.envio.o:	$(versao)/MPI.envio.c $(versao)/MPI.envio.h $(versao)/MPI.comunicacao.h
+	$(CC) -c $(CFLAGS) $(versao)/MPI.envio.c
+
+MPI.recebimento.o:	$(versao)/MPI.recebimento.c $(versao)/MPI.recebimento.h $(versao)/MPI.comunicacao.h
+	$(CC) -c $(CFLAGS) $(versao)/MPI.recebimento.c
 
 utils.o:	utils.c utils.h map.o source.o
 	$(CC) -c $(CFLAGS) utils.c

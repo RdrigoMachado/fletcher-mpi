@@ -11,7 +11,9 @@
 #include "model.h"
 #include "walltime.h"
 
-#include "comunicacao.mpi.h"
+#include "multiplas_conexoes/MPI.envio.h"
+#include "multiplas_conexoes/MPI.recebimento.h"
+#include "multiplas_conexoes/MPI.comunicacao.h"
 
 #include <unistd.h>
 #include <sys/time.h>
@@ -28,18 +30,8 @@ int main(int argc, char** argv) {
   MPI_Comm_size(MPI_COMM_WORLD, &cluser_size);
   //rank do procsso atual
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-
-
-  // //Pra confirmar que esta rodando em mais de uma maquina
-  // char hostbuffer[256];
-  // struct hostent *host_entry;
-  // int hostname;
-  // hostname = gethostname(hostbuffer, sizeof(hostbuffer));
-  
-  // if (hostname != -1) {
-  //   printf("***RANK1 Hostname: %s\n", hostbuffer);
-  // }
-  // //----------------------------------------------------
+  int tamanho_buffer_envio;
+  int tamanho_buffer_recebimento;
 
   enum Form prob;        // problem formulation
   int nx;                // grid points in x
@@ -86,6 +78,9 @@ int main(int argc, char** argv) {
   dt=atof(argv[9]);
   tmax=atof(argv[10]);
 
+  //BUFFERS
+  tamanho_buffer_envio       = atoi(argv[11]);;
+  tamanho_buffer_recebimento = atoi(argv[12]);;
 
 
   // verify problem formulation
@@ -121,7 +116,7 @@ int main(int argc, char** argv) {
 
 //MPI ESCRITA
   if(rank == 1){
-    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
+    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento);
   }
 
 
@@ -265,7 +260,7 @@ int main(int argc, char** argv) {
 
   //###### ENVIAR ONDA MPI
  
-  init(sx, sy, sz);
+  inicializar_envio(sx, sy, sz, tamanho_buffer_envio);
   MPI_enviar_onda(sx,sy,sz,pc,sPtr);
   
   double walltime=0.0;
@@ -279,6 +274,6 @@ int main(int argc, char** argv) {
   walltime+=wtime()-t0;
   printf("%lf\n", walltime);
   
-  finalizar_comunicacao();
+  finalizar_envio();
 
 }

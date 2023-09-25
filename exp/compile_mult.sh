@@ -15,11 +15,10 @@ echo "-----------------------------------------------------"
 echo "MPI_SYNC"
 echo "-----------------------------------------------------"
 #for comunicao in i_nocontrol i_control; do
-for comunicacao in i_nocontrol; do
+for comunicacao in nocontrol; do
 	cd $comunicacao
 	pwd
-	for send in isend_irecv; do
-		versao="${send}_packing"
+		versao="multiplas_conexoes"
 		echo "-----------------------------------------------------"
 		echo "  OpenMP - $versao"
 		echo "-----------------------------------------------------"
@@ -27,7 +26,6 @@ for comunicacao in i_nocontrol; do
 		make versao=$versao
 		mv ModelagemFletcher.exe ../../exp/bin/$versao.$backend.x
 		make clean
-	done
 	cd ..
 done
 cd ..
