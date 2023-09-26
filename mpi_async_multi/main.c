@@ -11,9 +11,9 @@
 #include "model.h"
 #include "walltime.h"
 
-#include "multiplas_conexoes/MPI.envio.h"
-#include "multiplas_conexoes/MPI.recebimento.h"
-#include "multiplas_conexoes/MPI.comunicacao.h"
+#include "MPI.envio.h"
+#include "MPI.recebimento.h"
+#include "MPI.comunicacao.h"
 
 #include <unistd.h>
 #include <sys/time.h>

@@ -10,22 +10,19 @@ backend=OpenMP
 
 
 cd ../mpi_async_multi/
+pwd
 
 echo "-----------------------------------------------------"
-echo "MPI_SYNC"
+echo "MPI MULTIPLE CONNECTIONS"
 echo "-----------------------------------------------------"
 #for comunicao in i_nocontrol i_control; do
-for comunicacao in nocontrol; do
-	cd $comunicacao
-	pwd
-		versao="multiplas_conexoes"
+for versao in multiple_files single_file; do
 		echo "-----------------------------------------------------"
 		echo "  OpenMP - $versao"
 		echo "-----------------------------------------------------"
 		make clean
 		make versao=$versao
-		mv ModelagemFletcher.exe ../../exp/bin/$versao.$backend.x
+		mv ModelagemFletcher.exe ../exp/bin/$versao.$backend.x
 		make clean
-	cd ..
 done
 cd ..

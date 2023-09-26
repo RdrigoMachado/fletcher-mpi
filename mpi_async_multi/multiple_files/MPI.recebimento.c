@@ -1,4 +1,4 @@
-#include "MPI.recebimento.h"
+#include "../MPI.recebimento.h"
 
 //Vars
 int recebimento_ordem;

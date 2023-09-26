@@ -4,7 +4,7 @@
 #include "fletcher.h"
 #include "walltime.h"
 #include "model.h"
-#include "multiplas_conexoes/MPI.envio.h"
+#include "MPI.envio.h"
 
 #ifdef PAPI
 #include "ModPAPI.h"

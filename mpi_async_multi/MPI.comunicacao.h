@@ -4,7 +4,7 @@
 #include <mpi.h>
 #include <string.h>
 #include <stdio.h>
-#include "../utils.h"
+#include "utils.h"
 
 #define MSG_ONDA      101
 #define MSG_CONTROLE  100

@@ -41,10 +41,10 @@ boundary.o:	boundary.c boundary.h  map.o
 source.o:	source.c source.h
 	$(CC) -c $(CFLAGS) source.c
 
-MPI.envio.o:	$(versao)/MPI.envio.c $(versao)/MPI.envio.h $(versao)/MPI.comunicacao.h
+MPI.envio.o:	$(versao)/MPI.envio.c MPI.envio.h MPI.comunicacao.h
 	$(CC) -c $(CFLAGS) $(versao)/MPI.envio.c
 
-MPI.recebimento.o:	$(versao)/MPI.recebimento.c $(versao)/MPI.recebimento.h $(versao)/MPI.comunicacao.h
+MPI.recebimento.o:	$(versao)/MPI.recebimento.c MPI.recebimento.h MPI.comunicacao.h
 	$(CC) -c $(CFLAGS) $(versao)/MPI.recebimento.c
 
 utils.o:	utils.c utils.h map.o source.o

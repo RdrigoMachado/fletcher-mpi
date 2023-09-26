@@ -1,4 +1,4 @@
-#include "MPI.envio.h"
+#include "../MPI.envio.h"
 
 //Vars
 int tamanho_buffer_envio;
