@@ -25,7 +25,7 @@ for tamanho in 56 180 344; do
         linha="$tamanho"
         for envio in 1 4 8; do
         for recebe in 1 4 8; do
-            tempo=$(mpirun -np 2 --use-hwthread-cpus --rankfile rankfile_1_maquina_hwtrhread ./single_fiile.OpenMP.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07 $envio $recebe)
+            tempo=$(mpirun -np 2 --use-hwthread-cpus --rankfile rankfile_1_maquina_hwtrhread ./single_file.OpenMP.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07 $envio $recebe)
             tempo_formatado=$(replace_dot_with_comma)
             linha="$linha;$tempo_formatado"
         done
@@ -53,7 +53,7 @@ for tamanho in 56 180 344; do
         for envio in 1 4 8; do
         for recebe in 1 4 8; do
 		    versao="${send}_packing"
-            tempo=$(mpirun -np 2 --rankfile rankfile_1_maquina ./single_fiile.OpenMP.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07 $envio $recebe)
+            tempo=$(mpirun -np 2 --rankfile rankfile_1_maquina ./single_file.OpenMP.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07 $envio $recebe)
             tempo_formatado=$(replace_dot_with_comma)
             linha="$linha;$tempo_formatado"
         done
@@ -81,7 +81,7 @@ for tamanho in 56 180 344; do
         for envio in 1 4 8; do
         for recebe in 1 4 8; do
           versao="${send}_packing"
-          tempo=$(mpirun -host draco2,draco3 -np 2 --use-hwthread-cpus --rankfile rankfile_2_maquinas_hwthread ./single_fiile.OpenMP.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07 $envio $recebe)
+          tempo=$(mpirun -host draco2,draco3 -np 2 --use-hwthread-cpus --rankfile rankfile_2_maquinas_hwthread ./single_file.OpenMP.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07 $envio $recebe)
           tempo_formatado=$(replace_dot_with_comma)
           linha="$linha;$tempo_formatado"
         done
@@ -109,7 +109,7 @@ for tamanho in 56 180 344; do
         for envio in 1 4 8; do
         for recebe in 1 4 8; do
           versao="${send}_packing"
-          tempo=$(mpirun -host draco2,draco3 -np 2 --rankfile rankfile_2_maquinas ./single_fiile.OpenMP.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07 $envio $recebe)
+          tempo=$(mpirun -host draco2,draco3 -np 2 --rankfile rankfile_2_maquinas ./single_file.OpenMP.x TTI $tamanho $tamanho $tamanho 16 12.5 12.5 12.5 0.000685 0.07 $envio $recebe)
           tempo_formatado=$(replace_dot_with_comma)
           linha="$linha;$tempo_formatado"
         done
