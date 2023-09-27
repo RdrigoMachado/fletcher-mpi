@@ -4,6 +4,8 @@
 int recebimento_ordem;
 int tamanho_onda;
 int tamanho_buffer_recebimento;
+int proxima_parte;
+FILE *arquivo;
 
 //Arrays
 int *estatus_conexao;
@@ -93,21 +95,27 @@ FILE* abrirArquivo(char* nome)
   return fopen(nome_arquivo, "w+");
 }
 
-void escreve_em_disco(int id_request)
+int proxima_escrita()
+{
+  for(int i = 0; i < tamanho_buffer_recebimento; i++)
+  {
+    if(recebimento_posicao[i] == proxima_parte && estatus_conexao[i] == AGUARDANDO_ESCRITA)
+      return i;
+  }
+  return NENHUM_DISPONIVEL;
+}
+
+void escreve_em_disco()
 {  
-  char nome_arquivo[128];
-  strcpy(nome_arquivo, "TTI.rsf");
-  
-  char parte[3];
-  sprintf(parte, "%d", recebimento_posicao[id_request]);
-  
-  strcat(nome_arquivo,".part");
-  strcat(nome_arquivo, parte);
-  FILE *arquivo = abrirArquivo(nome_arquivo); 
-  fwrite((void *) recebimento_buffers[id_request], sizeof(float), tamanho_onda, arquivo);
-  fclose(arquivo);
-  free(recebimento_buffers[id_request]);
-  estatus_conexao[id_request] = LIVRE;
+  int posicao_proxima_parte = proxima_escrita();
+  while(posicao_proxima_parte != NENHUM_DISPONIVEL)
+  {
+    fwrite((void *) recebimento_buffers[posicao_proxima_parte], sizeof(float), tamanho_onda, arquivo);
+    estatus_conexao[posicao_proxima_parte] = LIVRE;
+    free(recebimento_buffers[posicao_proxima_parte]);
+    proxima_parte++;
+    posicao_proxima_parte = proxima_escrita();
+  }
 }
 
 void nova_transferencia(int id_request, int ordem)
@@ -123,8 +131,9 @@ void atualiza_estatus()
   for(int i = 0; i < tamanho_buffer_recebimento; i++)
   {
     if(recebimento_requests[i] == MPI_REQUEST_NULL && estatus_conexao[i] == TRANSFERINDO)
-      escreve_em_disco(i);
+      estatus_conexao[i] = AGUARDANDO_ESCRITA;
   }
+  escreve_em_disco();
 }
 
 int posicao_conexao_recebimento()
@@ -139,7 +148,7 @@ int posicao_conexao_recebimento()
 
   int proximo_indice;
   MPI_Waitany(tamanho_buffer_recebimento, recebimento_requests, &proximo_indice, MPI_STATUS_IGNORE);
-  escreve_em_disco(proximo_indice);
+  escreve_em_disco();
   return proximo_indice;
 }
 
@@ -148,6 +157,9 @@ void inicializar_recebimento(int sx, int sy, int sz, int tamanho_buffer)
   tamanho_onda = sx * sy * sz;
   recebimento_ordem = 1;
   tamanho_buffer_recebimento = tamanho_buffer;
+  proxima_parte  = 1;
+  
+  arquivo = abrirArquivo("TTI"); 
 
   recebimento_buffers   = malloc(tamanho_buffer * sizeof(float*));
   recebimento_requests  = malloc(tamanho_buffer * sizeof(MPI_Request));
@@ -209,5 +221,6 @@ void finalizar_recebimento()
   MPI_Waitall(tamanho_buffer_recebimento, recebimento_requests, MPI_STATUSES_IGNORE);
   atualiza_estatus();
   MPI_Finalize();
+  fclose(arquivo);
   exit(0);
 }

@@ -11,7 +11,8 @@
 #define FLAG_FINALIZAR -1
 #define FLAG_ONDA 1
 
-#define LIVRE            0
-#define TRANSFERINDO     1
-
+#define LIVRE               0
+#define TRANSFERINDO        1
+#define AGUARDANDO_ESCRITA  2
+#define NENHUM_DISPONIVEL   -1
 #endif
