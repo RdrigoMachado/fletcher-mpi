@@ -4,6 +4,7 @@
 int recebimento_ordem;
 int tamanho_onda;
 int tamanho_buffer_recebimento;
+int parOuImpar;
 
 //Arrays
 int *estatus_conexao;
@@ -116,7 +117,7 @@ void nova_transferencia(int id_request, int ordem)
     estatus_conexao[id_request]   = TRANSFERINDO;    
     recebimento_posicao[id_request] = ordem;
     recebimento_buffers[id_request] = malloc(sizeof(float) * tamanho_onda); 
-    MPI_Irecv((void *) recebimento_buffers[id_request], tamanho_onda, MPI_FLOAT, 1, ordem, MPI_COMM_WORLD, &(recebimento_requests[id_request]));
+    MPI_Irecv((void *) recebimento_buffers[id_request], tamanho_onda, MPI_FLOAT, 0, ordem, MPI_COMM_WORLD, &(recebimento_requests[id_request]));
 }
 
 void atualiza_estatus()
@@ -151,8 +152,9 @@ int posicao_conexao_recebimento()
 
 
 
-void inicializar_recebimento(int sx, int sy, int sz, int tamanho_buffer)
+void inicializar_recebimento(int sx, int sy, int sz, int tamanho_buffer, int par_impar)
 {
+  parOuImpar = par_impar;
   tamanho_onda = sx * sy * sz;
   recebimento_ordem = 1;
   tamanho_buffer_recebimento = tamanho_buffer;
@@ -193,9 +195,9 @@ void escreve_tudo()
 }
 
 void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
-                const int st,  const float dtOutput, const float dt, float dx, float dy, float dz, int tamanho_buffer)
+                const int st,  const float dtOutput, const float dt, float dx, float dy, float dz, int tamanho_buffer, int par_impar)
 {
-  inicializar_recebimento(sx, sy, sz, tamanho_buffer);
+  inicializar_recebimento(sx, sy, sz, tamanho_buffer, par_impar);
   float *onda = malloc(sizeof(float) * tamanho_onda); 
   FILE *arquivo = abrirArquivo(nome_arquivo);
   int ixStart=0;
@@ -210,18 +212,34 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
   float tOut=nOut*dtOutput;
   int itCnt = 1;
 
-  int id_request_atual = posicao_conexao_recebimento();
+  int id_request_atual;
   
-  nova_transferencia(id_request_atual, recebimento_ordem);
+  if(recebimento_ordem % 2 == parOuImpar)
+  {
+    if(parOuImpar == 1)
+      printf("rank 1 vai escrever %d\n", recebimento_ordem);
+    else 
+      printf("rank 2 vai escrever %d\n", recebimento_ordem);
+
+
+    id_request_atual = posicao_conexao_recebimento();
+    nova_transferencia(id_request_atual, recebimento_ordem);
+  }
   recebimento_ordem++;
 
   int temp = 1;
   for (int it=1; it<=st; it++) {
     tSim=it*dt;
     if (tSim >= tOut) {
-  
-      id_request_atual = posicao_conexao_recebimento();
-      nova_transferencia(id_request_atual, recebimento_ordem);
+      if(recebimento_ordem % 2 == parOuImpar)
+      {
+        if(parOuImpar == 1)
+          printf("rank 1 vai escrever %d\n", recebimento_ordem);
+        else 
+          printf("rank 2 vai escrever %d\n", recebimento_ordem);
+        id_request_atual = posicao_conexao_recebimento();
+        nova_transferencia(id_request_atual, recebimento_ordem);
+      }
       recebimento_ordem++;
 
       tOut=(++nOut)*dtOutput;
@@ -230,7 +248,8 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
     }
   }
   escreve_tudo();
-  salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
+  if(parOuImpar == 0)
+    salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
   MPI_Finalize();
   exit(0);
 }

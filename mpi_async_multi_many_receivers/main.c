@@ -118,9 +118,11 @@ int main(int argc, char** argv) {
 //MPI ESCRITA
   if(rank == 1)
   {
-    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento);
+    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento, 1);
   }
-
+  if(rank == 2){
+    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento, 0);
+  }
 
   ixSource=sx/2;
   iySource=sy/2;
