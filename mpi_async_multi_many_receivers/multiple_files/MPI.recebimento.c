@@ -216,12 +216,6 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
   
   if(recebimento_ordem % 2 == parOuImpar)
   {
-    if(parOuImpar == 1)
-      printf("rank 1 vai escrever %d\n", recebimento_ordem);
-    else 
-      printf("rank 2 vai escrever %d\n", recebimento_ordem);
-
-
     id_request_atual = posicao_conexao_recebimento();
     nova_transferencia(id_request_atual, recebimento_ordem);
   }
@@ -233,10 +227,6 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
     if (tSim >= tOut) {
       if(recebimento_ordem % 2 == parOuImpar)
       {
-        if(parOuImpar == 1)
-          printf("rank 1 vai escrever %d\n", recebimento_ordem);
-        else 
-          printf("rank 2 vai escrever %d\n", recebimento_ordem);
         id_request_atual = posicao_conexao_recebimento();
         nova_transferencia(id_request_atual, recebimento_ordem);
       }
