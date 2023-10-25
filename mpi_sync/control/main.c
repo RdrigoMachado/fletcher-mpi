@@ -265,6 +265,8 @@ int main(int argc, char** argv) {
         fNameSec);
 
   double walltime=0.0;
+  const double t0=wtime();
+  
   //###### ENVIAR ONDA MPI
   MPI_enviar_onda(sx,sy,sz,pc,sPtr);
 
@@ -275,13 +277,12 @@ int main(int argc, char** argv) {
         pp,     pc,      qp,       qc,
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
-  walltime+=wtime()-t0;
-  printf("%lf\n", walltime);
   
-
   int flag_finalizar = FLAG_FINALIZAR;
   MPI_Ssend(&flag_finalizar, 1, MPI_INT, 1, MSG_CONTROLE, MPI_COMM_WORLD);
-
   MPI_Finalize();
+
+  walltime+=wtime()-t0;
+  printf("%lf\n", walltime);
 
 }

@@ -16,7 +16,7 @@ echo "-----------------------------------------------------"
 echo "MPI MULTIPLE CONNECTIONS"
 echo "-----------------------------------------------------"
 #for comunicao in i_nocontrol i_control; do
-for versao in multiple_files single_file; do
+for versao in multiple_files single_file multiple_files_sender; do
 		echo "-----------------------------------------------------"
 		echo "  OpenMP - $versao"
 		echo "-----------------------------------------------------"

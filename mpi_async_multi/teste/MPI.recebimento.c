@@ -121,15 +121,10 @@ void nova_transferencia(int id_request, int ordem)
 
 void atualiza_estatus()
 {  
-  int pronto;
   for(int i = 0; i < tamanho_buffer_recebimento; i++)
   {
-    if(estatus_conexao[i] == TRANSFERINDO)
-    {
-      MPI_Test(&(recebimento_requests[i]) ,&pronto, MPI_STATUS_IGNORE);
-      if(pronto)
-        escreve_em_disco(i);
-    }
+    if(recebimento_requests[i] == MPI_REQUEST_NULL && estatus_conexao[i] == TRANSFERINDO)
+      escreve_em_disco(i);
   }
 }
 
@@ -139,7 +134,7 @@ int posicao_conexao_recebimento()
 
 	for(int i = 0; i < tamanho_buffer_recebimento; i++)
   {
-		if(estatus_conexao[i] == LIVRE)
+		if(recebimento_requests[i] == MPI_REQUEST_NULL && estatus_conexao[i] == LIVRE)
 			return i;
   }
 
@@ -231,6 +226,12 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
   }
   escreve_tudo();
   salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
+  finalizar_recebimento();
+}
+
+
+void finalizar_recebimento()
+{
   MPI_Finalize();
   exit(0);
 }

@@ -116,7 +116,7 @@ void nova_transferencia(int id_request, int ordem)
     estatus_conexao[id_request]   = TRANSFERINDO;    
     recebimento_posicao[id_request] = ordem;
     recebimento_buffers[id_request] = malloc(sizeof(float) * tamanho_onda); 
-    MPI_Irecv((void *) recebimento_buffers[id_request], tamanho_onda, MPI_FLOAT, 0, ordem, MPI_COMM_WORLD, &(recebimento_requests[id_request]));
+    MPI_Irecv((void *) recebimento_buffers[id_request], tamanho_onda, MPI_FLOAT, 1, ordem, MPI_COMM_WORLD, &(recebimento_requests[id_request]));
 }
 
 void atualiza_estatus()

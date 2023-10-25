@@ -1,0 +1,7 @@
+
+single_file.OpenMP.x:8652 terminated with signal 11 at PC=7fe8fc247580 SP=7ffd08adb820.  Backtrace:
+/lib/x86_64-linux-gnu/libc.so.6(+0x47580)[0x7fe8fc247580]
+./single_file.OpenMP.x(+0x26fc)[0x55ae962026fc]
+/lib/x86_64-linux-gnu/libc.so.6(+0x29d90)[0x7fe8fc229d90]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80)[0x7fe8fc229e40]
+./single_file.OpenMP.x(+0x3145)[0x55ae96203145]

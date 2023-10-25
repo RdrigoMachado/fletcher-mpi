@@ -12,17 +12,18 @@
 #include "walltime.h"
 
 #include "MPI.envio.h"
+#include "MPI.sender.h"
 #include "MPI.recebimento.h"
 #include "MPI.comunicacao.h"
 
 #include <unistd.h>
-#include <sys/time.h>
 
 
 enum Form {ISO, VTI, TTI};
 
 
 int main(int argc, char** argv) {
+
   //Inicia MPI
   MPI_Init(&argc, &argv);
   int rank, cluser_size;  
@@ -115,10 +116,17 @@ int main(int argc, char** argv) {
   // source position
 
 //MPI ESCRITA
-  if(rank == 1){
-    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento);
+  if(cluser_size == 2 && rank == 1)
+  {
+        MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento);
+  } else if (cluser_size == 3)
+  {
+    if(rank == 1){
+      MPI_sender(sx, sy, sz, st,  dtOutput, dt, tamanho_buffer_envio);
+    } else if (rank == 2){
+      MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento);
+    }
   }
-
 
 
   ixSource=sx/2;
@@ -259,21 +267,24 @@ int main(int argc, char** argv) {
         fNameSec);
 
   //###### ENVIAR ONDA MPI
- 
-  inicializar_envio(sx, sy, sz, tamanho_buffer_envio);
-  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
   
   double walltime=0.0;
   const double t0=wtime();
+
+  inicializar_envio(sx, sy, sz, tamanho_buffer_envio); 
+
+  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+   
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
         dx,     dy,      dz,       dt,   it, 
         pp,     pc,      qp,       qc,
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
-  walltime+=wtime()-t0;
-  printf("%lf\n", walltime);
   
   finalizar_envio();
+
+  walltime+=wtime()-t0;
+  printf("%lf\n", walltime);
 
 }

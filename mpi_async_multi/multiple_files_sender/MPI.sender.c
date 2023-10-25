@@ -1,4 +1,4 @@
-#include "../MPI.envio.h"
+#include "../MPI.sender.h"
 
 //Vars
 int tamanho_buffer_envio;
@@ -10,7 +10,7 @@ float **buffers;
 MPI_Request *requests;
 
 
-void inicializar_envio(int sx, int sy, int sz, int tamanho_buffer)
+void inicializar_sender(int sx, int sy, int sz, int tamanho_buffer)
 {
   tamanho = sx * sy * sz;
   ordem = 1;
@@ -24,10 +24,9 @@ void inicializar_envio(int sx, int sy, int sz, int tamanho_buffer)
     buffers[i]  = NULL;
     requests[i] = MPI_REQUEST_NULL;
 	}
-
 }
 
-void  finalizar_envio()
+void  finalizar_sender()
 {
   MPI_Waitall(tamanho_buffer_envio, requests, MPI_STATUSES_IGNORE);
   MPI_Finalize();
@@ -39,6 +38,7 @@ void  finalizar_envio()
   
   free(buffers);
   free(requests);
+  exit(0);
 }
 
 //#############################    MPI  SEND   ##################################
@@ -63,15 +63,39 @@ int posicao_conexao()
   return posicao;
 }
 
-void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
+void MPI_sender(int sx, int sy, int sz, const int st,  const float dtOutput, const float dt, int tamanho_buffer)
 {
+  inicializar_sender(sx, sy, sz, tamanho_buffer);
+  float tSim=0.0;
+  int nOut=1;
+  float tOut=nOut*dtOutput;
+  int itCnt = 1;
+
+
   int posicao = posicao_conexao();
   free(buffers[posicao]);
-  buffers[posicao] = empacotar(sx, sy, sz, ondaPtr, p);
-
-  MPI_Isend((void *) buffers[posicao], tamanho , MPI_FLOAT, 1, ordem, MPI_COMM_WORLD, &(requests[posicao]));
+  buffers[posicao] = malloc(sizeof(float) * tamanho);
+  MPI_Recv((void *) buffers[posicao], tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+  
+  MPI_Isend((void *) buffers[posicao], tamanho , MPI_FLOAT, 2, ordem, MPI_COMM_WORLD, &(requests[posicao]));
   ordem++;
-  p->itCnt++;
 
+
+  for (int it=1; it<=st; it++) {
+    tSim=it*dt;
+    if (tSim >= tOut) {
+        posicao = posicao_conexao();
+        free(buffers[posicao]);
+        buffers[posicao] = malloc(sizeof(float) * tamanho);
+        MPI_Recv((void *) buffers[posicao], tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+        MPI_Isend((void *) buffers[posicao], tamanho , MPI_FLOAT, 2, ordem, MPI_COMM_WORLD, &(requests[posicao]));
+        ordem++;
+
+        tOut=(++nOut)*dtOutput;
+        itCnt++;
+    }
+  }
+  finalizar_sender();
 }
 

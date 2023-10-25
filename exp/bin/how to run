@@ -1,0 +1,1 @@
+mpirun --hostfile hostfile --rankfile rankfile --use-hwthread-cpus -np 3 ./multiple_files_sender.OpenMP.x TTI 56 56 56 16 12.5 12.5 12.5 0.000685 0.07 8 8

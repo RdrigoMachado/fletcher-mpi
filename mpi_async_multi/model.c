@@ -79,7 +79,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     if (tSim >= tOut) {
       temp++;
       DRIVER_Update_pointers(sx,sy,sz,pc);
-      //DumpSliceFile(sx,sy,sz,pc,sPtr);
+      //DumpSliceFile(sx,sy,sz,pc,sPtr);    
       MPI_enviar_onda(sx,sy,sz,pc,sPtr);
       tOut=(++nOut)*dtOutput;
     }
