@@ -3,6 +3,8 @@
 //Vars
 int sequencia;
 int tamanho;
+char nome_arquivo[128];
+char parte[3];
 
 //##########################    MPI  RECEIVE   ##################################
 
@@ -73,27 +75,6 @@ void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, i
 
 }
 
-FILE* criar_arquivo(int sequencia)
-{
-  char nome_arquivo[128];
-  char parte[3];
-  
-  strcpy(nome_arquivo, "TTI.rsf");
-  strcat(nome_arquivo,".part");
-
-  
-  sprintf(parte, "%d", sequencia);
-  strcat(nome_arquivo, parte);
-  
-  return fopen(nome_arquivo, "w+");
-}
-
-void escreve_em_disco(int sequencia, float *onda)
-{
-  FILE *arquivo = criar_arquivo(sequencia);
-  fwrite((void *) onda, sizeof(float), tamanho, arquivo);  
-  fclose(arquivo);
-}
 
 void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
                 const int st,  const float dtOutput, const float dt, float dx, float dy, float dz, int par_impar)
@@ -120,7 +101,14 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
   if(sequencia % 2 == parOuImpar)
   {
     MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, sequencia, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-    escreve_em_disco(sequencia, onda);
+    strcpy(nome_arquivo, "TTI.rsf");
+    strcat(nome_arquivo,".part");
+    sprintf(parte, "%d", sequencia);
+    strcat(nome_arquivo, parte);
+    
+    FILE *arquivo = fopen(nome_arquivo, "w+");
+    fwrite((void *) onda, sizeof(float), tamanho, arquivo);  
+    fclose(arquivo);
   }
   sequencia++;
 
@@ -132,7 +120,14 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
       if(sequencia % 2 == parOuImpar)
       {
         MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, sequencia, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        escreve_em_disco(sequencia, onda);
+        strcpy(nome_arquivo, "TTI.rsf");
+        strcat(nome_arquivo,".part");
+        sprintf(parte, "%d", sequencia);
+        strcat(nome_arquivo, parte);
+        
+        FILE *arquivo = fopen(nome_arquivo, "w+");
+        fwrite((void *) onda, sizeof(float), tamanho, arquivo);  
+        fclose(arquivo);
       }
       sequencia++;
 

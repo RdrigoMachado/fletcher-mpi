@@ -38,6 +38,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 	   float * restrict vpz, float * restrict vsv, float * restrict epsilon, float * restrict delta,
 	   float * restrict phi, float * restrict theta)
 {
+  //tempos parado em envio
 
   float tSim=0.0;
   int nOut=1;
@@ -57,6 +58,8 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 		      phi,    theta,
 		      pp,    pc,    qp,    qc);
 
+
+  double tempo_transmissao=0.0;
   
   double walltime=0.0;
   int temp = 0;
@@ -77,14 +80,18 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
     tSim=it*dt;
     if (tSim >= tOut) {
-      temp++;
       DRIVER_Update_pointers(sx,sy,sz,pc);
-      //DumpSliceFile(sx,sy,sz,pc,sPtr);    
+      
+      const double tOnda=wtime();
       MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+      tempo_transmissao+= wtime()-tOnda;
+      temp++;
+
       tOut=(++nOut)*dtOutput;
     }
   }
-
+  printf("comp %lf\n", walltime);
+  printf("send %lf\n", tempo_transmissao);
   fflush(stdout);
 
   // DRIVER_Finalize deallocate data, clean-up things etc 
