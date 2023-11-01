@@ -260,10 +260,25 @@ int main(int argc, char** argv) {
   double walltime=0.0;
   const double t0=wtime();
 
-  inicializar_envio(sx, sy, sz); 
 
-  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
-   
+  double init=0.0;
+  const double tInit=wtime();
+
+    inicializar_envio(sx, sy, sz); 
+  
+  init+=wtime()-tInit;
+  printf("init %lf\n", init);
+
+  double send=0.0;
+  const double tSend=wtime();
+
+    MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+  
+  send+=wtime()-tSend;
+  printf("send %lf\n", send);
+
+
+
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
         dx,     dy,      dz,       dt,   it, 
@@ -271,7 +286,15 @@ int main(int argc, char** argv) {
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
   
+
+
+  double fin=0.0;
+  const double tFin=wtime();
+
   finalizar_envio();
+
+  fin+=wtime()-tFin;
+  printf("fin %lf\n", fin);
 
   walltime+=wtime()-t0;
   printf("%lf\n", walltime);

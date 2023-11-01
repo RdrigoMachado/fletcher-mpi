@@ -39,6 +39,10 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 	   float * restrict phi, float * restrict theta)
 {
   //tempos parado em envio
+  double preComp=0.0;
+  const double tPrewtime=wtime();
+
+
 
   float tSim=0.0;
   int nOut=1;
@@ -58,9 +62,14 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 		      phi,    theta,
 		      pp,    pc,    qp,    qc);
 
+  preComp+=wtime()-tPrewtime;
 
   double tempo_transmissao=0.0;
-  
+
+
+
+
+
   double walltime=0.0;
   int temp = 0;
   for (int it=1; it<=st; it++) {
@@ -90,6 +99,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
       tOut=(++nOut)*dtOutput;
     }
   }
+  printf("pre %lf\n", preComp);
   printf("comp %lf\n", walltime);
   printf("send %lf\n", tempo_transmissao);
   fflush(stdout);
