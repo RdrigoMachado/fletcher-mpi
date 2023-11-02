@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
   // input problem definition
   
   if (argc<ARGS) {
-    printf("program requires %d input arguments; execution halted\n",ARGS-1);
+  //  printf("program requires %d input arguments; execution halted\n",ARGS-1);
     exit(-1);
   } 
   strcpy(fNameSec,argv[1]);
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
     prob=TTI;
   }
   else {
-    printf("Input problem formulation (%s) is unknown\n", fNameSec);
+   // printf("Input problem formulation (%s) is unknown\n", fNameSec);
     exit(-1);
   }
 
@@ -133,8 +133,8 @@ int main(int argc, char** argv) {
   case VTI:
 
     if (SIGMA > MAX_SIGMA) {
-      printf("Since sigma (%f) is greater that threshold (%f), sigma is considered infinity and vsv is set to zero\n", 
-		      SIGMA, MAX_SIGMA);
+      // printf("Since sigma (%f) is greater that threshold (%f), sigma is considered infinity and vsv is set to zero\n", 
+		  //     SIGMA, MAX_SIGMA);
     }
     for (i=0; i<sx*sy*sz; i++) {
       vpz[i]=3000.0;
@@ -153,8 +153,8 @@ int main(int argc, char** argv) {
   case TTI:
 
     if (SIGMA > MAX_SIGMA) {
-      printf("Since sigma (%f) is greater that threshold (%f), sigma is considered infinity and vsv is set to zero\n", 
-		      SIGMA, MAX_SIGMA);
+      // printf("Since sigma (%f) is greater that threshold (%f), sigma is considered infinity and vsv is set to zero\n", 
+		  //     SIGMA, MAX_SIGMA);
     }
     for (i=0; i<sx*sy*sz; i++) {
       vpz[i]=3000.0;
@@ -224,6 +224,10 @@ int main(int argc, char** argv) {
 		     dx, dy, dz, dt,
 		     fNameSec);
 
+
+  double walltime=0.0;
+  const double t0=wtime();
+
   DumpSliceFile(sx,sy,sz,pc,sPtr);
   
   // Model do:
@@ -234,8 +238,7 @@ int main(int argc, char** argv) {
   // - calls InsertSource
   // - do AbsorbingBoundary and DumpSliceFile, if needed
   // - Finalize
-  double walltime=0.0;
-  const double t0=wtime();
+
 
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,

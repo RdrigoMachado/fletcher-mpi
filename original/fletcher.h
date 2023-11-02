@@ -1,7 +1,7 @@
 #define MI 0.2           // stability factor to compute dt
 #define ARGS 11          // tokens in executable command
 
-#define _DUMP       // execution summary dump
+//#define _DUMP       // execution summary dump
 //#undef  _DUMP     // execution summary dump
 
 //#define SIGMA 20.0     // value of sigma (infinity) on formula 7 of Fletcher's paper
