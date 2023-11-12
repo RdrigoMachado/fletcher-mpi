@@ -24,7 +24,15 @@ enum Form {ISO, VTI, TTI};
 int main(int argc, char** argv) {
 
   //Inicia MPI
-  MPI_Init(&argc, &argv);
+  int provided;
+  MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
+  if (provided < MPI_THREAD_MULTIPLE)
+  {
+    printf("Error: the MPI library doesn't provide the required thread level\n");
+    MPI_Abort(MPI_COMM_WORLD, 0);
+  }
+
+  //MPI_Init(&argc, &argv);
   int rank, cluser_size;  
   //quantidade de processos do cluster
   MPI_Comm_size(MPI_COMM_WORLD, &cluser_size);
