@@ -7,12 +7,10 @@ pthread_t thread;
 int passo_atual = 0;
 int tamanho_onda;
 float *buffer;
-int destino = 1;
 
 // Producer thread function
 void* sender() {
-    printf("sending to %d: #%d\n", destino, passo_atual);
-    MPI_Send((void *) buffer, tamanho_onda, MPI_FLOAT, destino, passo_atual, MPI_COMM_WORLD);
+    MPI_Send((void *) buffer, tamanho_onda, MPI_FLOAT, 1, passo_atual, MPI_COMM_WORLD);
 }
 
 
@@ -33,7 +31,6 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
     else
     {
         pthread_join(thread, NULL);
-        destino = (destino == 1) ? 2: 1;
         pthread_create(&thread, NULL, &sender, NULL);
 
     }
