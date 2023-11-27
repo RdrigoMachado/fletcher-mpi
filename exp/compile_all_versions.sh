@@ -23,7 +23,7 @@ echo "-----------------------------------------------------"
 echo "  $version"
 echo "-----------------------------------------------------"
 make clean
-make version=$version
+make version=$version backend=$backend
 mv ModelagemFletcher.exe ../exp/bin/$version.$backend.x
 make clean
 
@@ -33,7 +33,7 @@ echo "-----------------------------------------------------"
 echo "  $version"
 echo "-----------------------------------------------------"
 make clean
-make version=$version
+make version=$version backend=$backend
 mv ModelagemFletcher.exe ../exp/bin/$version.$backend.x
 make clean
 
@@ -43,7 +43,7 @@ echo "-----------------------------------------------------"
 echo "  $version"
 echo "-----------------------------------------------------"
 make clean
-make version=$version
+make version=$version backend=$backend
 mv ModelagemFletcher.exe ../exp/bin/$version.$backend.x
 make clean
 
@@ -53,6 +53,6 @@ echo "-----------------------------------------------------"
 echo "  $version"
 echo "-----------------------------------------------------"
 make clean
-make version=$version
+make version=$version backend=$backend
 mv ModelagemFletcher.exe ../exp/bin/$version.$backend.x
 make clean

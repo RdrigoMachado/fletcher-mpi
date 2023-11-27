@@ -1,0 +1,4 @@
+#CC=$(GCC)
+CC=mpicc
+CFLAGS=-O3 $(OMP_FLAG)
+LIBS=$(GCC_LIBS)

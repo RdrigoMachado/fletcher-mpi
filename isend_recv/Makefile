@@ -4,6 +4,7 @@
 # Default
 backend=OpenMP
 arch=$(backend)
+CC=mpicc
 
 include config.mk
 include $(arch)/flags.mk

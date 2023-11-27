@@ -3,16 +3,17 @@
 
 # Default
 backend=OpenMP
-
 arch=$(backend)
-CC=mpicc
 
 include config.mk
 include $(arch)/flags.mk
+CC=mpicc
 
 OBJ1=\
 	source.o \
 	utils.o \
+	MPI.envio.o \
+	MPI.recebimento.o \
 	boundary.o \
 	walltime.o \
 	model.o \
@@ -40,6 +41,12 @@ boundary.o:	boundary.c boundary.h  map.o
 
 source.o:	source.c source.h
 	$(CC) -c $(CFLAGS) source.c
+
+MPI.envio.o:	$(version)/MPI.envio.c MPI.envio.h MPI.comunicacao.h
+	$(CC) -c $(CFLAGS) $(version)/MPI.envio.c
+
+MPI.recebimento.o:	$(version)/MPI.recebimento.c MPI.recebimento.h MPI.comunicacao.h
+	$(CC) -c $(CFLAGS) $(version)/MPI.recebimento.c
 
 utils.o:	utils.c utils.h map.o source.o
 	$(CC) -c $(CFLAGS) utils.c
