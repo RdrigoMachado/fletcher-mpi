@@ -21,7 +21,7 @@ void inicializar_envio(int sx, int sy, int sz, int tamanho_buffer)
 
   for(int i = 0; i < tamanho_buffer_envio; i++)
 	{
-    buffers[i]  = NULL;
+    buffers[i]  = malloc(sizeof(float) * tamanho);
     requests[i] = MPI_REQUEST_NULL;
 	}
 }
@@ -57,7 +57,11 @@ int posicao_conexao()
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
 {
   int posicao = posicao_conexao();
+  printf("initi\n");
+
   memcpy(buffers[posicao], ondaPtr, tamanho * sizeof(float));
+
+  printf("initi\n");
   int destino;
 
   if(ordem % 2 == 0)
