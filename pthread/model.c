@@ -91,6 +91,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   DRIVER_Finalize();
 
   printf("computacao;dump;total\n");
-  printf("%lf;%lf;", computacao, dump);
+  printf("%lf;%lf;", computacao, send);
 }
 

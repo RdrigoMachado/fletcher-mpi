@@ -77,7 +77,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
     tSim=it*dt;
     if (tSim >= tOut) {
-      temp++;
       DRIVER_Update_pointers(sx,sy,sz,pc);
 
       const double send0=wtime();
