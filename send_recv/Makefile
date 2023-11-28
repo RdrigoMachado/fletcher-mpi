@@ -2,6 +2,7 @@
 #   module load gompi
 
 # Default
+backend=OpenMP
 arch=$(backend)
 
 include config.mk

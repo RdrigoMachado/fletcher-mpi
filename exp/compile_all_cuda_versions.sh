@@ -13,9 +13,11 @@ version=original
 echo "-----------------------------------------------------"
 echo "   $version"
 echo "-----------------------------------------------------"
-make clean
+make clean-all
 make backend=$backend CC=gcc
 mv ModelagemFletcher.exe ../exp/bin/$version.$backend.x
+make clean-all
+
 
 for version in pthread isend_recv send_recv 2isend_recv; do
 
@@ -23,9 +25,9 @@ for version in pthread isend_recv send_recv 2isend_recv; do
     echo "-----------------------------------------------------"
     echo "  $version"
     echo "-----------------------------------------------------"
-    make clean
-    make version=$version backend=$backend
+    make clean-all
+    make backend=$backend version=$version 
     mv ModelagemFletcher.exe ../exp/bin/$version.$backend.x
-    make clean
+    make clean-all
 
 done
