@@ -246,8 +246,9 @@ int main(int argc, char** argv) {
         pp,     pc,      qp,       qc,
 	vpz,    vsv,     epsilon,  delta,
 	phi,    theta);
+  CloseSliceFile(sPtr);
   walltime+=wtime()-t0;
 
-  CloseSliceFile(sPtr);
+  
   printf("%lf\n", walltime);
 }

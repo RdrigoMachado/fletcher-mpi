@@ -14,7 +14,7 @@ echo "-----------------------------------------------------"
 echo "   $version"
 echo "-----------------------------------------------------"
 make clean
-make backend=$backend
+make backend=$backend CC=gcc
 mv ModelagemFletcher.exe ../exp/bin/$version.$backend.x
 
 cd ../pthread/

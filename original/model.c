@@ -57,7 +57,8 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 		      pp,    pc,    qp,    qc);
 
   
-  double walltime=0.0;
+  double computacao=0.0;
+  double dump=0.0;
   for (int it=1; it<=st; it++) {
 
     // Calculate / obtain source value on i timestep
@@ -71,23 +72,26 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 		       pp,    pc,    qp,    qc);
 
     SwapArrays(&pp, &pc, &qp, &qc);
-    walltime+=wtime()-t0;
+    computacao+=wtime()-t0;
 
     tSim=it*dt;
     if (tSim >= tOut) {
 
       DRIVER_Update_pointers(sx,sy,sz,pc);
+      
+      const double dump0=wtime();
       DumpSliceFile(sx,sy,sz,pc,sPtr);
+      dump+=wtime()-dump0;
+
       tOut=(++nOut)*dtOutput;
     }
   }
-
-
   fflush(stdout);
-
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
-  //printf("%lf\n", walltime);
+
+  printf("computacao;dump;total\n");
+  printf("%lf;%lf;", computacao, dump);
 
 }
 

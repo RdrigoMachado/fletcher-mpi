@@ -39,7 +39,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 	   float * restrict phi, float * restrict theta)
 {
   
-
   float tSim=0.0;
   int nOut=1;
   float tOut=nOut*dtOutput;
@@ -58,6 +57,9 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 		      phi,    theta,
 		      pp,    pc,    qp,    qc);
 
+
+  double computacao=0.0;
+  double send=0.0;
   for (int it=1; it<=st; it++) {
 
     // Calculate / obtain source value on i timestep
@@ -71,19 +73,24 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 		       pp,    pc,    qp,    qc);
 
     SwapArrays(&pp, &pc, &qp, &qc);
+    computacao+=wtime()-t0;
 
     tSim=it*dt;
     if (tSim >= tOut) {
       DRIVER_Update_pointers(sx,sy,sz,pc); 
+
+      const double send0=wtime();
       MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+      send+=wtime()-send0;
 
       tOut=(++nOut)*dtOutput;
     }
   }
   fflush(stdout);
-
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
 
+  printf("computacao;dump;total\n");
+  printf("%lf;%lf;", computacao, dump);
 }
 
