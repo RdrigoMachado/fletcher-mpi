@@ -6,7 +6,7 @@ clear
 mkdir -p bin/
 rm bin/*.x
 rm bin/*.rsf*
-backend=OpenMP
+backend=CUDA
 
 cd ../original/
 version=original
