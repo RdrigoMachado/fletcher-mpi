@@ -57,11 +57,7 @@ int posicao_conexao()
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
 {
   int posicao = posicao_conexao();
-  printf("initi\n");
-
   memcpy(buffers[posicao], ondaPtr, tamanho * sizeof(float));
-
-  printf("initi\n");
   int destino;
 
   if(ordem % 2 == 0)
