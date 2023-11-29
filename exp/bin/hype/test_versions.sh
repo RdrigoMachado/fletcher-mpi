@@ -5,10 +5,10 @@ replace_dot_with_comma () {
 }
 
 
-omp_threads=40
+omp_threads=20
 
 #create or make file empty
-for size in 56 180 344; do
+for size in 504; do
 for version in original send_recv isend_recv pthread 2isend_recv many; do
     echo -n "" > "${size}_${version}_${omp_threads}.csv"
 done
@@ -16,10 +16,10 @@ done
 
 
 #run tests
-export OMP_NUM_THREADS=40
-for size in 56 180 344; do
+export OMP_NUM_THREADS=20
+for size in 504; do
 for i in 1; do
-for version in original send_recv isend_recv pthread 2isend_recv; do
+for version in original send_recv isend_recv pthread 2isend_recv many; do
     if test "$version" = "original"
     then
         time=$(./original.CUDA.x TTI $size $size $size 16 12.5 12.5 12.5 0.000685 0.5)
