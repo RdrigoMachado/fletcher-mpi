@@ -1,6 +1,6 @@
 #Variveis
 VERSION=pthread
-SIZE=440
+SIZE=504
 STEP=0.001
 THRESHOLD=1
 

@@ -274,7 +274,6 @@ int main(int argc, char** argv) {
         pp,     pc,      qp,       qc,
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
-  finalizar_envio();
 
   walltime+=wtime()-t0;
   printf("%lf\n", walltime);

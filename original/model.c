@@ -90,7 +90,12 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
 
-  printf("computacao;dump;total\n");
+  const double dump0=wtime();
+  CloseSliceFile(sPtr);
+  dump+=wtime()-dump0;
+
+
+  printf("\ncomputacao;dump;total\n");
   printf("%lf;%lf;", computacao, dump);
 
 }
