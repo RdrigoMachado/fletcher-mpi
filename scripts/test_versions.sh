@@ -5,7 +5,7 @@ replace_dot_with_comma () {
 }
 
 
-omp_threads=20
+omp_threads=40
 tamanho=440
 
 export OMP_NUM_THREADS=$omp_threads

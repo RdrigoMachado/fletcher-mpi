@@ -1,0 +1,17 @@
+#No arquivo env.sh na secao CUDA ficam as variaveis relacionadas a Compute Capability da GPU.
+#Remover comentario da linha que tiver a CC correta para a GPU ou adicionar a versao correta, ex:
+export CUDA_GPU_SM=sm_37
+
+#Em seguida, executar:
+source env.sh
+
+#Para compilar basta rodar o script:
+./compile_all_cuda_versions.sh
+
+#Os executaveis compilados serao movidos para a basta bin.
+#Na pasta bin tambem se encontra o arquivo rankfile onde fica descrito a quantidade de nucleos que cada rank podera utilizar.
+#Para rodar as versoes mpi, utilizar a seguinte estrutura de comando:
+mpirun --rankfile rankfile -np 2 ./versao.CUDA.x TTI tamanho tamanho tamanho 16 12.5 12.5 12.5 0.001 1
+
+#Ex:
+mpirun --rankfile rankfile -np 2 ./pthread.CUDA.x TTI 440 440 440 16 12.5 12.5 12.5 0.001 1
