@@ -1,6 +1,7 @@
 #include "../MPI.envio.h"
 
 int byte_size;
+int size;
 int numero_escrita;
 int pos_atual;
 float *buffers[TAMANHO_BUFFER];
@@ -9,7 +10,8 @@ MPI_Request requests[TAMANHO_BUFFER];
 
 void inicializar_envio(int sx, int sy, int sz)
 {
-  byte_size = (sx * sy * sz) * sizeof(float);
+  size = sx * sy * sz;
+  byte_size = size * sizeof(float);
   numero_escrita = 1;
 
   for(int i = 0; i < TAMANHO_BUFFER; i++)
@@ -28,7 +30,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
   }
   
   memcpy(buffers[pos_atual], ondaPtr, byte_size);
-  MPI_Isend((void *) buffers[pos_atual], byte_size , MPI_FLOAT, 1, numero_escrita, MPI_COMM_WORLD, &(requests[pos_atual]));
+  MPI_Isend((void *) buffers[pos_atual], size , MPI_FLOAT, 1, numero_escrita, MPI_COMM_WORLD, &(requests[pos_atual]));
   
   numero_escrita++;
   p->itCnt++;
