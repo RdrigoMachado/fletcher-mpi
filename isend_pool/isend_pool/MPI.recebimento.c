@@ -1,6 +1,7 @@
 #include "../MPI.recebimento.h"
 
 int recv_byte_size;
+int recv_size;
 int recv_numero_escrita;
 int recv_pos_atual;
 float *recv_buffer[TAMANHO_BUFFER];
@@ -10,15 +11,14 @@ MPI_Request recv_requests[TAMANHO_BUFFER];
 char recv_nome[128];
 
 
-void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  const float dtOutput,
-                        const float dt, float dx, float dy, float dz);
+void inicializar_recebimento(int sx, int sy, int sz)
 {
-  strcpy(recv_nome, nome_arquivo);
-  recv_byte_size = (sx * sy * sz) * sizeof(float);
+  recv_size = sx * sy * sz;
+  recv_byte_size = recv_size * sizeof(float);
   recv_numero_escrita = 1;
   for(int i = 0; i < TAMANHO_BUFFER; i++)
 	{
-    recv_buffer[i]  = malloc(byte_size);
+    recv_buffer[i]  = malloc(recv_byte_size);
     recv_requests[i] = MPI_REQUEST_NULL;
 	}
 }
@@ -103,57 +103,29 @@ void escreve_em_disco()
   strcpy(nome_arquivo, recv_nome);
   
   char parte[3];
-  sprintf(parte, "%d", recebimento_posicao[recv_numero_escrita]);
+  sprintf(parte, "%d", recv_numero_escrita);
   
   strcat(nome_arquivo,".part");
   strcat(nome_arquivo, parte);
-  FILE *arquivo = abrirArquivo(nome_arquivo); 
-  fwrite((void *) recv_buffes[recv_numero_escrita], sizeof(float), recv_byte_size, arquivo);
+  FILE *arquivo = fopen(nome_arquivo, "w+"); 
+  fwrite((void *) recv_buffer[recv_numero_escrita], sizeof(float), recv_size, arquivo);
   fclose(arquivo);
   recv_numero_escrita++;
 }
 
-
-void escreve_tudo()
+void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  const float dtOutput, const float dt, float dx, float dy, float dz)
 {
-  int continua = 1;
-  int pronto;
-  while(continua)
-  {
-    continua = 0;
-    for(int i = 0; i < tamanho_buffer_recebimento; i++)
-    {
-      if(estatus_conexao[i] == TRANSFERINDO)
-      {
-        MPI_Test(&(recebimento_requests[i]) ,&pronto, MPI_STATUS_IGNORE);
-        if(pronto)
-          escreve_em_disco(i);
-        else
-          continua = 1;
-      }
-    }
-  }
-}
-
-void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
-                const int st,  const float dtOutput, const float dt, float dx, float dy, float dz, int tamanho_buffer, int par_impar)
-{
-  inicializar_recebimento(sx, sy, sz, tamanho_buffer, par_impar);
-  float *onda = malloc(sizeof(float) * tamanho_onda); 
-  int ixStart=0;
-  int ixEnd=sx-1;
-  int iyStart=0;
-  int iyEnd=sy-1;
-  int izStart=0;
-  int izEnd=sz-1;
+  inicializar_recebimento(sx, sy, sz);
+  strcpy(recv_nome, nome_arquivo);
   float tSim=0.0;
   int nOut=1;
   float tOut=nOut*dtOutput;
   int itCnt = 1;
 
-  MPI_Irecv((void *) recv_buffers[0], recv_byte_size, MPI_FLOAT, 0, 1, MPI_COMM_WORLD, &(recv_requests[0]));
-
-  for (int it=1; it<=st; it++) {
+  MPI_Irecv((void *) recv_buffer[0], recv_size, MPI_FLOAT, 0, 1, MPI_COMM_WORLD, &(recv_requests[0]));
+  int it;
+  
+  for (it=1; it<=st; it++) {
     tSim=it*dt;
     if (tSim >= tOut) {
       
@@ -163,14 +135,20 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
           MPI_Wait(&(recv_requests[recv_pos_atual]), MPI_STATUS_IGNORE);
           escreve_em_disco();
         }
-        MPI_Irecv((void *) recv_buffers[recv_pos_atual], recv_byte_size, MPI_FLOAT, 0, it+1, MPI_COMM_WORLD, &(recv_requests[recv_pos_atual]));
+        MPI_Irecv((void *) recv_buffer[recv_pos_atual], recv_size, MPI_FLOAT, 0, it+1, MPI_COMM_WORLD, &(recv_requests[recv_pos_atual]));
 
       tOut=(++nOut)*dtOutput;
       itCnt++;
     }
   }
-  escreve_tudo();
-  salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
+
+  while (recv_numero_escrita <= it)
+  {
+    recv_pos_atual = it % TAMANHO_BUFFER;
+    MPI_Wait(&(recv_requests[recv_pos_atual]), MPI_STATUS_IGNORE);
+    escreve_em_disco();
+  }
+  salvarInformacoesExecucao(0, sx-1, 0, sy-1, 0, sz-1, dx, dy, dz, dt, itCnt, nome_arquivo);
   MPI_Finalize();
   exit(0);
 }

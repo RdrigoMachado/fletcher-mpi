@@ -12,7 +12,6 @@
 #include "walltime.h"
 
 #include "MPI.envio.h"
-#include "MPI.sender.h"
 #include "MPI.recebimento.h"
 #include "MPI.comunicacao.h"
 

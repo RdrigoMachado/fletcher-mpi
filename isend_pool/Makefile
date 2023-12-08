@@ -12,7 +12,6 @@ OBJ1=\
 	source.o \
 	utils.o \
 	MPI.envio.o \
-	MPI.sender.o \
 	MPI.recebimento.o \
 	boundary.o \
 	walltime.o \
@@ -44,10 +43,6 @@ source.o:	source.c source.h
 
 MPI.envio.o:	$(version)/MPI.envio.c MPI.envio.h MPI.comunicacao.h
 	$(CC) -c $(CFLAGS) $(version)/MPI.envio.c
-
-
-MPI.sender.o:	$(version)/MPI.sender.c MPI.sender.h MPI.comunicacao.h
-	$(CC) -c $(CFLAGS) $(version)/MPI.sender.c
 
 MPI.recebimento.o:	$(version)/MPI.recebimento.c MPI.recebimento.h MPI.comunicacao.h
 	$(CC) -c $(CFLAGS) $(version)/MPI.recebimento.c
