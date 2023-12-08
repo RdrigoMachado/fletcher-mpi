@@ -78,11 +78,6 @@ int main(int argc, char** argv) {
   dt=atof(argv[9]);
   tmax=atof(argv[10]);
 
-  //BUFFERS
-  tamanho_buffer_envio       = atoi(argv[11]);;
-  tamanho_buffer_recebimento = atoi(argv[12]);;
-
-
   // verify problem formulation
 
   if (strcmp(fNameSec,"ISO")==0) {
@@ -114,7 +109,7 @@ int main(int argc, char** argv) {
   st=ceil(tmax/dt);
   // source position
 
-//MPI ESCRITA
+  //MPI ESCRITA
   if(rank == 1)
   {
     MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
@@ -258,6 +253,7 @@ int main(int argc, char** argv) {
         fNameSec);
 
   //###### ENVIAR ONDA MPI
+  
   double walltime=0.0;
   const double t0=wtime();
 
@@ -274,5 +270,5 @@ int main(int argc, char** argv) {
   walltime+=wtime()-t0;
 
   printf("%lf\n", walltime);
-
+  
 }

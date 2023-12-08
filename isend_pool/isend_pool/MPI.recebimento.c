@@ -121,30 +121,36 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  
   int nOut=1;
   float tOut=nOut*dtOutput;
   int itCnt = 1;
+  recv_pos_atual = 0;
 
-  MPI_Irecv((void *) recv_buffer[0], recv_size, MPI_FLOAT, 0, 1, MPI_COMM_WORLD, &(recv_requests[0]));
-  int it;
+  //printf("recv recebendo %d\n", recv_pos_atual);
+  MPI_Irecv((void *) recv_buffer[recv_pos_atual], recv_size, MPI_FLOAT, 0, itCnt, MPI_COMM_WORLD, &(recv_requests[0]));
   
-  for (it=1; it<=st; it++) {
+  
+  for (int it=1; it<=st; it++) {
     tSim=it*dt;
     if (tSim >= tOut) {
-      
-        if(it >= TAMANHO_BUFFER)
+
+        if(itCnt >= TAMANHO_BUFFER)
         {
-          recv_pos_atual = it % TAMANHO_BUFFER;
+          recv_pos_atual = itCnt % TAMANHO_BUFFER;
+          //printf("recv esperando %d\n", recv_pos_atual);
           MPI_Wait(&(recv_requests[recv_pos_atual]), MPI_STATUS_IGNORE);
           escreve_em_disco();
+        } else {
+          recv_pos_atual++;
         }
-        MPI_Irecv((void *) recv_buffer[recv_pos_atual], recv_size, MPI_FLOAT, 0, it+1, MPI_COMM_WORLD, &(recv_requests[recv_pos_atual]));
+        //printf("recv recebendo %d\n", recv_pos_atual);
+        MPI_Irecv((void *) recv_buffer[recv_pos_atual], recv_size, MPI_FLOAT, 0, itCnt+1, MPI_COMM_WORLD, &(recv_requests[recv_pos_atual]));
 
       tOut=(++nOut)*dtOutput;
       itCnt++;
     }
   }
 
-  while (recv_numero_escrita <= it)
+  while (recv_numero_escrita <= itCnt)
   {
-    recv_pos_atual = it % TAMANHO_BUFFER;
+    recv_pos_atual = recv_numero_escrita % TAMANHO_BUFFER;
     MPI_Wait(&(recv_requests[recv_pos_atual]), MPI_STATUS_IGNORE);
     escreve_em_disco();
   }

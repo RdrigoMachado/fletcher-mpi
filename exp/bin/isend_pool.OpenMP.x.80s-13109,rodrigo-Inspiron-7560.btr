@@ -1,0 +1,7 @@
+
+isend_pool.OpenMP.x:13109 terminated with signal 11 at PC=7f1256447580 SP=7ffe639065c0.  Backtrace:
+/lib/x86_64-linux-gnu/libc.so.6(+0x47580)[0x7f1256447580]
+./isend_pool.OpenMP.x(+0x1660)[0x55820327d660]
+/lib/x86_64-linux-gnu/libc.so.6(+0x29d90)[0x7f1256429d90]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80)[0x7f1256429e40]
+./isend_pool.OpenMP.x(+0x1fc5)[0x55820327dfc5]
