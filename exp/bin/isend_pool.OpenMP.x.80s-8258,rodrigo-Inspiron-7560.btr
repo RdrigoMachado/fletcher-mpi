@@ -1,0 +1,15 @@
+
+isend_pool.OpenMP.x:8258 terminated with signal 11 at PC=7f96bb9a08ca SP=7ffd41981bd8.  Backtrace:
+/lib/x86_64-linux-gnu/libc.so.6(+0x1a08ca)[0x7f96bb9a08ca]
+/lib/x86_64-linux-gnu/libmpich.so.12(+0x217c7b)[0x7f96bbe17c7b]
+/lib/x86_64-linux-gnu/libmpich.so.12(+0x21289ed)[0x7f96bdd289ed]
+/lib/x86_64-linux-gnu/libmpich.so.12(+0x23fb85)[0x7f96bbe3fb85]
+/lib/x86_64-linux-gnu/libmpich.so.12(+0x23fc7f)[0x7f96bbe3fc7f]
+/lib/x86_64-linux-gnu/libmpich.so.12(+0x215a7e6)[0x7f96bdd5a7e6]
+/lib/x86_64-linux-gnu/libmpich.so.12(+0x252861)[0x7f96bbe52861]
+/lib/x86_64-linux-gnu/libmpich.so.12(PMPI_Wait+0x17e)[0x7f96bbd2aa2e]
+./isend_pool.OpenMP.x(+0x4746)[0x55c0e9579746]
+./isend_pool.OpenMP.x(+0x2e89)[0x55c0e9577e89]
+/lib/x86_64-linux-gnu/libc.so.6(+0x29d90)[0x7f96bb829d90]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80)[0x7f96bb829e40]
+./isend_pool.OpenMP.x(+0x3015)[0x55c0e9578015]

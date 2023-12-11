@@ -27,13 +27,13 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
   {
 
     pos_atual = numero_escrita % TAMANHO_BUFFER;
-    //printf("snd esperando %d num %d\n", pos_atual, numero_escrita);
+    printf("snd esperando %d num %d\n", pos_atual, numero_escrita);
     MPI_Wait(&(requests[pos_atual]), MPI_STATUS_IGNORE);
   } else {
     pos_atual++;
   }
   
-  //printf("snd enviando %d num %d\n", pos_atual, numero_escrita);
+  printf("snd enviando %d num %d\n", pos_atual, numero_escrita);
 
   memcpy(buffers[pos_atual], ondaPtr, byte_size);
   MPI_Isend((void *) buffers[pos_atual], size , MPI_FLOAT, 1, numero_escrita, MPI_COMM_WORLD, &(requests[pos_atual]));
