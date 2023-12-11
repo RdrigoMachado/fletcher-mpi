@@ -108,7 +108,8 @@ void escreve_em_disco()
   strcat(nome_arquivo,".part");
   strcat(nome_arquivo, parte);
   FILE *arquivo = fopen(nome_arquivo, "w+"); 
-  fwrite((void *) recv_buffer[recv_numero_escrita], sizeof(float), recv_size, arquivo);
+  int posicao = (recv_numero_escrita - 1) % TAMANHO_BUFFER;
+  fwrite((void *) recv_buffer[posicao], sizeof(float), recv_size, arquivo);
   fclose(arquivo);
   recv_numero_escrita++;
 }
@@ -133,7 +134,7 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  
 
         if(itCnt >= TAMANHO_BUFFER)
         {
-          recv_pos_atual = itCnt % TAMANHO_BUFFER;
+          recv_pos_atual = (itCnt - 1) % TAMANHO_BUFFER;
           //printf("recv esperando %d\n", recv_pos_atual);
           MPI_Wait(&(recv_requests[recv_pos_atual]), MPI_STATUS_IGNORE);
           escreve_em_disco();
@@ -150,7 +151,7 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  
 
   while (recv_numero_escrita <= itCnt)
   {
-    recv_pos_atual = recv_numero_escrita % TAMANHO_BUFFER;
+    recv_pos_atual = (recv_numero_escrita - 1) % TAMANHO_BUFFER;
     MPI_Wait(&(recv_requests[recv_pos_atual]), MPI_STATUS_IGNORE);
     escreve_em_disco();
   }
