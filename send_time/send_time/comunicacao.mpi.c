@@ -5,11 +5,12 @@
 
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   int tamanho = sx * sy * sz;
-  // double write_time=0.0;
-  // const double t1=wtime();
+  double write_time=0.0;
+  const double t1=wtime();
   MPI_Send((void *) ondaPtr, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
-  // write_time+=wtime()-t1;     
-  // printf("send %lf\n", write_time);
+  write_time+=wtime()-t1;
+      
+  printf("send %lf\n", write_time);
 }
 
 
@@ -121,29 +122,30 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
   
       MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-      // double write_time=0.0;
-      // const double t1=wtime();
+      double write_time=0.0;
+      const double t1=wtime();
       FILE *arquivo = fopen(nome_arquivo, "a");
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
       fclose(arquivo);
-      // write_time+=wtime()-t1;
-      // printf("%d execucoes\n", contador);
-      // printf("%d - %lf\n", itCnt, write_time);
-      // contador = 0;
+      write_time+=wtime()-t1;
+      
+      printf("%d execucoes\n", contador);
+      printf("%d - %lf\n", itCnt, write_time);
+      contador = 0;
       tOut=(++nOut)*dtOutput;
       itCnt++;
     }
   }
-    // printf("transmissao ok\n");
+    printf("transmissao ok\n");
 
   salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
   
 
-  // double finalize_time=0.0;
-  // const double finalize=wtime();
+  double finalize_time=0.0;
+  const double finalize=wtime();
   MPI_Finalize();
-  // finalize_time+=wtime()-finalize;
-  // printf("finalize - %lf\n",finalize_time);
+  finalize_time+=wtime()-finalize;
+  printf("finalize - %lf\n",finalize_time);
 
   
   exit(0);
