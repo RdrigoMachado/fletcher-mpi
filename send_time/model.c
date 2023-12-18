@@ -59,14 +59,19 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
   
   double computacao=0.0;
+  double source=0.0;
+
   double computacao_unitaria=0.0;
   double send=0.0;
   for (int it=1; it<=st; it++) {
 
+    const double tsource=wtime();
+
     // Calculate / obtain source value on i timestep
     float src = Source(dt, it-1);
-    
     DRIVER_InsertSource(dt,it-1,iSource,pc,qc,src);
+
+    source+=wtime()-tsource;
 
     const double t0=wtime();
     DRIVER_Propagate(  sx,   sy,   sz,   bord,
@@ -97,11 +102,17 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
       computacao_unitaria=0.0;
     }
   }
+
+  double flush_driver=0.0;
+  const double tflush_driver=wtime();
+
   fflush(stdout);
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
 
- printf("computacao;send;total\n");
-  printf("%lf;%lf;", computacao, send);
+  flush_driver+=wtime()-tflush_driver;
+
+  printf("computacao;source;flush,send;total\n");
+  printf("%lf;%lf;%lf;%lf;", computacao, source, flush_driver, send);
 }
 
