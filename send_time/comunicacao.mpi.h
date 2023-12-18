@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "utils.h"
+#include "walltime.h"
 
 #define MSG_ONDA      101
 #define MSG_CONTROLE  100
