@@ -141,12 +141,6 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
   salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
   
 
-  double close_time=0.0;
-  const double close=wtime();
-  fclose(arquivo);
-  close_time+=wtime()-close;
-  printf("close - %lf\n",close_time);
-
   double finalize_time=0.0;
   const double finalize=wtime();
   MPI_Finalize();
