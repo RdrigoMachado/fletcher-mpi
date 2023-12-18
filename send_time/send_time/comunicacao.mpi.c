@@ -10,7 +10,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   MPI_Send((void *) ondaPtr, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
   write_time+=wtime()-t1;
       
-  printf("send %lf\n", itCnt, write_time);
+  printf("send %lf\n", write_time);
 }
 
 
