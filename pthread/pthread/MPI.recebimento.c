@@ -99,10 +99,10 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
 
   
   MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, sequencia, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-  strcpy(nome_arquivo, "TTI.rsf");
-  strcat(nome_arquivo,".part");
-  sprintf(parte, "%d", sequencia);
-  strcat(nome_arquivo, parte);
+  // strcpy(nome_arquivo, "TTI.rsf");
+  // strcat(nome_arquivo,".part");
+  // sprintf(parte, "%d", sequencia);
+  // strcat(nome_arquivo, parte);
   
   FILE *arquivo = fopen(nome_arquivo, "w+");
   fwrite((void *) onda, sizeof(float), tamanho, arquivo);  
@@ -113,12 +113,12 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo,
     tSim=it*dt;
     if (tSim >= tOut) {
       MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, sequencia, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-      strcpy(nome_arquivo, "TTI.rsf");
-      strcat(nome_arquivo,".part");
-      sprintf(parte, "%d", sequencia);
-      strcat(nome_arquivo, parte);
+      // strcpy(nome_arquivo, "TTI.rsf");
+      // strcat(nome_arquivo,".part");
+      // sprintf(parte, "%d", sequencia);
+      // strcat(nome_arquivo, parte);
       
-      FILE *arquivo = fopen(nome_arquivo, "w+");
+      FILE *arquivo = fopen(nome_arquivo, "a");
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);  
       fclose(arquivo);
       sequencia++;

@@ -81,17 +81,17 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     SwapArrays(&pp, &pc, &qp, &qc);
     computacao+=wtime()-t0;
 
-    computacao_unitaria+=wtime()-t0;
+    // computacao_unitaria+=wtime()-t0;
     
     tSim=it*dt;
     if (tSim >= tOut) {
-      const double t1=wtime();
+      // const double t1=wtime();
       
       DRIVER_Update_pointers(sx,sy,sz,pc);
       
-      computacao_unitaria+=wtime()-t1;
+      // computacao_unitaria+=wtime()-t1;
       
-      printf("comp %lf;", computacao_unitaria);
+      // printf("comp %lf;", computacao_unitaria);
       
       const double send0=wtime();
       MPI_enviar_onda(sx,sy,sz,pc,sPtr);
@@ -99,7 +99,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
       tOut=(++nOut)*dtOutput;
       
-      computacao_unitaria=0.0;
+      // computacao_unitaria=0.0;
     }
   }
 
