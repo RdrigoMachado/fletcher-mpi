@@ -112,6 +112,7 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
  
   MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
   fwrite((void *) onda, sizeof(float), tamanho, arquivo);
+  fclose(arquivo);
 
   int contador = 0;
   for (int it=1; it<=st; it++) {
@@ -123,9 +124,9 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
 
       double write_time=0.0;
       const double t1=wtime();
-  
+      FILE *arquivo = fopen(nome_arquivo, "a");
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
-      fflush(arquivo);
+      fclose(arquivo);
       write_time+=wtime()-t1;
       
       printf("%d execucoes\n", contador);
