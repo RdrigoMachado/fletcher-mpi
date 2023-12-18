@@ -1,0 +1,7 @@
+rcmachado@blaise:/scratch/rcmachado/fletcher-mpi/exp/bin$ ./original.CUDA.x TTI 504 504 504 16 12.5 12.5 12.5 0.001 1
+CUDA source using device(0) Tesla P100-SXM2-16GB with compute capability 6.0.
+GPU memory usage = 12896 MiB
+CUDA_Finalize: SUCCESS
+
+computacao;dump;total
+214.135775;57.500270;297.993778

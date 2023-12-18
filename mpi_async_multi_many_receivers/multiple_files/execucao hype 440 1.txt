@@ -1,0 +1,327 @@
+rcmachado@hype5:/scratch/rcmachado/fletcher-mpi/exp/bin$ ./run_mpi_cuda.sh 
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   hype5
+  Local device: mlx5_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+Open MPI failed an OFI Libfabric library call (fi_domain).  This is highly
+unusual; your job may behave unpredictably (and/or abort) after this.
+
+  Local host: hype5
+  Location: ../../../../../../ompi/mca/mtl/ofi/mtl_ofi_component.c:939
+  Error: No data available (61)
+--------------------------------------------------------------------------
+send 0.264195
+[hype5:69364] 1 more process has sent help message help-mpi-btl-openib.txt / error in device init
+[hype5:69364] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+[hype5:69364] 1 more process has sent help message help-mtl-ofi.txt / OFI call fail
+CUDA source using device(0) Tesla K80 with compute capability 3.7.
+GPU memory usage = 8859 MiB
+comp 2.969879;send 0.101177
+10 execucoes
+1 - 0.380431
+comp 2.969537;send 0.100585
+10 execucoes
+2 - 0.382814
+comp 2.984485;send 0.100500
+10 execucoes
+3 - 0.382084
+comp 2.995418;send 0.099814
+10 execucoes
+4 - 0.379777
+comp 3.004153;send 0.099354
+10 execucoes
+5 - 0.499516
+comp 3.021148;send 0.099752
+10 execucoes
+6 - 0.413199
+comp 3.021038;send 0.099169
+10 execucoes
+7 - 0.464195
+comp 3.025962;send 0.101277
+10 execucoes
+8 - 0.381118
+comp 3.030956;send 0.101456
+10 execucoes
+9 - 0.380907
+comp 3.026594;send 0.099681
+10 execucoes
+10 - 0.393650
+comp 3.035208;send 0.098279
+10 execucoes
+11 - 0.499600
+comp 3.035673;send 0.098183
+10 execucoes
+12 - 0.390005
+comp 3.043337;send 0.099640
+10 execucoes
+13 - 0.391921
+comp 3.048464;send 0.101489
+10 execucoes
+14 - 0.380798
+comp 3.052408;send 0.099131
+10 execucoes
+15 - 0.390605
+comp 3.058839;send 0.098442
+10 execucoes
+16 - 0.456178
+comp 3.056822;send 0.097986
+10 execucoes
+17 - 0.503393
+comp 3.074175;send 0.098837
+10 execucoes
+18 - 0.392220
+comp 3.076015;send 0.099983
+10 execucoes
+19 - 0.382069
+comp 3.084049;send 0.099345
+10 execucoes
+20 - 0.387883
+comp 3.085865;send 0.098666
+10 execucoes
+21 - 0.516779
+comp 3.084305;send 0.099055
+10 execucoes
+22 - 0.440840
+comp 3.094833;send 0.098507
+10 execucoes
+23 - 0.508131
+comp 3.101134;send 0.101198
+10 execucoes
+24 - 0.384361
+comp 3.121063;send 0.099034
+10 execucoes
+25 - 0.396725
+comp 3.109219;send 0.098623
+10 execucoes
+26 - 0.394815
+comp 3.109086;send 0.100561
+10 execucoes
+27 - 0.408860
+comp 3.114658;send 0.098736
+10 execucoes
+28 - 0.479986
+comp 3.133028;send 0.101942
+10 execucoes
+29 - 0.385550
+comp 3.137334;send 0.098776
+10 execucoes
+30 - 0.505934
+comp 3.144308;send 0.098733
+10 execucoes
+31 - 0.506255
+comp 3.141794;send 0.098040
+10 execucoes
+32 - 0.398302
+comp 3.152879;send 0.098070
+10 execucoes
+33 - 0.398047
+comp 3.158478;send 0.101562
+10 execucoes
+34 - 0.385165
+comp 3.170998;send 0.098963
+10 execucoes
+35 - 0.433155
+comp 3.168517;send 0.099315
+10 execucoes
+36 - 0.505349
+comp 3.199592;send 0.099708
+10 execucoes
+37 - 0.459255
+comp 3.207100;send 0.099674
+10 execucoes
+38 - 0.506833
+comp 3.199265;send 0.101395
+10 execucoes
+39 - 0.383513
+comp 3.218033;send 0.099078
+10 execucoes
+40 - 0.396018
+comp 3.211366;send 0.098892
+10 execucoes
+41 - 0.398206
+comp 3.228796;send 0.100022
+10 execucoes
+42 - 0.410770
+comp 3.252456;send 0.098503
+10 execucoes
+43 - 0.419499
+comp 3.245422;send 0.101282
+10 execucoes
+44 - 0.384672
+comp 3.271259;send 0.099834
+10 execucoes
+45 - 0.397665
+comp 3.274012;send 0.099815
+10 execucoes
+46 - 0.501856
+comp 3.270434;send 0.099044
+10 execucoes
+47 - 0.509463
+comp 3.272875;send 0.101417
+10 execucoes
+48 - 0.385073
+comp 3.287971;send 0.101404
+10 execucoes
+49 - 0.385472
+comp 3.308342;send 0.099587
+10 execucoes
+50 - 0.498450
+comp 3.312202;send 0.099902
+10 execucoes
+51 - 0.463899
+comp 3.310890;send 0.099805
+10 execucoes
+52 - 0.494638
+comp 3.313888;send 0.100428
+10 execucoes
+53 - 0.384002
+comp 3.324575;send 0.101995
+10 execucoes
+54 - 0.385219
+comp 3.337040;send 0.097346
+10 execucoes
+55 - 0.496318
+comp 3.320148;send 0.098783
+10 execucoes
+56 - 0.491840
+comp 3.342728;send 0.098397
+10 execucoes
+57 - 0.395802
+comp 3.350524;send 0.100946
+10 execucoes
+58 - 0.383503
+comp 3.370700;send 0.101228
+10 execucoes
+59 - 0.401889
+comp 3.358635;send 0.098828
+10 execucoes
+60 - 0.462324
+comp 3.358667;send 0.099254
+10 execucoes
+61 - 0.462411
+comp 3.378302;send 0.102444
+10 execucoes
+62 - 0.387528
+comp 3.381655;send 0.101089
+10 execucoes
+63 - 0.396278
+comp 3.391344;send 0.100325
+10 execucoes
+64 - 0.502079
+comp 3.391344;send 0.098021
+10 execucoes
+65 - 0.506414
+comp 3.392200;send 0.101367
+10 execucoes
+66 - 0.385556
+comp 3.383782;send 0.099188
+10 execucoes
+67 - 0.461587
+comp 3.402526;send 0.098949
+10 execucoes
+68 - 0.395994
+comp 3.387356;send 0.099448
+10 execucoes
+69 - 0.443578
+comp 3.417753;send 0.100467
+10 execucoes
+70 - 0.385585
+comp 3.402345;send 0.098706
+10 execucoes
+71 - 0.474572
+comp 3.409164;send 0.098828
+10 execucoes
+72 - 0.461111
+comp 3.419096;send 0.101355
+10 execucoes
+73 - 0.386295
+comp 3.414094;send 0.101532
+10 execucoes
+74 - 0.385431
+comp 3.425435;send 0.099409
+10 execucoes
+75 - 0.399214
+comp 3.442696;send 0.099362
+10 execucoes
+76 - 0.497885
+comp 3.431676;send 0.101515
+10 execucoes
+77 - 0.384536
+comp 3.462606;send 0.101782
+10 execucoes
+78 - 0.386307
+comp 3.479749;send 0.097980
+10 execucoes
+79 - 0.432472
+comp 3.468473;send 0.099363
+10 execucoes
+80 - 0.458716
+comp 3.461278;send 0.101716
+10 execucoes
+81 - 0.388326
+comp 3.470068;send 0.098799
+10 execucoes
+82 - 0.487345
+comp 3.459090;send 0.099649
+10 execucoes
+83 - 0.398419
+comp 3.480377;send 0.101066
+10 execucoes
+84 - 0.388254
+comp 3.468093;send 0.098729
+10 execucoes
+85 - 0.496437
+comp 3.484169;send 0.099286
+10 execucoes
+86 - 0.458960
+comp 3.483783;send 0.101037
+10 execucoes
+87 - 0.384468
+comp 3.494216;send 0.099857
+10 execucoes
+88 - 0.440516
+comp 3.493367;send 0.098190
+10 execucoes
+89 - 0.455503
+comp 3.481939;send 0.100890
+10 execucoes
+90 - 0.387990
+comp 3.493509;send 0.101612
+10 execucoes
+91 - 0.389687
+comp 3.481887;send 0.100558
+10 execucoes
+92 - 0.502651
+comp 3.482348;send 0.098346
+10 execucoes
+93 - 0.516826
+comp 3.481538;send 0.101400
+10 execucoes
+94 - 0.384754
+comp 3.484120;send 0.098320
+10 execucoes
+95 - 0.447850
+comp 3.485096;send 0.098041
+10 execucoes
+96 - 0.474474
+comp 3.517304;send 0.100971
+10 execucoes
+97 - 0.387147
+comp 3.471779;send 0.099215
+10 execucoes
+98 - 0.415640
+comp 3.475543;send 0.099273
+10 execucoes
+99 - 0.469436
+comp 3.517866;send 0.101086
+10 execucoes
+100 - 0.388049
+transmissao ok
+CUDA_Finalize: SUCCESS
+computacao;source;flush,send;total
+322.069361;0.031708;0.851957;9.982188;355.986386
+finalize - 1.789960
+finalize 1.373908

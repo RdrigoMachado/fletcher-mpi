@@ -1,0 +1,460 @@
+rcmachado@blaise:/scratch/rcmachado/fletcher-mpi/exp/bin$ ./run_mpi_cuda.sh 
+send 4.769500
+CUDA source using device(0) Tesla P100-SXM2-16GB with compute capability 6.0.
+GPU memory usage = 12896 MiB
+comp 2.193928;send 0.176796
+10 execucoes
+1 - 0.401128
+comp 2.195162;send 0.175570
+10 execucoes
+2 - 0.401526
+comp 2.194577;send 0.175691
+10 execucoes
+3 - 0.397023
+comp 2.195164;send 0.175619
+10 execucoes
+4 - 0.398867
+comp 2.195222;send 0.176254
+10 execucoes
+5 - 0.395635
+comp 2.193284;send 0.178052
+10 execucoes
+6 - 0.396307
+comp 2.194579;send 0.176486
+10 execucoes
+7 - 0.396382
+comp 2.186023;send 0.177444
+10 execucoes
+8 - 0.396853
+comp 2.190998;send 0.177135
+10 execucoes
+9 - 0.395443
+comp 2.191213;send 0.177350
+10 execucoes
+10 - 0.393124
+comp 2.185462;send 0.176918
+10 execucoes
+11 - 0.396621
+comp 2.186516;send 0.175981
+10 execucoes
+12 - 0.395347
+comp 2.188897;send 0.176800
+10 execucoes
+13 - 0.396153
+comp 2.187855;send 0.176726
+10 execucoes
+14 - 0.394801
+comp 2.188208;send 0.178063
+10 execucoes
+15 - 0.393687
+comp 2.190600;send 0.177045
+10 execucoes
+16 - 0.392752
+comp 2.189201;send 0.176747
+10 execucoes
+17 - 0.392048
+comp 2.192442;send 0.176591
+10 execucoes
+18 - 0.394196
+comp 2.194834;send 0.176658
+10 execucoes
+19 - 0.462772
+comp 2.198264;send 0.176968
+10 execucoes
+20 - 0.393355
+comp 2.196996;send 0.177883
+10 execucoes
+21 - 0.392275
+comp 2.194413;send 0.177354
+10 execucoes
+22 - 0.394476
+comp 2.194983;send 0.176831
+10 execucoes
+23 - 0.393853
+comp 2.196216;send 0.176947
+10 execucoes
+24 - 0.394289
+comp 2.197413;send 0.176267
+10 execucoes
+25 - 0.394298
+comp 2.197723;send 0.176418
+10 execucoes
+26 - 0.396770
+comp 2.195840;send 0.176301
+10 execucoes
+27 - 0.394713
+comp 2.194474;send 0.176858
+10 execucoes
+28 - 0.392859
+comp 2.194852;send 0.176153
+10 execucoes
+29 - 0.394188
+comp 2.197131;send 0.176855
+10 execucoes
+30 - 0.395323
+comp 2.191663;send 0.177095
+10 execucoes
+31 - 0.395709
+comp 2.196802;send 0.178277
+10 execucoes
+32 - 0.392418
+comp 2.196740;send 0.176389
+10 execucoes
+33 - 0.395325
+comp 2.189785;send 0.175493
+10 execucoes
+34 - 0.393309
+comp 2.195427;send 0.175548
+10 execucoes
+35 - 0.395380
+comp 2.193511;send 0.177189
+10 execucoes
+36 - 0.394085
+comp 2.198267;send 0.176715
+10 execucoes
+37 - 0.391358
+comp 2.193098;send 0.177732
+10 execucoes
+38 - 0.395634
+comp 2.195447;send 0.176026
+10 execucoes
+39 - 0.393745
+comp 2.191371;send 0.177326
+10 execucoes
+40 - 0.394600
+comp 2.194931;send 0.175919
+10 execucoes
+41 - 0.394884
+comp 2.195295;send 0.176385
+10 execucoes
+42 - 0.397130
+comp 2.195080;send 0.176467
+10 execucoes
+43 - 0.394029
+comp 2.196411;send 0.177745
+10 execucoes
+44 - 0.395077
+comp 2.194799;send 0.177137
+10 execucoes
+45 - 0.394432
+comp 2.198241;send 0.177386
+10 execucoes
+46 - 0.396024
+comp 2.195002;send 0.176083
+10 execucoes
+47 - 0.545180
+comp 2.198124;send 0.177363
+10 execucoes
+48 - 0.395929
+comp 2.194901;send 0.176400
+10 execucoes
+49 - 0.396107
+comp 2.196379;send 0.176766
+10 execucoes
+50 - 0.400347
+comp 2.195193;send 0.176032
+10 execucoes
+51 - 0.439144
+comp 2.194466;send 0.176268
+10 execucoes
+52 - 0.437847
+comp 2.193587;send 0.176070
+10 execucoes
+53 - 0.433624
+comp 2.196708;send 0.176772
+10 execucoes
+54 - 0.435029
+comp 2.195498;send 0.177755
+10 execucoes
+55 - 0.430620
+comp 2.194674;send 0.176989
+10 execucoes
+56 - 0.435686
+comp 2.197041;send 0.177286
+10 execucoes
+57 - 0.431909
+comp 2.194712;send 0.175699
+10 execucoes
+58 - 0.431300
+comp 2.193030;send 0.177405
+10 execucoes
+59 - 0.428729
+comp 2.193540;send 0.176619
+10 execucoes
+60 - 0.434741
+comp 2.193696;send 0.177764
+10 execucoes
+61 - 0.431777
+comp 2.193550;send 0.176436
+10 execucoes
+62 - 0.446204
+comp 2.196455;send 0.176730
+10 execucoes
+63 - 0.432608
+comp 2.193391;send 0.176687
+10 execucoes
+64 - 0.429510
+comp 2.196325;send 0.176277
+10 execucoes
+65 - 0.430946
+comp 2.195587;send 0.176205
+10 execucoes
+66 - 0.430057
+comp 2.199927;send 0.177333
+10 execucoes
+67 - 0.429632
+comp 2.197197;send 0.176675
+10 execucoes
+68 - 0.429918
+comp 2.197471;send 0.176180
+10 execucoes
+69 - 0.432222
+comp 2.196681;send 0.177257
+10 execucoes
+70 - 0.430015
+comp 2.195168;send 0.176566
+10 execucoes
+71 - 0.431100
+comp 2.193724;send 0.176173
+10 execucoes
+72 - 0.431615
+comp 2.197342;send 0.176767
+10 execucoes
+73 - 0.432572
+comp 2.194931;send 0.176743
+10 execucoes
+74 - 0.427791
+comp 2.194585;send 0.177378
+10 execucoes
+75 - 0.432380
+comp 2.194515;send 0.177421
+10 execucoes
+76 - 0.429879
+comp 2.194713;send 0.176241
+10 execucoes
+77 - 0.450361
+comp 2.192260;send 0.176607
+10 execucoes
+78 - 0.427380
+comp 2.198707;send 0.176741
+10 execucoes
+79 - 0.426805
+comp 2.196751;send 0.176952
+10 execucoes
+80 - 0.429679
+comp 2.199309;send 0.176794
+10 execucoes
+81 - 0.426891
+comp 2.196599;send 0.176150
+10 execucoes
+82 - 0.431797
+comp 2.199264;send 0.178113
+10 execucoes
+83 - 0.428467
+comp 2.195361;send 0.176343
+10 execucoes
+84 - 0.429900
+comp 2.196780;send 0.176344
+10 execucoes
+85 - 0.436176
+comp 2.199135;send 0.177199
+10 execucoes
+86 - 0.432773
+comp 2.196742;send 0.176696
+10 execucoes
+87 - 0.436611
+comp 2.198892;send 0.175886
+10 execucoes
+88 - 0.582204
+comp 2.199365;send 0.176918
+10 execucoes
+89 - 0.582725
+comp 2.194758;send 0.177062
+10 execucoes
+90 - 0.706389
+comp 2.194162;send 0.177355
+10 execucoes
+91 - 0.845759
+comp 2.198011;send 0.176833
+10 execucoes
+92 - 1.111826
+comp 2.196366;send 0.178314
+10 execucoes
+93 - 1.092685
+comp 2.197499;send 0.176022
+10 execucoes
+94 - 1.090696
+comp 2.198927;send 0.176937
+10 execucoes
+95 - 1.354500
+comp 2.196252;send 0.176034
+10 execucoes
+96 - 1.981287
+comp 2.196953;send 0.175944
+10 execucoes
+97 - 1.563998
+comp 2.196500;send 0.177974
+10 execucoes
+98 - 1.144565
+comp 2.194808;send 0.177119
+10 execucoes
+99 - 2.437086
+comp 2.196946;send 0.417775
+10 execucoes
+100 - 3.702322
+comp 2.196802;send 1.682793
+10 execucoes
+101 - 3.709845
+comp 2.196800;send 1.690621
+10 execucoes
+102 - 4.250154
+comp 2.197357;send 2.231299
+10 execucoes
+103 - 5.593385
+comp 2.192024;send 3.578180
+10 execucoes
+104 - 5.666647
+comp 2.205686;send 3.640360
+10 execucoes
+105 - 5.744119
+comp 2.196243;send 3.727003
+10 execucoes
+106 - 6.148615
+comp 2.195862;send 4.129966
+10 execucoes
+107 - 5.835429
+comp 2.193619;send 3.819682
+10 execucoes
+108 - 5.720331
+comp 2.195028;send 3.703448
+10 execucoes
+109 - 5.738169
+comp 2.198509;send 3.718006
+10 execucoes
+110 - 6.001188
+comp 2.196619;send 3.982784
+10 execucoes
+111 - 5.709537
+comp 2.195886;send 3.689855
+10 execucoes
+112 - 6.540079
+comp 2.205448;send 4.513189
+10 execucoes
+113 - 5.648886
+comp 2.194028;send 3.634309
+10 execucoes
+114 - 5.648098
+comp 2.193583;send 3.633309
+10 execucoes
+115 - 5.856159
+comp 2.198371;send 3.836434
+10 execucoes
+116 - 6.317230
+comp 2.194197;send 4.302046
+10 execucoes
+117 - 6.396468
+comp 2.197715;send 4.378419
+10 execucoes
+118 - 6.460147
+comp 2.198700;send 4.439604
+10 execucoes
+119 - 5.649354
+comp 2.197222;send 3.630976
+10 execucoes
+120 - 6.428985
+comp 2.203644;send 4.402989
+10 execucoes
+121 - 6.953860
+comp 2.196811;send 4.935671
+10 execucoes
+122 - 7.117192
+comp 2.196968;send 5.096701
+10 execucoes
+123 - 6.943039
+comp 2.193925;send 4.926284
+10 execucoes
+124 - 6.847087
+comp 2.197675;send 4.827730
+10 execucoes
+125 - 7.396695
+comp 2.198354;send 5.374918
+10 execucoes
+126 - 7.043328
+comp 2.198388;send 5.023513
+10 execucoes
+127 - 6.548861
+comp 2.209960;send 4.516841
+10 execucoes
+128 - 7.554012
+comp 2.198589;send 5.533132
+10 execucoes
+129 - 7.474101
+comp 2.194805;send 5.457732
+10 execucoes
+130 - 6.646097
+comp 2.195316;send 4.628738
+10 execucoes
+131 - 6.237417
+comp 2.195674;send 4.218906
+10 execucoes
+132 - 6.337903
+comp 2.193782;send 4.322094
+10 execucoes
+133 - 6.054438
+comp 2.196794;send 4.036051
+10 execucoes
+134 - 5.820542
+comp 2.194426;send 3.805089
+10 execucoes
+135 - 5.676931
+comp 2.187816;send 3.667623
+10 execucoes
+136 - 5.737003
+comp 2.187192;send 3.728748
+10 execucoes
+137 - 5.660983
+comp 2.190675;send 3.648334
+10 execucoes
+138 - 5.685441
+comp 2.189415;send 3.671879
+10 execucoes
+139 - 5.696526
+comp 2.188060;send 3.685943
+10 execucoes
+140 - 5.733948
+comp 2.187869;send 3.723843
+10 execucoes
+141 - 5.785768
+comp 2.189725;send 3.775087
+10 execucoes
+142 - 5.844808
+comp 2.201815;send 3.821540
+10 execucoes
+143 - 5.705008
+comp 2.186508;send 3.697639
+10 execucoes
+144 - 5.848267
+comp 2.190441;send 3.836464
+10 execucoes
+145 - 5.937165
+comp 2.190158;send 3.924824
+10 execucoes
+146 - 5.917664
+comp 2.189189;send 3.907028
+10 execucoes
+147 - 5.697356
+comp 2.187578;send 3.687896
+10 execucoes
+148 - 5.689855
+comp 2.186691;send 3.681229
+10 execucoes
+149 - 5.669888
+comp 2.189995;send 3.658679
+CUDA_Finalize: SUCCESS
+computacao;source;flush,send;total
+321.307250;0.034855;0.015625;217.106656;571.749552
+10 execucoes
+150 - 5.704616
+transmissao ok
+finalize 5.836136
+finalize - 0.046540

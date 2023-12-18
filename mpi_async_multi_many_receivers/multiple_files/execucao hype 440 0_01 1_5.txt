@@ -1,0 +1,7 @@
+rcmachado@hype5:/scratch/rcmachado/fletcher-mpi/exp/bin$ ./original.CUDA.x TTI 440 440 440 16 12.5 12.5 12.5 0.01 1.5
+CUDA source using device(0) Tesla K80 with compute capability 3.7.
+GPU memory usage = 8859 MiB
+CUDA_Finalize: SUCCESS
+
+computacao;dump;total
+45.352719;373.240024;443.211245
