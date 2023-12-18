@@ -5,7 +5,12 @@
 
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   int tamanho = sx * sy * sz;
+  double write_time=0.0;
+  const double t1=wtime();
   MPI_Send((void *) ondaPtr, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
+  write_time+=wtime()-t1;
+      
+  printf("send %lf\n", itCnt, write_time);
 }
 
 
@@ -113,24 +118,20 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
     contador++;
     tSim=it*dt;
     if (tSim >= tOut) {
-      printf("%d execucoes\n", contador);
-      contador = 0;
-      
-      double recv_time=0.0;
-      double write_time=0.0;
-      const double t0=wtime();
   
       MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-      recv_time+=wtime()-t0;
 
-      t0=wtime();
+      double write_time=0.0;
+      const double t1=wtime();
   
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
-      write_time+=wtime()-t0;
+      write_time+=wtime()-t1;
       
+      printf("%d execucoes\n", contador);
+      printf("%d - %lf\n", itCnt, write_time);
+      contador = 0;
       tOut=(++nOut)*dtOutput;
       itCnt++;
-      printf("%d - %lf ; %lf\n", itCnt, recv_time, write_time);
     }
 
   }
