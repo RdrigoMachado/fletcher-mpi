@@ -133,11 +133,25 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
       tOut=(++nOut)*dtOutput;
       itCnt++;
     }
-
   }
+    printf("transmissao ok\n");
+    
   salvarInformacoesExecucao(ixStart, ixEnd, iyStart, iyEnd, izStart, izEnd, dx, dy, dz, dt, itCnt, nome_arquivo);
+  
+
+  double close_time=0.0;
+  const double close=wtime();
   fclose(arquivo);
+  close_time+=wtime()-close;
+  printf("close %d - %lf\n",close_time);
+
+  double finalize_time=0.0;
+  const double finalize=wtime();
   MPI_Finalize();
+  finalize_time+=wtime()-finalize;
+  printf("close %d - %lf\n",finalize_time);
+
+  
   exit(0);
 }
 
