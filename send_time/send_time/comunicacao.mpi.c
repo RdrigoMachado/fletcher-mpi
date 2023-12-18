@@ -125,6 +125,7 @@ void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
       const double t1=wtime();
   
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
+      fflush(arquivo);
       write_time+=wtime()-t1;
       
       printf("%d execucoes\n", contador);
