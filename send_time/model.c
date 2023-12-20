@@ -69,7 +69,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     // const double tsource=wtime();
 
     // Calculate / obtain source value on i timestep
-    // float src = Source(dt, it-1);
+    float src = Source(dt, it-1);
     DRIVER_InsertSource(dt,it-1,iSource,pc,qc,src);
 
     // source+=wtime()-tsource;
