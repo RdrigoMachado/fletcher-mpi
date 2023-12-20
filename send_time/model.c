@@ -59,19 +59,20 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
   
   double computacao=0.0;
-  double source=0.0;
-
-  double computacao_unitaria=0.0;
   double send=0.0;
+  
+  // double source=0.0;
+
+  // double computacao_unitaria=0.0;
   for (int it=1; it<=st; it++) {
 
-    const double tsource=wtime();
+    // const double tsource=wtime();
 
     // Calculate / obtain source value on i timestep
-    float src = Source(dt, it-1);
+    // float src = Source(dt, it-1);
     DRIVER_InsertSource(dt,it-1,iSource,pc,qc,src);
 
-    source+=wtime()-tsource;
+    // source+=wtime()-tsource;
 
     const double t0=wtime();
     DRIVER_Propagate(  sx,   sy,   sz,   bord,
@@ -81,17 +82,17 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     SwapArrays(&pp, &pc, &qp, &qc);
     computacao+=wtime()-t0;
 
-    computacao_unitaria+=wtime()-t0;
+    // computacao_unitaria+=wtime()-t0;
     
     tSim=it*dt;
     if (tSim >= tOut) {
-      const double t1=wtime();
+      // const double t1=wtime();
       
       DRIVER_Update_pointers(sx,sy,sz,pc);
       
-      computacao_unitaria+=wtime()-t1;
+      // computacao_unitaria+=wtime()-t1;
       
-      printf("comp %lf;", computacao_unitaria);
+      // printf("comp %lf;", computacao_unitaria);
       
       const double send0=wtime();
       MPI_enviar_onda(sx,sy,sz,pc,sPtr);
@@ -99,20 +100,20 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
       tOut=(++nOut)*dtOutput;
       
-      computacao_unitaria=0.0;
+      // computacao_unitaria=0.0;
     }
   }
 
-  double flush_driver=0.0;
-  const double tflush_driver=wtime();
+  // double flush_driver=0.0;
+  // const double tflush_driver=wtime();
 
   fflush(stdout);
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
 
-  flush_driver+=wtime()-tflush_driver;
+  // flush_driver+=wtime()-tflush_driver;
 
-  printf("computacao;source;flush,send;total\n");
-  printf("%lf;%lf;%lf;%lf;", computacao, source, flush_driver, send);
+  printf("computacao;send;total\n");
+  printf("%lf;%lf;", computacao, send);
 }
 
