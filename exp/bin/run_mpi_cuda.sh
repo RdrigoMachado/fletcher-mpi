@@ -15,6 +15,7 @@ for i in 1 2 3 4 5; do
 	rm TTI*
         echo "$saida" >> "$output_file"
 	echo "" >> "$output_file"
+        sleep 20
 done
 
 
@@ -27,5 +28,6 @@ for i in 1 2 3 4 5; do
         rm TTI*
         echo "$saida" >> "$output_file"
         echo "" >> "$output_file"
+        sleep 20
 done
 
