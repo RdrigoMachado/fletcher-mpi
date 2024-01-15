@@ -65,7 +65,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
   else
     destino = 1;
 
-  MPI_Isend((void *) buffers[posicao], tamanho , MPI_FLOAT, destino, ordem, MPI_COMM_WORLD, &(requests[posicao]));
+  MPI_Send((void *) buffers[posicao], tamanho , MPI_FLOAT, destino, ordem, MPI_COMM_WORLD);
   ordem++;
   p->itCnt++;
 }
