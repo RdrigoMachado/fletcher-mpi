@@ -126,11 +126,11 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  
 
   for (int it=1; it<=st; it++) {
     tSim=it*dt;
-    tOut=(++nOut)*dtOutput;
-    itCnt++;
-    
+   
     if (tSim >= tOut) {
-
+      tOut=(++nOut)*dtOutput;
+      itCnt++;
+    
       id = itCnt % (tamanho_grupo - 1);
       if(id == 0)
         id = 1;
