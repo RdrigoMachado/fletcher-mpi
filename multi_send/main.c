@@ -12,7 +12,6 @@
 #include "walltime.h"
 
 #include "MPI.envio.h"
-#include "MPI.sender.h"
 #include "MPI.recebimento.h"
 #include "MPI.comunicacao.h"
 
@@ -26,14 +25,12 @@ int main(int argc, char** argv) {
 
   //Inicia MPI
   MPI_Init(&argc, &argv);
-  int rank, cluser_size;  
+  int rank, cluster_size;
   //quantidade de processos do cluster
-  MPI_Comm_size(MPI_COMM_WORLD, &cluser_size);
+  MPI_Comm_size(MPI_COMM_WORLD, &cluster_size);
   //rank do procsso atual
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  int tamanho_buffer_envio;
-  int tamanho_buffer_recebimento;
-
+  
   enum Form prob;        // problem formulation
   int nx;                // grid points in x
   int ny;                // grid points in y
@@ -79,11 +76,6 @@ int main(int argc, char** argv) {
   dt=atof(argv[9]);
   tmax=atof(argv[10]);
 
-  //BUFFERS
-  tamanho_buffer_envio       = atoi(argv[11]);;
-  tamanho_buffer_recebimento = atoi(argv[12]);;
-
-
   // verify problem formulation
 
   if (strcmp(fNameSec,"ISO")==0) {
@@ -118,7 +110,7 @@ int main(int argc, char** argv) {
 //MPI ESCRITA
   if(rank != 0)
   {
-    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, rank, cluser_size);
+    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, rank, cluster_size);
   }
 
   ixSource=sx/2;
@@ -262,7 +254,7 @@ int main(int argc, char** argv) {
   double walltime=0.0;
   const double t0=wtime();
 
-  inicializar_envio(sx, sy, sz, cluser_size); 
+  inicializar_envio(sx, sy, sz, cluster_size); 
   MPI_enviar_onda(sx,sy,sz,pc,sPtr);
 
   Model(st,     iSource, dtOutput, sPtr,

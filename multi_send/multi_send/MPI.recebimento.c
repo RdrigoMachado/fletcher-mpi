@@ -114,11 +114,12 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  
   int itCnt = 1;
   
 
-  int id = itCnt % tamanho_grupo;
+  int id = itCnt % (tamanho_grupo - 1);
   if(id == 0)
-    id = tamanho_grupo;
+    id = 1;
   if(id == myRank)
   {
+    printf("rank %d recebendo %d\n", myRank, itCnt);
     MPI_Recv((void *) onda, tamanho_onda, MPI_FLOAT, 0, itCnt, MPI_COMM_WORLD, MPI_STATUS_IGNORE);    
     escreve_em_disco(itCnt);
   }
@@ -127,12 +128,14 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  
     tSim=it*dt;
     if (tSim >= tOut) {
 
-      id = itCnt % tamanho_grupo;
+      id = itCnt % (tamanho_grupo - 1);
       if(id == 0)
-        id = tamanho_grupo;
+        id = 1;
       
       if(id == myRank)
       {
+    printf("rank %d recebendo %d\n", myRank, itCnt);
+
         MPI_Recv((void *) onda, tamanho_onda, MPI_FLOAT, 0, itCnt, MPI_COMM_WORLD, MPI_STATUS_IGNORE);   
         escreve_em_disco(itCnt);
       }
