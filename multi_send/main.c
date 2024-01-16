@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
   MPI_Comm_size(MPI_COMM_WORLD, &cluster_size);
   //rank do procsso atual
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  
+  printf("cluster size %d\n", cluster_size);
   enum Form prob;        // problem formulation
   int nx;                // grid points in x
   int ny;                // grid points in y
