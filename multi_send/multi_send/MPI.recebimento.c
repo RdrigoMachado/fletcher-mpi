@@ -133,7 +133,7 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  
     
       id = itCnt % (tamanho_grupo - 1);
       if(id == 0)
-        id = 1;
+        id = tamanho_grupo - 1;
       
       if(id == myRank)
       {

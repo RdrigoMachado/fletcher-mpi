@@ -17,7 +17,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
 {
   int destino = ordem % (tamanho_grupo_escrita - 1);
   if(destino == 0)
-    destino = 1;
+    destino = tamanho_grupo_escrita - 1;
 
     printf("enviando %d para rank %d\n", ordem, destino);
 
