@@ -134,12 +134,13 @@ void MPI_recebimento(int sx, int sy, int sz, char* nome_arquivo, const int st,  
       
       if(id == myRank)
       {
-    printf("rank %d recebendo %d\n", myRank, itCnt);
-
+        printf("rank %d recebendo %d\n", myRank, itCnt);
         MPI_Recv((void *) onda, tamanho_onda, MPI_FLOAT, 0, itCnt, MPI_COMM_WORLD, MPI_STATUS_IGNORE);   
         escreve_em_disco(itCnt);
       }
-    
+  
+      tOut=(++nOut)*dtOutput;
+      itCnt++;
     }
   }
 
