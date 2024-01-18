@@ -4,7 +4,7 @@
 #include "fletcher.h"
 #include "walltime.h"
 #include "model.h"
-#include "MPI.envio.h"
+#include "comunicacao.mpi.h"
 
 #ifdef PAPI
 #include "ModPAPI.h"
@@ -38,11 +38,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 	   float * restrict vpz, float * restrict vsv, float * restrict epsilon, float * restrict delta,
 	   float * restrict phi, float * restrict theta)
 {
-  //tempos parado em envio
-  double preComp=0.0;
-  const double tPrewtime=wtime();
-
-
 
   float tSim=0.0;
   int nOut=1;
@@ -62,23 +57,13 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 		      phi,    theta,
 		      pp,    pc,    qp,    qc);
 
-  preComp+=wtime()-tPrewtime;
-
-  double tempo_transmissao=0.0;
-
-
-
-
-
+  
   double computacao=0.0;
   double send=0.0;
-  int cont = 0;
-
   for (int it=1; it<=st; it++) {
 
     // Calculate / obtain source value on i timestep
     float src = Source(dt, it-1);
-    
     DRIVER_InsertSource(dt,it-1,iSource,pc,qc,src);
 
     const double t0=wtime();
@@ -92,14 +77,10 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     tSim=it*dt;
     if (tSim >= tOut) {
       DRIVER_Update_pointers(sx,sy,sz,pc);
-      
+
       const double send0=wtime();
-      //MPI_enviar_onda(sx,sy,sz,pc,sPtr);
-      send+= wtime()-send0;
-
-      printf("%d/n", cont);
-      cont++;
-
+      MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+      send+=wtime()-send0;
 
       tOut=(++nOut)*dtOutput;
     }
@@ -108,7 +89,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
 
-  printf("computacao;send;total\n");
+ printf("computacao;send;total\n");
   printf("%lf;%lf;", computacao, send);
 }
 
