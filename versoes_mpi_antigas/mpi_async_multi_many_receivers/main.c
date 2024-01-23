@@ -262,24 +262,21 @@ int main(int argc, char** argv) {
         fNameSec);
 
   //###### ENVIAR ONDA MPI
-  
   double walltime=0.0;
   const double t0=wtime();
 
   inicializar_envio(sx, sy, sz, tamanho_buffer_envio); 
-
   MPI_enviar_onda(sx,sy,sz,pc,sPtr);
-   
+
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
         dx,     dy,      dz,       dt,   it, 
         pp,     pc,      qp,       qc,
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
-  
   finalizar_envio();
-
   walltime+=wtime()-t0;
+
   printf("%lf\n", walltime);
 
 }

@@ -108,7 +108,6 @@ void escreve_em_disco(int id_request)
   FILE *arquivo = abrirArquivo(nome_arquivo); 
   fwrite((void *) recebimento_buffers[id_request], sizeof(float), tamanho_onda, arquivo);
   fclose(arquivo);
-  free(recebimento_buffers[id_request]);
   estatus_conexao[id_request] = LIVRE;
 }
 
@@ -116,7 +115,6 @@ void nova_transferencia(int id_request, int ordem)
 {
     estatus_conexao[id_request]   = TRANSFERINDO;    
     recebimento_posicao[id_request] = ordem;
-    recebimento_buffers[id_request] = malloc(sizeof(float) * tamanho_onda); 
     MPI_Irecv((void *) recebimento_buffers[id_request], tamanho_onda, MPI_FLOAT, 0, ordem, MPI_COMM_WORLD, &(recebimento_requests[id_request]));
 }
 
@@ -168,7 +166,7 @@ void inicializar_recebimento(int sx, int sy, int sz, int tamanho_buffer, int par
 	{
     estatus_conexao[i] = LIVRE;
     recebimento_posicao[i]  = 0;
-    recebimento_buffers[i]  = NULL;
+    recebimento_buffers[i]  = malloc(sizeof(float) * tamanho_onda); 
     recebimento_requests[i] = MPI_REQUEST_NULL;
 	}
 }

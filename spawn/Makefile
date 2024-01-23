@@ -2,7 +2,7 @@
 #   module load gompi
 
 # Default
-backend=CUDA
+backend=OpenMP
 arch=$(backend)
 
 include config.mk
@@ -11,9 +11,7 @@ include $(arch)/flags.mk
 OBJ1=\
 	source.o \
 	utils.o \
-	MPI.envio.o \
-	MPI.sender.o \
-	MPI.recebimento.o \
+	comunicacao.mpi.o \
 	boundary.o \
 	walltime.o \
 	model.o \
@@ -42,15 +40,8 @@ boundary.o:	boundary.c boundary.h  map.o
 source.o:	source.c source.h
 	$(CC) -c $(CFLAGS) source.c
 
-MPI.envio.o:	$(version)/MPI.envio.c MPI.envio.h MPI.comunicacao.h
-	$(CC) -c $(CFLAGS) $(version)/MPI.envio.c
-
-
-MPI.sender.o:	$(version)/MPI.sender.c MPI.sender.h MPI.comunicacao.h
-	$(CC) -c $(CFLAGS) $(version)/MPI.sender.c
-
-MPI.recebimento.o:	$(version)/MPI.recebimento.c MPI.recebimento.h MPI.comunicacao.h
-	$(CC) -c $(CFLAGS) $(version)/MPI.recebimento.c
+comunicacao.mpi.o:	$(version)/comunicacao.mpi.c comunicacao.mpi.h
+	$(CC) -c $(CFLAGS) $(version)/comunicacao.mpi.c
 
 utils.o:	utils.c utils.h map.o source.o
 	$(CC) -c $(CFLAGS) utils.c

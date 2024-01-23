@@ -21,7 +21,7 @@ void inicializar_envio(int sx, int sy, int sz, int tamanho_buffer)
 
   for(int i = 0; i < tamanho_buffer_envio; i++)
 	{
-    buffers[i]  = NULL;
+    buffers[i]  = malloc(sizeof(float) * tamanho);
     requests[i] = MPI_REQUEST_NULL;
 	}
 }
@@ -41,14 +41,6 @@ void  finalizar_envio()
 }
 
 //#############################    MPI  SEND   ##################################
-
-float* empacotar(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
-{
-  float *onda = malloc(sizeof(float) * tamanho);
-  memcpy(onda, ondaPtr, tamanho * sizeof(float));
-  return onda;
-}
-
 int posicao_conexao()
 {
   for(int i = 0; i < tamanho_buffer_envio; i++)
@@ -65,8 +57,7 @@ int posicao_conexao()
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
 {
   int posicao = posicao_conexao();
-  free(buffers[posicao]);
-  buffers[posicao] = empacotar(sx, sy, sz, ondaPtr, p);
+  memcpy(buffers[posicao], ondaPtr, tamanho * sizeof(float));
   int destino;
 
   if(ordem % 2 == 0)
@@ -74,7 +65,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
   else
     destino = 1;
 
-  MPI_Isend((void *) buffers[posicao], tamanho , MPI_FLOAT, destino, ordem, MPI_COMM_WORLD, &(requests[posicao]));
+  MPI_Send((void *) buffers[posicao], tamanho , MPI_FLOAT, destino, ordem, MPI_COMM_WORLD);
   ordem++;
   p->itCnt++;
 }

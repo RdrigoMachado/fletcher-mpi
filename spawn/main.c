@@ -11,19 +11,16 @@
 #include "model.h"
 #include "walltime.h"
 
-#include "MPI.envio.h"
-#include "MPI.sender.h"
-#include "MPI.recebimento.h"
-#include "MPI.comunicacao.h"
+#include "comunicacao.mpi.h"
 
 #include <unistd.h>
-
+#include <sys/time.h>
+#include <sys/types.h>
 
 enum Form {ISO, VTI, TTI};
 
 
 int main(int argc, char** argv) {
-
   //Inicia MPI
   MPI_Init(&argc, &argv);
   int rank, cluser_size;  
@@ -31,8 +28,18 @@ int main(int argc, char** argv) {
   MPI_Comm_size(MPI_COMM_WORLD, &cluser_size);
   //rank do procsso atual
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  int tamanho_buffer_envio;
-  int tamanho_buffer_recebimento;
+
+
+  // //Pra confirmar que esta rodando em mais de uma maquina
+  // char hostbuffer[256];
+  // struct hostent *host_entry;
+  // int hostname;
+  // hostname = gethostname(hostbuffer, sizeof(hostbuffer));
+  
+  // if (hostname != -1) {
+  //   printf("***RANK1 Hostname: %s\n", hostbuffer);
+  // }
+  // //----------------------------------------------------
 
   enum Form prob;        // problem formulation
   int nx;                // grid points in x
@@ -79,9 +86,6 @@ int main(int argc, char** argv) {
   dt=atof(argv[9]);
   tmax=atof(argv[10]);
 
-  //BUFFERS
-  tamanho_buffer_envio       = atoi(argv[11]);;
-  tamanho_buffer_recebimento = atoi(argv[12]);;
 
 
   // verify problem formulation
@@ -116,13 +120,12 @@ int main(int argc, char** argv) {
   // source position
 
 //MPI ESCRITA
-  if(rank == 1)
-  {
-    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento, 1);
+  if(rank == 1){
+
+    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
   }
-  if(rank == 2){
-    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, tamanho_buffer_recebimento, 0);
-  }
+
+
 
   ixSource=sx/2;
   iySource=sy/2;
@@ -261,22 +264,26 @@ int main(int argc, char** argv) {
         dx, dy, dz, dt,
         fNameSec);
 
-  //###### ENVIAR ONDA MPI
   double walltime=0.0;
   const double t0=wtime();
 
-  inicializar_envio(sx, sy, sz, tamanho_buffer_envio); 
+  //###### ENVIAR ONDA MPI
   MPI_enviar_onda(sx,sy,sz,pc,sPtr);
-
+  
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
         dx,     dy,      dz,       dt,   it, 
         pp,     pc,      qp,       qc,
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
-  finalizar_envio();
+  
   walltime+=wtime()-t0;
-
   printf("%lf\n", walltime);
 
+  double finalize=0.0;
+  const double t1=wtime();
+
+  MPI_Finalize();
+  finalize+=wtime()-t1;
+  printf("finalize %lf\n", finalize);
 }
