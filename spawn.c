@@ -3,8 +3,11 @@
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
-    float onda[20];
+    int rank;  
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    printf("rank %d\n", rank);
 
+    float onda[20];
 
     // Accessing command line arguments
     printf("Number of arguments: %d\n", argc);
