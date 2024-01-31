@@ -24,6 +24,10 @@ int main(int argc, char** argv) {
     
     MPI_Comm_spawn("spawn.x", spawn_argv, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &parentcomm, MPI_ERRCODES_IGNORE);
     
+    spawn_argv[argc] = "2";
+
+    MPI_Comm_spawn("spawn.x", spawn_argv, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &parentcomm, MPI_ERRCODES_IGNORE);
+    
     MPI_Finalize();
     return 0;
 }
