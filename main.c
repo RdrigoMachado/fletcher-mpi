@@ -8,9 +8,9 @@ int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     int rank;  
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    
+
     MPI_Info info;
-    MPI_Comm parentcomm;
+    MPI_Comm childcomm;
 
     char** spawn_argv = (char**)malloc((argc + 2) * sizeof(char*));
 
@@ -28,8 +28,8 @@ int main(int argc, char** argv) {
         onda[i] = i;
     }
 
-    MPI_Comm_spawn("spawn.x", spawn_argv, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &parentcomm, MPI_ERRCODES_IGNORE);
-    MPI_Send(onda, 20, MPI_FLOAT, 1, 101, parentcomm);
+    MPI_Comm_spawn("spawn.x", spawn_argv, 0, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm, MPI_ERRCODES_IGNORE);
+    MPI_Send(onda, 20, MPI_FLOAT, 1, 101, childcomm);
 
     MPI_Finalize();
     return 0;
