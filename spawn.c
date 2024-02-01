@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
     MPI_Comm_get_parent(&parentcomm);
 
     MPI_File thefile;
-    MPI_File_open(parentcomm, "testfile",
+    MPI_File_open(MPI_COMM_WORLD, "testfile",
                 MPI_MODE_CREATE | MPI_MODE_WRONLY,
                 MPI_INFO_NULL, &thefile);
     MPI_File_set_view(thefile, numero_processo * tamanho * sizeof(float),
