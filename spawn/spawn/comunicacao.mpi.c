@@ -11,18 +11,9 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   printf("antes do sprintf\n");
 
   char offset[6];
-  if (sprintf(offset, "%d", num_processo) < 0) {
-      // Handle error
-      fprintf(stderr, "Error: Failed to allocate memory for offset\n");
-      exit(EXIT_FAILURE);
-  }
-
-  char size[100];
-  if (sprintf(size, "%d", tamanho) < 0) {
-      // Handle error
-      fprintf(stderr, "Error: Failed to allocate memory for size\n");
-      exit(EXIT_FAILURE);
-  }
+  sprintf(offset, "%d", num_processo);
+  // char size[100];
+  // sprintf(size, "%d", tamanho);
   
   
   printf("depois do sprintf\n");
@@ -32,7 +23,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   char** spawn_argv = (char**)malloc((3) * sizeof(char*));
   spawn_argv[0] = "./spawn.x";
   spawn_argv[1] = strdup(offset);
-  spawn_argv[2] = strdup(size);
+  // spawn_argv[2] = strdup(size);
 
   printf("depois das copias strdup\n");
 
