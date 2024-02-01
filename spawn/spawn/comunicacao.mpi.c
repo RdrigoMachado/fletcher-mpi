@@ -11,9 +11,18 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   printf("antes do sprintf\n");
 
   char offset[6];
-  sprintf(offset, "%d", num_processo);
+  if (sprintf(offset, "%d", num_processo) < 0) {
+      // Handle error
+      fprintf(stderr, "Error: Failed to allocate memory for offset\n");
+      exit(EXIT_FAILURE);
+  }
+
   char size[100];
-  sprintf(size, "%d", tamanho);
+  if (sprintf(size, "%d", tamanho) < 0) {
+      // Handle error
+      fprintf(stderr, "Error: Failed to allocate memory for size\n");
+      exit(EXIT_FAILURE);
+  }
   
   
   printf("depois do sprintf\n");
