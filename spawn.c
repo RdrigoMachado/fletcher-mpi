@@ -12,7 +12,8 @@ int main(int argc, char** argv) {
 
     MPI_Comm parentcomm;
     MPI_Comm_get_parent(&parentcomm);
-    
+    MPI_Barrier(parentcomm);
+
     MPI_File thefile;
     MPI_File_open(parentcomm, "testfile",
                 MPI_MODE_CREATE | MPI_MODE_WRONLY,

@@ -29,6 +29,7 @@ int main(int argc, char** argv) {
     }
 
     MPI_Comm_spawn("spawn.x", spawn_argv, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm, MPI_ERRCODES_IGNORE);
+    MPI_Barrier(childcomm);
     MPI_Send(onda, 20, MPI_FLOAT, 0, 101, childcomm);
 
     MPI_Finalize();
