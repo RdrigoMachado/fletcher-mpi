@@ -32,5 +32,32 @@ int main(int argc, char** argv) {
     MPI_Send(onda, 20, MPI_FLOAT, 0, 101, childcomm);
 
     MPI_Finalize();
+
+    FILE* file = fopen("testfile", "rb");
+    
+    // Determine the file size
+    fseek(file, 0, SEEK_END);
+    long filesize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+      // Allocate memory to store the data
+    float* data = (float*)malloc(filesize);
+
+    // Read the data from the file
+    fread(data, sizeof(float), filesize / sizeof(float), file);
+
+    // Close the file
+    fclose(file);
+
+    // Print the read data
+    printf("Data read from file:\n");
+    for (long i = 0; i < filesize / sizeof(float); ++i) {
+        printf("%f ", data[i]);
+    }
+    printf("\n");
+
+    // Free allocated memory
+    free(data);
+
     return 0;
 }
