@@ -119,14 +119,6 @@ int main(int argc, char** argv) {
   st=ceil(tmax/dt);
   // source position
 
-//MPI ESCRITA
-  if(rank == 1){
-
-    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
-  }
-
-
-
   ixSource=sx/2;
   iySource=sy/2;
   izSource=sz/2;
