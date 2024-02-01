@@ -15,7 +15,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
 
 
 
-  char** spawn_argv = (char**)malloc((argc + 2) * sizeof(char*));
+  char** spawn_argv = (char**)malloc((3) * sizeof(char*));
   spawn_argv[0] = "./spawn.x";
   spawn_argv[1] = strdup(offset);
   spawn_argv[2] = strdup(size);
