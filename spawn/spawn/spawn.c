@@ -1,14 +1,14 @@
 #include <mpi.h>
 #include <stdio.h>
-    
+#include <stdlib.h> 
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     MPI_Comm parentcomm;
     MPI_Comm_get_parent(&parentcomm);
 
-    int num_processo, tamanho;
-    MPI_Recv(&num_processo, 1, MPI_INT, 0, 100, parentcomm, MPI_STATUS_IGNORE);
+    int numero_processo, tamanho;
+    MPI_Recv(&numero_processo, 1, MPI_INT, 0, 100, parentcomm, MPI_STATUS_IGNORE);
     MPI_Recv(&tamanho,      1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
     
 
