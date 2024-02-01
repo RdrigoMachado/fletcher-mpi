@@ -5,6 +5,7 @@
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
     int numero_processo = atoi(argv[2]);
+    numero_processo--;
     int tamanho = 20;  
 
     float onda[20];
