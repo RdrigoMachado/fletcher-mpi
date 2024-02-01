@@ -7,9 +7,6 @@ int main(int argc, char** argv) {
     int numero_processo = atoi(argv[2]);
     int tamanho = 20;  
 
-   
-    printf("rank %d\n", rank);
-
     float onda[20];
 
 
@@ -28,6 +25,9 @@ int main(int argc, char** argv) {
 
     MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
     MPI_File_close(&thefile);
+
+
+    
     MPI_Finalize();
     return 0;
 }
