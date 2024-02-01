@@ -7,7 +7,7 @@ int main(int argc, char** argv) {
     MPI_Comm parentcomm;
     MPI_Comm_get_parent(&parentcomm);
 
-
+printf("oi eu sou o filho\n");
 
     int numero_processo = atoi(argv[1]);
     numero_processo--;
