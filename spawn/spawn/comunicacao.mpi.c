@@ -8,22 +8,12 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   int tamanho = sx * sy * sz;
   num_processo++;
 
-  printf("antes do sprintf\n");
+  char** spawn_argv = (char**)malloc((argc) * sizeof(char*));
 
-  // char offset[6];
-  // sprintf(offset, "%d", num_processo);
-  // char size[100];
-  // sprintf(size, "%d", tamanho);
-  
-  
-  // printf("depois do sprintf\n");
-
-
-
-  // char** spawn_argv = (char**)malloc((3) * sizeof(char*));
-  // spawn_argv[0] = "./spawn.x";
-  // spawn_argv[1] = strdup(offset);
-  // spawn_argv[2] = strdup(size);
+  // Copy the original command-line arguments
+  for (int i = 0; i < argc; ++i) {
+      spawn_argv[i] = strdup(argv[i]);
+  }
 
   printf("depois das copias strdup\n");
 
@@ -32,5 +22,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
 
   printf("depois spawn\n");
 
-  MPI_Send(ondaPtr, tamanho, MPI_FLOAT, 0, 101, childcomm);
+  MPI_Send(&num_processo, 1, MPI_INT, 0, 100, childcomm);
+  MPI_Send(&tamanho, 1, MPI_INT, 0, 101, childcomm);
+  MPI_Send(ondaPtr, tamanho, MPI_FLOAT, 0, 102, childcomm);
 }
