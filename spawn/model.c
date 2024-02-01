@@ -60,7 +60,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   
   double computacao=0.0;
   double send=0.0;
-  int cont = 0;
   for (int it=1; it<=st; it++) {
 
     // Calculate / obtain source value on i timestep
@@ -80,11 +79,9 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
       DRIVER_Update_pointers(sx,sy,sz,pc);
 
       const double send0=wtime();
-      //MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+      MPI_enviar_onda(sx,sy,sz,pc,sPtr);
       send+=wtime()-send0;
       
-      printf("%d/n", cont);
-      cont++;
       
       tOut=(++nOut)*dtOutput;
     }
