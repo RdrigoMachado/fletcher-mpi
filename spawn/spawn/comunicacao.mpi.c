@@ -7,7 +7,7 @@ int num_processo = 0;
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   int tamanho = sx * sy * sz;
   num_processo++;
-  printf("criar processo %d\n", num_processo);
+
   MPI_Comm childcomm;
   MPI_Comm_spawn("spawn.x", NULL, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm, MPI_ERRCODES_IGNORE);
 
