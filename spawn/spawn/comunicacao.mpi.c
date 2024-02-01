@@ -2,90 +2,32 @@
 
 
 //#############################    MPI  SEND   ##################################
+int num_processo = 0;
 
 void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   int tamanho = sx * sy * sz;
-  MPI_Send((void *) ondaPtr, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);
-
-  MPI_Comm parentcomm;
-  MPI_Comm_spawn("escritor.x", MPI_ARGV_NULL, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &parentcomm, MPI_ERRCODES_IGNORE);
-
-
-
-
+  
+  num_processo++;
+  char offset[6];
+  sprintf(offset, "%d", num_processo);
+  char size[100];
+  sprintf(size, "%d", tamanho);
 
 
+
+  char** spawn_argv = (char**)malloc((argc + 2) * sizeof(char*));
+  spawn_argv[0] = "./spawn.x";
+  spawn_argv[1] = strdup(offset);
+  spawn_argv[2] = strdup(size);
+
+
+  MPI_Comm childcomm;
+  MPI_Comm_spawn("spawn.x", spawn_argv, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm, MPI_ERRCODES_IGNORE);
+  MPI_Send(ondaPtr, tamanho, MPI_FLOAT, 0, 101, childcomm);
 }
 
 
 //##########################    MPI  RECEIVE   ##################################
-
-void salvarInformacoesExecucao(int ixStart, int ixEnd, int iyStart, int iyEnd, int izStart, int izEnd, 
-		       float dx, float dy, float dz, float dt, int itCnt, char* nome){
-  
-   char nome_arquivo[128];
-
-  strcpy(nome_arquivo, FNAMEBINARYPATH);
-  strcat(nome_arquivo, nome);
-  strcat(nome_arquivo, ".rsf");
-
-  FILE* arquivo = fopen(nome_arquivo, "w+");
-
-  enum sliceDirection direcao;
-
-  if (ixStart==ixEnd)
-    direcao=XSLICE;
-  else if (iyStart==iyEnd)
-    direcao=YSLICE;
-  else if (izStart==izEnd)
-    direcao=ZSLICE;
-  else {
-    direcao=FULL;
-  }
-  
-  strcat(nome_arquivo,"@");
-  fprintf(arquivo,"in=\"%s\"\n", nome_arquivo);
-  fprintf(arquivo,"data_format=\"native_float\"\n");
-  fprintf(arquivo,"esize=%lu\n", sizeof(float)); 
-  switch(direcao) {
-  case XSLICE:
-    fprintf(arquivo,"n1=%d\n",iyEnd-iyStart+1);
-    fprintf(arquivo,"n2=%d\n",izEnd-izStart+1);
-    fprintf(arquivo,"n3=%d\n",itCnt);
-    fprintf(arquivo,"d1=%f\n",dy);
-    fprintf(arquivo,"d2=%f\n",dz);
-    fprintf(arquivo,"d3=%f\n",dt);
-    break;
-  case YSLICE:
-    fprintf(arquivo,"n1=%d\n",ixEnd-ixStart+1);
-    fprintf(arquivo,"n2=%d\n",izEnd-izStart+1);
-    fprintf(arquivo,"n3=%d\n",itCnt);
-    fprintf(arquivo,"d1=%f\n",dx);
-    fprintf(arquivo,"d2=%f\n",dz);
-    fprintf(arquivo,"d3=%f\n",dt);
-    break;
-  case ZSLICE:
-    fprintf(arquivo,"n1=%d\n",ixEnd-ixStart+1);
-    fprintf(arquivo,"n2=%d\n",iyEnd-iyStart+1);
-    fprintf(arquivo,"n3=%d\n",itCnt);
-    fprintf(arquivo,"d1=%f\n",dx);
-    fprintf(arquivo,"d2=%f\n",dy);
-    fprintf(arquivo,"d3=%f\n",dt);
-    break;
-  case FULL:
-    fprintf(arquivo,"n1=%d\n",ixEnd-ixStart+1);
-    fprintf(arquivo,"n2=%d\n",iyEnd-iyStart+1);
-    fprintf(arquivo,"n3=%d\n",izEnd-izStart+1);
-    fprintf(arquivo,"n4=%d\n",itCnt);
-    fprintf(arquivo,"d1=%f\n",dx);
-    fprintf(arquivo,"d2=%f\n",dy);
-    fprintf(arquivo,"d3=%f\n",dz);
-    fprintf(arquivo,"d4=%f\n",dt);
-    break;
-  }
-  fclose(arquivo);
-
-}
 
 void MPI_escrita_disco(int sx, int sy, int sz, char* nome_arquivo,
                 const int st,  const float dtOutput, const float dt, float dx, float dy, float dz)
