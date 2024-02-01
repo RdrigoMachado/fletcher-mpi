@@ -12,8 +12,7 @@ int main(int argc, char** argv) {
     MPI_Recv(&tamanho,      1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
     
 
-    int inicio = (numero_processo -1) * tamanho;
-    printf("processo #%d, tamanho %d, inicio %d\n",numero_processo, tamanho, inicio);
+    int inicio = (numero_processo - 1) * tamanho;
 
     MPI_File thefile;
     MPI_File_open(MPI_COMM_WORLD, "TTI",
