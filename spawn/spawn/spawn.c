@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     MPI_File_open(MPI_COMM_WORLD, "TTI",
                 MPI_MODE_CREATE | MPI_MODE_WRONLY,
                 MPI_INFO_NULL, &thefile);
-    MPI_File_set_view(thefile, numero_processo * tamanho * sizeof(float),
+    MPI_File_set_view(thefile, inicio * sizeof(float),
                                 MPI_FLOAT, MPI_FLOAT, "native", MPI_INFO_NULL);
    
 
