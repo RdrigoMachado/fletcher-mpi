@@ -30,7 +30,6 @@ TARGET = ModelagemFletcher.exe
 all: 	$(OBJ)
 	cd $(arch) && make
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ) $(arch)/*.o $(LIBS)
-	mpicc -o spawn.x spawn.c
 
 main.o:	main.c $(OBJ1)
 	$(CC) -c $(CFLAGS) main.c
