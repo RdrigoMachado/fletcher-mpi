@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     MPI_File_set_view(thefile, numero_processo * tamanho * sizeof(float),
                                 MPI_FLOAT, MPI_FLOAT, "native", MPI_INFO_NULL);
    
-
+    printf("processo %d comecando arquivo em %d\n", numero_processo + 1, numero_processo * tamanho );
     MPI_Recv(onda, 20, MPI_FLOAT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
 
     MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
