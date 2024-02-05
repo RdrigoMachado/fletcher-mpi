@@ -32,9 +32,9 @@ export ACC_DEVICE_TYPE=nvidia
 
 #export PGCC_GPU_SM=cc35 # NVIDIA K20m
 #export PGCC_GPU_SM=cc37 # NVIDIA K80
-#export PGCC_GPU_SM=cc60 # NVIDIA P100
+export PGCC_GPU_SM=cc60 # NVIDIA P100 BLAISE
 #export PGCC_GPU_SM=cc61 # NVIDIA GTX 1080Ti
-export PGCC_GPU_SM=cc75 # NVIDIA RTX 2080Ti | 1650 super
+#export PGCC_GPU_SM=cc75 # NVIDIA RTX 2080Ti | 1650 super
 
 # cuda
 export HOST_COMPILER=gcc
@@ -43,6 +43,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.8/lib64
 
 #export CUDA_GPU_SM=sm_35 # NVIDIA K20m
 #export CUDA_GPU_SM=sm_37 # NVIDIA K80
-#export CUDA_GPU_SM=sm_60 # NVIDIA P100
+export CUDA_GPU_SM=sm_60 # NVIDIA P100 BLAISE
 #export CUDA_GPU_SM=sm_61 # NVIDIA GTX 1080Ti
-export CUDA_GPU_SM=sm_75 # NVIDIA RTX 2080Ti | 1650 super
+#export CUDA_GPU_SM=sm_75 # NVIDIA RTX 2080Ti | 1650 super
