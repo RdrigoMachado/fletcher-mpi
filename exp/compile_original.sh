@@ -7,10 +7,7 @@ mkdir -p bin/
 backend=CUDA
 version=original
 
-cd ../$version/$version
-mpicc -o spawn.x spawn.c
-mv spawn.x ../../exp/bin/spawn.x
-cd ..
+cd ../$version
 echo "-----------------------------------------------------"
 echo "  $version"
 echo "-----------------------------------------------------"
