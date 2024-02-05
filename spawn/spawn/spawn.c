@@ -14,19 +14,27 @@ int main(int argc, char** argv) {
 
     int inicio = (numero_processo - 1) * tamanho;
 
+printf("antes de open\n");
     MPI_File thefile;
     MPI_File_open(MPI_COMM_WORLD, "TTI",
                 MPI_MODE_CREATE | MPI_MODE_WRONLY,
                 MPI_INFO_NULL, &thefile);
     MPI_File_set_view(thefile, inicio * sizeof(float),
                                 MPI_FLOAT, MPI_FLOAT, "native", MPI_INFO_NULL);
+printf("depois de open\n");
    
 
     float *onda = malloc(sizeof(float) * tamanho); 
     MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
+printf("antes de write\n");
 
     MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
+printf("depois de write\n");
+printf("depois de close\n");
+
     MPI_File_close(&thefile);
+printf("depois de close\n");
+
     MPI_Finalize();
     return 0;
 }
