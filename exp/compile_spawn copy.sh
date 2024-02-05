@@ -5,7 +5,7 @@
 clear
 mkdir -p bin/
 backend=CUDA
-version=spawn
+version=original
 
 cd ../$version/$version
 mpicc -o spawn.x spawn.c
@@ -18,4 +18,3 @@ make clean-all
 make backend=$backend version=$version 
 mv ModelagemFletcher.exe ../exp/bin/$version.$backend.x
 make clean-all
-
