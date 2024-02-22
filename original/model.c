@@ -87,7 +87,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
       const double temp = wtime()-dump0;
       long tamanhoEscrito = sx*sy*sz*sizeof(float)*nOut;
-      printf("%lf;%lf;\n", tamanhoEscrito, temp);
+      printf("%ld;%lf;\n", tamanhoEscrito, temp);
 
 
 
