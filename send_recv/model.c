@@ -82,10 +82,10 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
       MPI_enviar_onda(sx,sy,sz,pc,sPtr);
       send+=wtime()-send0;     
       tOut=(++nOut)*dtOutput;
-      
+
       const double temp = wtime()-send0;
       long tamanhoEscrito = sx*sy*sz*sizeof(float)*nOut;
-      printf("%lf;%lf;", tamanhoEscrito, temp);
+      printf("%lf;%lf;\n", tamanhoEscrito, temp);
 
     }
   }
