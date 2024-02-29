@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     char nome_arquivo[128];
     strcpy(nome_arquivo, "TTI.rsf");
     
-    char parte[3];
+    char parte[5];
     sprintf(parte, "%d", numero_processo);
     
     strcat(nome_arquivo,".part");
