@@ -1,22 +1,6 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h> 
-void escreve_em_disco(int id_request)
-{  
-
-  char nome_arquivo[128];
-  strcpy(nome_arquivo, "TTI.rsf");
-  
-  char parte[3];
-  sprintf(parte, "%d", recebimento_posicao[id_request]);
-  
-  strcat(nome_arquivo,".part");
-  strcat(nome_arquivo, parte);
-  FILE *arquivo = abrirArquivo(nome_arquivo); 
-  fwrite((void *) recebimento_buffers[id_request], sizeof(float), tamanho_onda, arquivo);
-  fclose(arquivo);
-  estatus_conexao[id_request] = LIVRE;
-}
 
 
 int main(int argc, char** argv) {
