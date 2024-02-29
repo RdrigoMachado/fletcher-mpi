@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
     
     strcat(nome_arquivo,".part");
     strcat(nome_arquivo, parte);
-    FILE *arquivo = abrirArquivo(nome_arquivo); 
+    FILE *arquivo = fopen(nome_arquivo, "w+"); 
     
     fwrite(onda, sizeof(float), tamanho, arquivo);
     fclose(arquivo);
