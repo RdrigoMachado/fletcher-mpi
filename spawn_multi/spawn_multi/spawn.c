@@ -1,7 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h> 
-
+#include <string.h>
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
@@ -26,8 +26,10 @@ int main(int argc, char** argv) {
     strcat(nome_arquivo,".part");
     strcat(nome_arquivo, parte);
     FILE *arquivo = abrirArquivo(nome_arquivo); 
-    fwrite((void *) recebimento_buffers[id_request], sizeof(float), tamanho_onda, arquivo);
+    
+    fwrite(onda, sizeof(float), tamanho, arquivo);
     fclose(arquivo);
+    
     MPI_Finalize();
     return 0;
 }
