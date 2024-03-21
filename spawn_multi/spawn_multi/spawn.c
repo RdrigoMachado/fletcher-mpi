@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
     
     fwrite(onda, sizeof(float), tamanho, arquivo);
     fclose(arquivo);
-    
+    free(onda);
     MPI_Finalize();
     return 0;
 }
