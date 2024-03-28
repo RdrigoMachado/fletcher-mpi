@@ -45,10 +45,8 @@ int main(int argc, char** argv) {
         
         MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
     }
-printf("RANK %d exiting\n", rank);
+
     free(onda);
     MPI_Finalize();
-printf("RANK %d returning\n", rank);
-
     return 0;
 }
