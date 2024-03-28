@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    
+printf("meu rank %d\n", rank);
     MPI_Recv(&tamanho, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
     onda = malloc(sizeof(float) * tamanho); 
 
