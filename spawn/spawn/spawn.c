@@ -13,14 +13,15 @@ int main(int argc, char** argv) {
     MPI_File thefile;
     int rank;
     int num_escrita, tamanho, deslocamento;
-    float *onda = malloc(sizeof(float) * tamanho); 
-
+    float *onda;
+    
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_File_open(MPI_COMM_WORLD, "TTI.rsf",
                 MPI_MODE_CREATE | MPI_MODE_WRONLY,
                 MPI_INFO_NULL, &thefile);
     
     MPI_Recv(&tamanho, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
+    onda = malloc(sizeof(float) * tamanho); 
 printf("My rank %d - tamanho %d\n", rank, tamanho);
 
     MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
