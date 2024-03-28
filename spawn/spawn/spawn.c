@@ -45,11 +45,12 @@ printf("rank %d recebendo num escrita\n", rank);
 printf("rank %d recebeu instrucoes\n", rank);
 
     }
-
+    
+    MPI_Barrier(MPI_COMM_WORLD);
 printf("RANK %d exiting\n", rank);
-    // free(onda);
-    // MPI_File_close(&thefile);
-    // MPI_Finalize();
+    free(onda);
+    MPI_File_close(&thefile);
+    MPI_Finalize();
 printf("RANK %d returning\n", rank);
     return 0;
 }
