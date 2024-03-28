@@ -28,6 +28,7 @@ printf("Enviado rank %d onda\n", rank_destino);
 
   rank_destino = (rank_destino == 0) ? 1 : 0;
   printf("enviado\n\n");
+  num_escrita++;
 }
 
 void MPI_terminar()
