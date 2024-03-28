@@ -274,7 +274,8 @@ int main(int argc, char** argv) {
 
   double finalize=0.0;
   const double t1=wtime();
-
+  
+  MPI_terminar();
   MPI_Finalize();
   finalize+=wtime()-t1;
   printf("finalize %lf\n", finalize);
