@@ -28,6 +28,7 @@ printf("tamanho %d\n", tamanho);
     MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
 printf("num escrita %d\n", num_escrita);
 
+    printf
     while(num_escrita != TERMINAR)
     {   
         printf("entrei");
@@ -42,6 +43,7 @@ printf("%d file write\n", rank);
         MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
 printf("%d num escrita\n", rank);
     }
+        printf("free");
 
     free(onda);
     MPI_File_close(&thefile);
