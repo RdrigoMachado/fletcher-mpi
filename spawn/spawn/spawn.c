@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     MPI_Comm_get_parent(&parentcomm);
     MPI_File thefile;
     int rank;
-    int num_escrita, ;
+    int num_escrita;
     MPI_Offset deslocamento, tamanho;
     float *onda;
     
