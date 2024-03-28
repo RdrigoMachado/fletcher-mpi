@@ -46,7 +46,12 @@ printf("rank %d recebeu instrucoes\n", rank);
 
     }
     
+
+printf("Barreira child %d waiting\n", rank);
     MPI_Barrier(parentcomm);
+printf("Barreira child %d ended\n", rank);
+    
+
 printf("RANK %d exiting\n", rank);
     free(onda);
     MPI_File_close(&thefile);

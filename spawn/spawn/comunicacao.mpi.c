@@ -27,7 +27,7 @@ printf("Enviado rank %d num escrita\n", rank_destino);
 printf("Enviado rank %d onda\n", rank_destino);
 
   rank_destino = (rank_destino == 0) ? 1 : 0;
-  printf("enviado\n\n");
+printf("enviado\n\n");
   num_escrita++;
 }
 
@@ -38,6 +38,9 @@ void MPI_terminar()
   MPI_Send(&msg, 1, MPI_INT, rank_destino, 101, childcomm);
   rank_destino = (rank_destino == 0) ? 1 : 0;
   MPI_Send(&msg, 1, MPI_INT, rank_destino, 101, childcomm);
+
+printf("Barreira parent waiting\n");
   MPI_Barrier(childcomm);
+printf("Barreira parent ended\n\n");
 
 }
