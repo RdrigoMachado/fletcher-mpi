@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
 
     deslocamento = 70 * tamanho;
-printf("rank %d escrevendo %d na posicao %lld\n", rank, num_escrita, deslocamento);
+printf("rank %d escrevendo %d na posicao %lld size %d\n", rank, num_escrita, deslocamento, sizeof(MPI_Offset));
     while(num_escrita != TERMINAR)
     {   
         MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
