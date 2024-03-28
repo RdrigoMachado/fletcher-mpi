@@ -12,8 +12,8 @@ int main(int argc, char** argv) {
     MPI_Comm_get_parent(&parentcomm);
     MPI_File thefile;
     int rank;
-    int num_escrita, tamanho;
-    MPI_Offset deslocamento;
+    int num_escrita, ;
+    MPI_Offset deslocamento, tamanho;
     float *onda;
     
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
