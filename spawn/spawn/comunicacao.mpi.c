@@ -18,10 +18,13 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
     primeiraExecucao = 0;
   }
   
-  printf("Enviando para rank %d num escrita %d\n", rank_destino, num_escrita);
+printf("Enviando para rank %d num escrita %d\n", rank_destino, num_escrita);
 
   MPI_Send(&num_escrita, 1, MPI_INT, rank_destino, 101, childcomm);
+printf("Enviado rank %d num escrita\n", rank_destino);
+
   MPI_Send(ondaPtr, tamanho, MPI_FLOAT, rank_destino, 102, childcomm);
+printf("Enviado rank %d onda\n", rank_destino);
 
   rank_destino = (rank_destino == 0) ? 1 : 0;
   printf("enviado\n\n");
