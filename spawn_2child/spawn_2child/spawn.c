@@ -16,6 +16,7 @@ int main(int argc, char** argv) {
     int num_escrita, tamanho;
     MPI_Offset deslocamento;
     float *onda;
+    char nome_base[128];
     char nome_arquivo[128];
     char parte[5];
     FILE *arquivo;
@@ -23,7 +24,7 @@ int main(int argc, char** argv) {
 
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-printf("meu rank %d\n", rank);
+
     MPI_Recv(&tamanho, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
     onda = malloc(sizeof(float) * tamanho); 
 
@@ -31,6 +32,7 @@ printf("meu rank %d\n", rank);
 
     while(num_escrita != TERMINAR)
     {   
+        strcpy(nome_arquivo, nome_base);
         sprintf(parte, "%d", num_escrita);
         strcat(nome_arquivo,".part");
         strcat(nome_arquivo, parte);
