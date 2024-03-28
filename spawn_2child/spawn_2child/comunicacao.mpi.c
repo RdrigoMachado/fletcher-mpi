@@ -25,12 +25,12 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   
   if(rank_destino == 0)
   {
-    MPI_Send(&num_escrita, 1, MPI_INT, rank_destino, 101, childcomm1);
-    MPI_Send(ondaPtr, tamanho, MPI_FLOAT, rank_destino, 102, childcomm1);
+    MPI_Send(&num_escrita, 1, MPI_INT, 0, 101, childcomm1);
+    MPI_Send(ondaPtr, tamanho, MPI_FLOAT, 0, 102, childcomm1);
   }
   else {
-    MPI_Send(&num_escrita, 1, MPI_INT, rank_destino, 101, childcomm2);
-    MPI_Send(ondaPtr, tamanho, MPI_FLOAT, rank_destino, 102, childcomm2);
+    MPI_Send(&num_escrita, 1, MPI_INT, 0, 101, childcomm2);
+    MPI_Send(ondaPtr, tamanho, MPI_FLOAT, 0, 102, childcomm2);
   }
   
 
