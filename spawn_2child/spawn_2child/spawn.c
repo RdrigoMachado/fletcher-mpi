@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     char nome_arquivo[128];
     char parte[5];
     FILE *arquivo;
-    strcpy(nome_arquivo, "TTI.rsf");
+    strcpy(nome_base, "TTI.rsf");
 
 
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
