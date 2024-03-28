@@ -2,39 +2,40 @@
 #include <stdio.h>
 #include <stdlib.h> 
 
+#define TERMINAR -1
+
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
+
+
     MPI_Comm parentcomm;
     MPI_Comm_get_parent(&parentcomm);
-
-    int numero_processo, tamanho;
-    MPI_Recv(&numero_processo, 1, MPI_INT, 0, 100, parentcomm, MPI_STATUS_IGNORE);
-    MPI_Recv(&tamanho,      1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
-    
-
-    int inicio = (numero_processo - 1) * tamanho;
-
-printf("antes de open\n");
     MPI_File thefile;
-    MPI_File_open(MPI_COMM_WORLD, "TTI",
+    int rank;
+    int num_escrita, tamanho, deslocamento;
+    float *onda = malloc(sizeof(float) * tamanho); 
+
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_File_open(MPI_COMM_WORLD, "TTI.rsf",
                 MPI_MODE_CREATE | MPI_MODE_WRONLY,
                 MPI_INFO_NULL, &thefile);
-    MPI_File_set_view(thefile, inicio * sizeof(float),
-                                MPI_FLOAT, MPI_FLOAT, "native", MPI_INFO_NULL);
-printf("depois de open\n");
-   
+    
+    printf("My rank %d\n", rank);
 
-    float *onda = malloc(sizeof(float) * tamanho); 
-    MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
-printf("antes de write\n");
+    MPI_Recv(&tamanho, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
+    
+    MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
+    while(num_escrita != TERMINAR)
+    {
+        deslocamento = (num_escrita) * tamanho;
+        MPI_File_set_view(thefile, deslocamento * sizeof(float),
+                        MPI_FLOAT, MPI_FLOAT, "native", MPI_INFO_NULL);
+        MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
+        MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
+    }
 
-    MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
-printf("depois de write\n");
-printf("depois de close\n");
-
+    free(onda);
     MPI_File_close(&thefile);
-printf("depois de close\n");
-
     MPI_Finalize();
     return 0;
 }
