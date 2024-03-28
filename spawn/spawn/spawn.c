@@ -30,6 +30,8 @@ int main(int argc, char** argv) {
 printf("rank %d escrevendo %d na posicao %lld size %d\n", rank, num_escrita, deslocamento, sizeof(MPI_Offset));
     while(num_escrita != TERMINAR)
     {   
+printf("rank %d comecou laco\n", rank);
+
         MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
         deslocamento = (num_escrita) * (MPI_Offset) tamanho;
 printf("rank %d escrevendo %d na posicao %lld\n", rank, num_escrita, deslocamento);
@@ -40,11 +42,13 @@ printf("rank %d escrevendo\n", rank);
         MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
 printf("rank %d recebendo num escrita\n", rank);
         MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
+printf("rank %d recebeu instrucoes\n", rank);
+
     }
 
 printf("RANK %d exiting\n", rank);
     free(onda);
-    //MPI_File_close(&thefile);
+    MPI_File_close(&thefile);
     MPI_Finalize();
 printf("RANK %d returning\n", rank);
     return 0;
