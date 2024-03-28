@@ -43,5 +43,5 @@ void MPI_terminar()
 {
   int msg = TERMINAR;
   MPI_Send(&msg, 1, MPI_INT, 0, 101, childcomm1);
-  MPI_Send(&msg, 1, MPI_INT, 1, 101, childcomm2);
+  MPI_Send(&msg, 1, MPI_INT, 0, 101, childcomm2);
 }
