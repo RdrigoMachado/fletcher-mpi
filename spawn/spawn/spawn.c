@@ -48,7 +48,7 @@ printf("rank %d recebeu instrucoes\n", rank);
     
 
 printf("Barreira child %d waiting\n", rank);
-    MPI_Barrier(parentcomm);
+    MPI_Barrier(MPI_COMM_WORLD);
 printf("Barreira child %d ended\n", rank);
     
 

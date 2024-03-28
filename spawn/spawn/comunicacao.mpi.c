@@ -36,9 +36,4 @@ void MPI_terminar()
   int msg = TERMINAR;
   MPI_Send(&msg, 1, MPI_INT, 0, 101, childcomm);
   MPI_Send(&msg, 1, MPI_INT, 1, 101, childcomm);
-
-printf("Barreira parent waiting\n");
-  MPI_Barrier(childcomm);
-printf("Barreira parent ended\n\n");
-
 }
