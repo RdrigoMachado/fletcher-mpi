@@ -24,7 +24,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   MPI_Send(ondaPtr, tamanho, MPI_FLOAT, rank_destino, 102, childcomm);
 
   rank_destino = (rank_destino == 0) ? 1 : 0;
-
+  printf("enviado\n\n");
 }
 
 void MPI_terminar()
