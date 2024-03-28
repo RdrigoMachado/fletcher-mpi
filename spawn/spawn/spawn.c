@@ -44,7 +44,7 @@ printf("rank %d recebendo num escrita\n", rank);
 
 printf("RANK %d exiting\n", rank);
     free(onda);
-    MPI_File_close(&thefile);
+    //MPI_File_close(&thefile);
     MPI_Finalize();
 printf("RANK %d returning\n", rank);
     return 0;
