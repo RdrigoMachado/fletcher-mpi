@@ -38,4 +38,6 @@ void MPI_terminar()
   MPI_Send(&msg, 1, MPI_INT, rank_destino, 101, childcomm);
   rank_destino = (rank_destino == 0) ? 1 : 0;
   MPI_Send(&msg, 1, MPI_INT, rank_destino, 101, childcomm);
+  MPI_Barrier(childcomm);
+
 }

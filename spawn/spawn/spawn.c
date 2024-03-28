@@ -46,7 +46,7 @@ printf("rank %d recebeu instrucoes\n", rank);
 
     }
     
-    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(parentcomm);
 printf("RANK %d exiting\n", rank);
     free(onda);
     MPI_File_close(&thefile);
