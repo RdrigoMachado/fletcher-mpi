@@ -34,10 +34,8 @@ printf("enviado\n\n");
 void MPI_terminar()
 {
   int msg = TERMINAR;
-  rank_destino = (rank_destino == 0) ? 1 : 0;
-  MPI_Send(&msg, 1, MPI_INT, rank_destino, 101, childcomm);
-  rank_destino = (rank_destino == 0) ? 1 : 0;
-  MPI_Send(&msg, 1, MPI_INT, rank_destino, 101, childcomm);
+  MPI_Send(&msg, 1, MPI_INT, 0, 101, childcomm);
+  MPI_Send(&msg, 1, MPI_INT, 1, 101, childcomm);
 
 printf("Barreira parent waiting\n");
   MPI_Barrier(childcomm);
