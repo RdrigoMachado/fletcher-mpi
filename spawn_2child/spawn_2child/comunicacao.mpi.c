@@ -16,8 +16,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
     MPI_Comm_spawn("./spawn.x", MPI_ARGV_NULL, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm1, MPI_ERRCODES_IGNORE);
     MPI_Send(&tamanho, 1, MPI_INT, 0, 101, childcomm1);
     execucao++;
-  }
-  if(execucao == 2)
+  } else if(execucao == 2)
   {
     MPI_Comm_spawn("./spawn.x", MPI_ARGV_NULL, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm2, MPI_ERRCODES_IGNORE);
     MPI_Send(&tamanho, 1, MPI_INT, 0, 101, childcomm2);
