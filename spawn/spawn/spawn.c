@@ -47,9 +47,9 @@ printf("rank %d recebeu instrucoes\n", rank);
     }
 
 printf("RANK %d exiting\n", rank);
-    free(onda);
-    MPI_File_close(&thefile);
-    MPI_Finalize();
+    // free(onda);
+    // MPI_File_close(&thefile);
+    // MPI_Finalize();
 printf("RANK %d returning\n", rank);
     return 0;
 }
