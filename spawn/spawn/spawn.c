@@ -26,6 +26,8 @@ printf("My rank %d\n", rank);
 printf("tamanho %d\n", tamanho);
 
     MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
+printf("num escrita %d\n", num_escrita);
+
     while(num_escrita != TERMINAR)
     {   
         MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
