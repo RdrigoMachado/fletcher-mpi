@@ -35,7 +35,10 @@ printf("rank %d escrevendo %d na posicao %lld size %d\n", rank, num_escrita, des
 printf("rank %d escrevendo %d na posicao %lld\n", rank, num_escrita, deslocamento);
         MPI_File_set_view(thefile, deslocamento * sizeof(float),
                         MPI_FLOAT, MPI_FLOAT, "native", MPI_INFO_NULL);
+
+printf("rank %d escrevendo\n", rank);
         MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
+printf("rank %d recebendo num escrita\n", rank);
         MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
     }
 
