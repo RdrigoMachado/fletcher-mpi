@@ -22,28 +22,20 @@ int main(int argc, char** argv) {
     
     MPI_Recv(&tamanho, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
     onda = malloc(sizeof(float) * tamanho); 
-printf("My rank %d - tamanho %d\n", rank, tamanho);
 
     MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
-printf("My rank %d - num escrita %d\n", rank, num_escrita);
 
-    MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
-printf("My rank %d - onda recebida\n", rank);
     
-//     while(num_escrita != TERMINAR)
-//     {   
-//         printf("entrei");
-//         deslocamento = (num_escrita) * tamanho;
-// printf("rank %d escrevendo %d na posicao %d\n", rank, num_escrita, deslocamento);
-//         MPI_File_set_view(thefile, deslocamento * sizeof(float),
-//                         MPI_FLOAT, MPI_FLOAT, "native", MPI_INFO_NULL);
-// printf("%d set view\n", rank);
-//         MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
-// printf("%d file write\n", rank);
-//         MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
-// printf("%d num escrita\n", rank);
-//     }
-        printf("free");
+    while(num_escrita != TERMINAR)
+    {   
+        MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
+        deslocamento = (num_escrita) * tamanho;
+printf("rank %d escrevendo %d na posicao %d\n", rank, num_escrita, deslocamento);
+        MPI_File_set_view(thefile, deslocamento * sizeof(float),
+                        MPI_FLOAT, MPI_FLOAT, "native", MPI_INFO_NULL);
+        MPI_File_write(thefile, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
+        MPI_Recv(&num_escrita, 1, MPI_INT, 0, 101, parentcomm, MPI_STATUS_IGNORE);
+    }
 
     free(onda);
     MPI_File_close(&thefile);
