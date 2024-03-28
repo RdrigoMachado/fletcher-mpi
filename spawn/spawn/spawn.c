@@ -30,6 +30,7 @@ printf("num escrita %d\n", num_escrita);
 
     while(num_escrita != TERMINAR)
     {   
+        printf("entrei");
         MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, 102, parentcomm, MPI_STATUS_IGNORE);
         deslocamento = (num_escrita) * tamanho;
 printf("rank %d escrevendo %d na posicao %d\n", rank, num_escrita, deslocamento);
