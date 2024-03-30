@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
         if(sucesso != MPI_SUCCESS)
             printf("#%d - ERRO ao receber msg controle\n", rank);
         else
-            printf("#%d - Recebida msg controle\n", rank);
+            printf("#%d - Recebida msg controle %d\n", rank, num_escrita);
 
     }
     
