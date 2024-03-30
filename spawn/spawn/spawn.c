@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
         printf("#%d - ERRO ao fechar arquivo\n", rank);
     else
         printf("#%d - Arquivo fechado\n", rank);
-
+    MPI_Send(&num_escrita, 1, MPI_INT, 0, 101, interCommParent);
     MPI_Finalize();
     return 0;
 }

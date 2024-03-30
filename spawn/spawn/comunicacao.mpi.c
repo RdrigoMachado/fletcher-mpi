@@ -32,4 +32,6 @@ void MPI_terminar()
   int msg = TERMINAR;
   MPI_Send(&msg, 1, MPI_INT, 0, 101, childcomm);
   MPI_Send(&msg, 1, MPI_INT, 1, 101, childcomm);
+  MPI_Recv(&msg, 1, MPI_INT, 0, 101, childcomm, MPI_STATUS_IGNORE);
+  MPI_Recv(&msg, 1, MPI_INT, 1, 101, childcomm, MPI_STATUS_IGNORE);
 }
