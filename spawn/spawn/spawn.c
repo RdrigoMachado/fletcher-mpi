@@ -40,15 +40,22 @@ int main(int argc, char** argv) {
         printf("#%d - Arquivo aberto\n", rank);
 
     
-    sucesso = MPI_Recv(&num_escrita, 1, MPI_INT, 0, MSG_CONTROLE, interCommParent, MPI_STATUS_IGNORE);
-    if(sucesso != MPI_SUCCESS)
-            printf("#%d - ERRO ao receber msg controle\n", rank);
-    else
-            printf("#%d - Recebida msg controle\n", rank);
 
-    while(num_escrita != TERMINAR)
+    while(1)
     {   
-        MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, interCommParent, MPI_STATUS_IGNORE);
+        sucesso = MPI_Recv(&num_escrita, 1, MPI_INT, 0, MSG_CONTROLE, interCommParent, MPI_STATUS_IGNORE);
+        if(sucesso != MPI_SUCCESS)
+                printf("#%d - ERRO ao receber msg controle\n", rank);
+        else
+                printf("#%d - Recebida msg controle\n", rank);
+        if(num_escrita == TERMINAR)
+            break;
+
+        sucesso = MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, interCommParent, MPI_STATUS_IGNORE);
+        if(sucesso != MPI_SUCCESS)
+                printf("#%d - ERRO ao receber onda\n", rank);
+        else
+                printf("#%d - Recebida onda\n", rank);
         deslocamento = (num_escrita) * (MPI_Offset) tamanho;
 
         sucesso = MPI_File_set_view(arquivo, deslocamento * sizeof(float),
@@ -63,13 +70,6 @@ int main(int argc, char** argv) {
             printf("#%d - ERRO ao escrever no arquivo\n", rank);
         else
             printf("#%d - escrita arquivo\n", rank);
-
-        sucesso = MPI_Recv(&num_escrita, 1, MPI_INT, 0, MSG_CONTROLE, interCommParent, MPI_STATUS_IGNORE);
-        if(sucesso != MPI_SUCCESS)
-            printf("#%d - ERRO ao receber msg controle\n", rank);
-        else
-            printf("#%d - Recebida msg controle %d\n", rank, num_escrita);
-
     }
     
     free(onda);
@@ -79,6 +79,9 @@ int main(int argc, char** argv) {
     else
         printf("#%d - Arquivo fechado\n", rank);
     MPI_Send(&num_escrita, 1, MPI_INT, 0, 101, interCommParent);
+        printf("#%d - Enviada msg termino\n", rank);
     MPI_Finalize();
+        printf("#%d - Finalize\n", rank);
+
     return 0;
 }
