@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h> 
 
-#define TERMINAR    -1
-#define MSG_CONTROLE 101
-#define MSG_ONDA     102
+#define MSG_ONDA      101
+#define MSG_CONTROLE  100
+#define FLAG_FINALIZAR -1
 
 int main(int argc, char** argv) {
     MPI_Init(&argc, &argv);
@@ -26,18 +26,13 @@ int main(int argc, char** argv) {
         MPI_Finalize();
         return 0;
     }
-    else
-        printf("#%d - Memoria alocada\n", rank);
-
-    
+       
     sucesso = MPI_File_open(MPI_COMM_WORLD, "TTI.rsf",
                 MPI_MODE_CREATE | MPI_MODE_WRONLY,
                 MPI_INFO_NULL, &arquivo);
     if(sucesso != MPI_SUCCESS)
         printf("#%d - ERRO ao abrir arquivo\n", rank);
-    else
-        printf("#%d - Arquivo aberto\n", rank);
-
+   
     
 
     while(1)
@@ -45,33 +40,26 @@ int main(int argc, char** argv) {
         sucesso = MPI_Recv(&num_escrita, 1, MPI_INT, 0, MSG_CONTROLE, interCommParent, MPI_STATUS_IGNORE);
         if(sucesso != MPI_SUCCESS)
                 printf("#%d - ERRO ao receber msg controle\n", rank);
-        else
-                printf("#%d - Recebida msg controle %d\n", rank, num_escrita);
-        if(num_escrita == TERMINAR)
+        
+        if(num_escrita == FLAG_FINALIZAR)
             break;
         deslocamento = (num_escrita) * (MPI_Offset) tamanho * sizeof(float);
 
         sucesso = MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, interCommParent, MPI_STATUS_IGNORE);
         if(sucesso != MPI_SUCCESS)
                 printf("#%d - ERRO ao receber onda\n", rank);
-        else
-                printf("#%d - Recebida onda\n", rank);
-
+        
         sucesso = MPI_File_write_at(arquivo, deslocamento, onda, tamanho, MPI_FLOAT, MPI_STATUS_IGNORE);
         if(sucesso != MPI_SUCCESS)
             printf("#%d - ERRO ao escrever no arquivo\n", rank);
-        else
-            printf("#%d - escrita arquivo\n", rank);
     }
     
     free(onda);
     sucesso = MPI_File_close(&arquivo);
     if(sucesso != MPI_SUCCESS)
         printf("#%d - ERRO ao fechar arquivo\n", rank);
-    else
-        printf("#%d - Arquivo fechado\n", rank);
+
     MPI_Finalize();
-        printf("#%d - Finalize\n", rank);
 
     return 0;
 }

@@ -9,7 +9,7 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr,  SlicePtr p) {
   num_processo++;
 
   MPI_Comm childcomm;
-  MPI_Comm_spawn("./spawn.x", MPI_ARGV_NULL, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm, MPI_ERRCODES_IGNORE);
+  MPI_Comm_spawn("./spawn_one_for_each_write.x", MPI_ARGV_NULL, 1, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm, MPI_ERRCODES_IGNORE);
 
   MPI_Send(&num_processo, 1, MPI_INT, 0, 100, childcomm);
   MPI_Send(&tamanho, 1, MPI_INT, 0, 101, childcomm);

@@ -8,5 +8,6 @@
 #define FLAG_FINALIZAR -1
 #define FLAG_ONDA 1
 
-void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p);
+void MPI_inicializacao(int sx, int sy, int sz, int qtdChilds);
+void MPI_enviar_onda(float *ondaPtr);
 void MPI_terminar();

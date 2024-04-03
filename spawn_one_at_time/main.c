@@ -256,11 +256,14 @@ int main(int argc, char** argv) {
         dx, dy, dz, dt,
         fNameSec);
 
+  int qtdChilds=atof(argv[11]);
+  MPI_inicializacao(sx, sy, sz, qtdChilds);
+  
   double walltime=0.0;
   const double t0=wtime();
 
   //###### ENVIAR ONDA MPI
-  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+  MPI_enviar_onda(pc);
   
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
