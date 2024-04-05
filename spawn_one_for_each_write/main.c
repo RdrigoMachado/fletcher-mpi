@@ -269,13 +269,9 @@ int main(int argc, char** argv) {
   vpz,    vsv,     epsilon,  delta,
   phi,    theta);
   
+  MPI_Finalize();
+
   walltime+=wtime()-t0;
   printf("%lf\n", walltime);
-
-  double finalize=0.0;
-  const double t1=wtime();
-
-  MPI_Finalize();
-  finalize+=wtime()-t1;
-  printf("finalize %lf\n", finalize);
+  //SAIDA: computacao;send;total
 }

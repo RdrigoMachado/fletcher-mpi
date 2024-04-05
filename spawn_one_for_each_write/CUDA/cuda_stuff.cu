@@ -44,7 +44,7 @@ void CUDA_Initialize(const int sx, const int sy, const int sz, const int bord,
   const int device=0;
   cudaDeviceProp deviceProp;
   CUDA_CALL(cudaGetDeviceProperties(&deviceProp, device));
-  printf("CUDA source using device(%d) %s with compute capability %d.%d.\n", device, deviceProp.name, deviceProp.major, deviceProp.minor);
+//   printf("CUDA source using device(%d) %s with compute capability %d.%d.\n", device, deviceProp.name, deviceProp.major, deviceProp.minor);
   CUDA_CALL(cudaSetDevice(device));
 
 
@@ -124,7 +124,7 @@ void CUDA_Initialize(const int sx, const int sy, const int sz, const int bord,
 
   CUDA_CALL(cudaGetLastError());
   CUDA_CALL(cudaDeviceSynchronize());
-  printf("GPU memory usage = %ld MiB\n", 21*msize_vol/1024/1024);
+//   printf("GPU memory usage = %ld MiB\n", 21*msize_vol/1024/1024);
 
 }
 
@@ -187,7 +187,7 @@ void CUDA_Finalize()
    CUDA_CALL(cudaFree(dev_pDy));
    CUDA_CALL(cudaFree(dev_qDy));
 
-   printf("CUDA_Finalize: SUCCESS\n");
+   // printf("CUDA_Finalize: SUCCESS\n");
 }
 
 

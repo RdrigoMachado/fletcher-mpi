@@ -1,7 +1,7 @@
 #Variveis
-SIZE=504
+SIZE=56
 STEP=0.001
-THRESHOLD=1.5
+THRESHOLD=0.5
 
 #Execucao
 for VERSION in spawn_all_at_once spawn_one_at_time; do

@@ -1,0 +1,6 @@
+CUDA source using device(0) NVIDIA GeForce GTX 1650 with compute capability 7.5.
+GPU memory usage = 70 MiB
+CUDA_Finalize: SUCCESS
+computacao;send;total
+0.807085;0.210593;1.818346
+finalize 0.013871

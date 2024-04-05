@@ -90,7 +90,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
 
- printf("computacao;send;total\n");
+//  printf("computacao;send;total\n");
   printf("%lf;%lf;", computacao, send);
 }
 
