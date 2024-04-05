@@ -84,13 +84,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
       dump+=wtime()-dump0;
 
       tOut=(++nOut)*dtOutput;
-
-      const double temp = wtime()-dump0;
-      long tamanhoEscrito = sx*sy*sz*sizeof(float)*nOut;
-      printf("%ld;%lf;\n", tamanhoEscrito, temp);
-
-
-
     }
   }
   fflush(stdout);
@@ -102,7 +95,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   dump+=wtime()-dump0;
 
 
-  printf("\ncomputacao;dump;total\n");
   printf("%lf;%lf;", computacao, dump);
 
 }
