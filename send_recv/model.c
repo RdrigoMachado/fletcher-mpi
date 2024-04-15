@@ -83,9 +83,9 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
       send+=wtime()-send0;     
       tOut=(++nOut)*dtOutput;
 
-      const double temp = wtime()-send0;
-      long tamanhoEscrito = sx*sy*sz*sizeof(float)*nOut;
-      printf("%ld;%lf;\n", tamanhoEscrito, temp);
+      // const double temp = wtime()-send0;
+      // long tamanhoEscrito = sx*sy*sz*sizeof(float)*nOut;
+      // printf("%ld;%lf;\n", tamanhoEscrito, temp);
 
     }
   }
@@ -93,7 +93,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
 
- printf("computacao;send;total\n");
   printf("%lf;%lf;", computacao, send);
 }
 
