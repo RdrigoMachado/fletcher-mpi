@@ -46,3 +46,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda-11.8/lib64
 export CUDA_GPU_SM=sm_60 # NVIDIA P100 BLAISE
 #export CUDA_GPU_SM=sm_61 # NVIDIA GTX 1080Ti
 #export CUDA_GPU_SM=sm_75 # NVIDIA RTX 2080Ti | 1650 super
+
+#HDF5
+
+export LD_LIBRARY_PATH=$PWD/../send_recv_hdf5/hdf5/lib:$LD_LIBRARY_PATH
