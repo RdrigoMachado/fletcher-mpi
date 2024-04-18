@@ -16,8 +16,9 @@
 #ifndef H5Tpublic_H
 #define H5Tpublic_H
 
-#include "H5public.h"  /* Generic Functions                        */
-#include "H5Ipublic.h" /* Identifiers                              */
+/* Public headers needed by this file */
+#include "H5public.h"
+#include "H5Ipublic.h"
 
 #define HOFFSET(S, M) (offsetof(S, M))
 
@@ -151,6 +152,45 @@ typedef enum H5T_pad_t {
 //! <!-- [H5T_pad_t_snip] -->
 
 /**
+ * Commands sent to conversion functions
+ */
+typedef enum H5T_cmd_t {
+    H5T_CONV_INIT = 0, /**< query and/or initialize private data	     */
+    H5T_CONV_CONV = 1, /**< convert data from source to dest datatype */
+    H5T_CONV_FREE = 2  /**< function is being removed from path	     */
+} H5T_cmd_t;
+
+/**
+ * How is the `bkg' buffer used by the conversion function?
+ */
+typedef enum H5T_bkg_t {
+    H5T_BKG_NO   = 0, /**< background buffer is not needed, send NULL */
+    H5T_BKG_TEMP = 1, /**< bkg buffer used as temp storage only       */
+    H5T_BKG_YES  = 2  /**< init bkg buf with data before conversion   */
+} H5T_bkg_t;
+
+/**
+ * Type conversion client data
+ */
+//! <!-- [H5T_cdata_t_snip] -->
+typedef struct H5T_cdata_t {
+    H5T_cmd_t command;  /**< what should the conversion function do?    */
+    H5T_bkg_t need_bkg; /**< is the background buffer needed?	     */
+    hbool_t   recalc;   /**< recalculate private data		     */
+    void     *priv;     /**< private data				     */
+} H5T_cdata_t;
+//! <!-- [H5T_cdata_t_snip] -->
+
+/**
+ * Conversion function persistence
+ */
+typedef enum H5T_pers_t {
+    H5T_PERS_DONTCARE = -1, /**< wild card				     */
+    H5T_PERS_HARD     = 0,  /**< hard conversion function		     */
+    H5T_PERS_SOFT     = 1   /**< soft conversion function		     */
+} H5T_pers_t;
+
+/**
  * The order to retrieve atomic native datatype
  */
 //! <!-- [H5T_direction_t_snip] -->
@@ -204,7 +244,7 @@ typedef struct {
  * Indicate that a string is variable length (null-terminated in C, instead of
  * fixed length)
  */
-#define H5T_VARIABLE SIZE_MAX
+#define H5T_VARIABLE ((size_t)(-1))
 
 /* Opaque information */
 /**
@@ -216,6 +256,14 @@ typedef struct {
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/**
+ * All datatype conversion functions are...
+ */
+//! <!-- [H5T_conv_t_snip] -->
+typedef herr_t (*H5T_conv_t)(hid_t src_id, hid_t dst_id, H5T_cdata_t *cdata, size_t nelmts, size_t buf_stride,
+                             size_t bkg_stride, void *buf, void *bkg, hid_t dset_xfer_plist);
+//! <!-- [H5T_conv_t_snip] -->
 
 //! <!-- [H5T_conv_except_func_t_snip] -->
 /**
@@ -728,7 +776,8 @@ H5_DLLVAR hid_t H5T_VAX_F32_g;
 H5_DLLVAR hid_t H5T_VAX_F64_g;
 
 /*
- * The predefined native types for this platform. Instead of a class name,
+ * The predefined native types. These are the types detected by H5detect and
+ * they violate the naming scheme a little.  Instead of a class name,
  * precision and byte order as the last component, they have a C-like type
  * name.  If the type begins with `U' then it is the unsigned version of the
  * integer type; other integer types are signed.  The type LLONG corresponds
@@ -1067,7 +1116,7 @@ H5_DLL hid_t H5Tcreate(H5T_class_t type, size_t size);
  *          dataset's datatype.
  *
  *          The returned datatype identifier should be released with H5Tclose()
- *          to prevent resource leaks.
+ *          to prevent resource leak.
  *
  */
 H5_DLL hid_t H5Tcopy(hid_t type_id);
@@ -1086,18 +1135,6 @@ H5_DLL hid_t H5Tcopy(hid_t type_id);
  *
  */
 H5_DLL herr_t H5Tclose(hid_t type_id);
-/**
- * \ingroup H5T
- *
- * \brief Asynchronous version of H5Tclose().
- *
- */
-#ifndef H5_DOXYGEN
-H5_DLL herr_t H5Tclose_async(const char *app_file, const char *app_func, unsigned app_line, hid_t type_id,
-                             hid_t es_id);
-#else
-H5_DLL herr_t H5Tclose_async(hid_t type_id, hid_t es_id);
-#endif
 /**
  * \ingroup H5T
  *
@@ -1140,7 +1177,7 @@ H5_DLL herr_t H5Tlock(hid_t type_id);
  *
  * \fg_loc_id
  * \param[in] name Name given to committed datatype
- * \type_id Identifier of datatype to be committed and, upon function's
+ * \type_id Identifier of datatype to be committed and, upon function’s
  *          return, identifier for the committed datatype
  * \lcpl_id
  * \tcpl_id
@@ -1156,7 +1193,7 @@ H5_DLL herr_t H5Tlock(hid_t type_id);
  *
  *          \p loc_id may be a file identifier, or a group identifier within
  *          that file. \p name may be either an absolute path in the file or
- *          a relative path from \p loc_id naming the newly-committed datatype.
+ *          a relative path from \p loc_id naming the newly-commited datatype.
  *
  *          The link creation property list, \p lcpl_id, governs creation of
  *          the link(s) by which the new committed datatype is accessed and
@@ -1180,20 +1217,6 @@ H5_DLL herr_t H5Tlock(hid_t type_id);
  */
 H5_DLL herr_t H5Tcommit2(hid_t loc_id, const char *name, hid_t type_id, hid_t lcpl_id, hid_t tcpl_id,
                          hid_t tapl_id);
-/**
- * \ingroup H5T
- *
- * \brief Asynchronous version of H5Tcommit2().
- *
- */
-#ifndef H5_DOXYGEN
-H5_DLL herr_t H5Tcommit_async(const char *app_file, const char *app_func, unsigned app_line, hid_t loc_id,
-                              const char *name, hid_t type_id, hid_t lcpl_id, hid_t tcpl_id, hid_t tapl_id,
-                              hid_t es_id);
-#else
-H5_DLL herr_t H5Tcommit_async(hid_t loc_id, const char *name, hid_t type_id, hid_t lcpl_id, hid_t tcpl_id,
-                              hid_t tapl_id, hid_t es_id);
-#endif
 /**
  * --------------------------------------------------------------------------
  * \ingroup H5T
@@ -1221,19 +1244,7 @@ H5_DLL hid_t H5Topen2(hid_t loc_id, const char *name, hid_t tapl_id);
 /**
  * \ingroup H5T
  *
- * \brief Asynchronous version of H5Topen2().
- *
- */
-#ifndef H5_DOXYGEN
-H5_DLL hid_t H5Topen_async(const char *app_file, const char *app_func, unsigned app_line, hid_t loc_id,
-                           const char *name, hid_t tapl_id, hid_t es_id);
-#else
-H5_DLL hid_t  H5Topen_async(hid_t loc_id, const char *name, hid_t tapl_id, hid_t es_id);
-#endif
-/**
- * \ingroup H5T
- *
- * \brief Commits a transient datatype to a file, creating a newly named
+ * \brief Commits a transient datatype to a file, creating a new named
  *        datatype, but does not link it into the file structure
  *
  * \fg_loc_id
@@ -1266,7 +1277,7 @@ H5_DLL hid_t  H5Topen_async(hid_t loc_id, const char *name, hid_t tapl_id, hid_t
  *              which provides for greater control of the creation process
  *              and of the properties of the new named datatype. H5Tcommit()
  *              always uses default properties.
- *          \li H5Tcommit_anon() neither provides the new named datatype's
+ *          \li H5Tcommit_anon() neither provides the new named datatype’s
  *              name nor links it into the HDF5 file structure; those actions
  *              must be performed separately through a call to H5Olink(),
  *              which offers greater control over linking.
@@ -1363,7 +1374,7 @@ H5_DLL herr_t H5Tencode(hid_t obj_id, void *buf, size_t *nalloc);
 /**
  * \ingroup H5T
  *
- * \brief Decodes a binary object description of datatype and returns a new
+ * \brief Decodes a binary object description of datatype and return a new
  *        object handle
  *
  * \param[in] buf Buffer for the datatype object to be decoded
@@ -1435,7 +1446,7 @@ H5_DLL herr_t H5Tflush(hid_t type_id);
  *          contents from disk.
  *
  *          This function essentially closes the datatype, evicts all
- *          metadata associated with it from the cache, and then reopens the
+ *          metadata associated with it from the cache, and then re-opens the
  *          datatype. The reopened datatype is automatically re-registered
  *          with the same identifier.
  *
@@ -1585,7 +1596,7 @@ H5_DLL herr_t H5Tenum_nameof(hid_t type, const void *value, char *name /*out*/, 
  * \details H5Tenum_valueof() finds the value that corresponds to the
  *          specified name of the enumeration datatype \p dtype_id.
  *
- *          Values returned in \p value will be of the enumerated type's
+ *          Values returned in \p value will be of the enumerated type’s
  *          base type, that is, the datatype used by H5Tenum_create() when
  *          the enumerated type was created.
  *
@@ -2196,7 +2207,7 @@ H5_DLL hid_t H5Tget_member_type(hid_t type_id, unsigned membno);
  *
  *          The member value is returned in a user-supplied buffer pointed to
  *          by \p value. Values returned in \p value will be of the enumerated
- *          type's base type, that is, the datatype used by H5Tenum_create()
+ *          type’s base type, that is, the datatype used by H5Tenum_create()
  *          when the enumerated type was created.
  *
  *          The value buffer must be at least large enough to hold a value
@@ -2261,7 +2272,7 @@ H5_DLL htri_t H5Tis_variable_str(hid_t type_id);
  * \details H5Tget_native_type() returns the equivalent native datatype
  *          identifier for the datatype specified by \p type_id.
  *
- *          H5Tget_native_type() is designed primarily to facilitate the use of
+ *          H5Tget_native_type() is designed primarily to facilitate use of
  *          the H5Dread() function, for which users otherwise must undertake a
  *          multi-step process to determine the native datatype of a dataset
  *          prior to reading it into memory. This function can be used for
@@ -2319,7 +2330,7 @@ H5_DLL htri_t H5Tis_variable_str(hid_t type_id);
  *
  *          \note Please note that a datatype is actually an object
  *          identifier or handle returned from opening the datatype. It
- *          is not persistent, and its value can be different from one HDF5
+ *          is not persistent and its value can be different from one HDF5
  *          session to the next.
  *
  *          \note H5Tequal() can be used to compare datatypes.
@@ -2340,14 +2351,14 @@ H5_DLL hid_t H5Tget_native_type(hid_t type_id, H5T_direction_t direction);
  * \brief Sets size for a datatype.
  *
  * \type_id
- * \param[in] size New datatype size in bytes or #H5T_VARIABLE
+ * \param[in] size New datatype size is bytes or #H5T_VARIABLE
  *
  * \return \herr_t
  *
  * \details H5Tset_size() sets the total size, \p size, in bytes, for a
  *          datatype.
  *
- *          \p size must have a positive value unless it is passed in as
+ *          \p size must have a positive value, unless it is passed in as
  *          #H5T_VARIABLE and the datatype is a string datatype.
  *
  *          \li Numeric datatypes: If the datatype is atomic and the size
@@ -2359,7 +2370,7 @@ H5_DLL hid_t H5Tget_native_type(hid_t type_id, H5T_direction_t direction);
  *
  *          \li String or character datatypes: The size set for a string
  *          datatype should include space for the null-terminator character,
- *          otherwise it will not be stored on (or retrieved from) the
+ *          otherwise it will not be stored on (or retrieved from)
  *          disk. Adjusting the size of a string automatically sets the
  *          precision to \p 8*size.
  *
@@ -2670,6 +2681,129 @@ H5_DLL herr_t H5Tset_cset(hid_t type_id, H5T_cset_t cset);
 H5_DLL herr_t H5Tset_strpad(hid_t type_id, H5T_str_t strpad);
 
 /**
+ * \ingroup CONV
+ *
+ * \brief Registers a datatype conversion function
+ *
+ * \param[in] pers Conversion function type
+ * \param[in] name Name displayed in diagnostic output
+ * \type_id{src_id} of source datatype
+ * \type_id{dst_id} of destination datatype
+ * \param[in] func Function to convert between source and destination datatypes
+ *
+ * \return \herr_t
+ *
+ * \details H5Tregister() registers a hard or soft conversion function for a
+ *          datatype conversion path. The parameter \p pers indicates whether a
+ *          conversion function is hard (#H5T_PERS_HARD) or soft
+ *          (#H5T_PERS_SOFT). User-defined functions employing compiler casting
+ *          are designated as \Emph{hard}; other user-defined conversion
+ *          functions registered with the HDF5 library (with H5Tregister() )
+ *          are designated as \Emph{soft}. The HDF5 library also has its own
+ *          hard and soft conversion functions.
+ *
+ *          A conversion path can have only one hard function. When type is
+ *          #H5T_PERS_HARD, \p func replaces any previous hard function.
+ *
+ *          When type is #H5T_PERS_SOFT, H5Tregister() adds the function to the
+ *          end of the master soft list and replaces the soft function in all
+ *          applicable existing conversion paths. Soft functions are used when
+ *          determining which conversion function is appropriate for this path.
+ *
+ *          The \p name is used only for debugging and should be a short
+ *          identifier for the function.
+ *
+ *          The path is specified by the source and destination datatypes \p
+ *          src_id and \p dst_id. For soft conversion functions, only the class
+ *          of these types is important.
+ *
+ *          The type of the conversion function pointer is declared as:
+ *          \snippet this H5T_conv_t_snip
+ *
+ *          The \ref H5T_cdata_t \c struct is declared as:
+ *          \snippet this H5T_cdata_t_snip
+ *
+ * \since 1.6.3 The following change occurred in the \ref H5T_conv_t function:
+ *              the \c nelmts parameter type changed to size_t.
+ *
+ */
+H5_DLL herr_t H5Tregister(H5T_pers_t pers, const char *name, hid_t src_id, hid_t dst_id, H5T_conv_t func);
+/**
+ * \ingroup CONV
+ *
+ * \brief Removes a conversion function
+ *
+ * \param[in] pers Conversion function type
+ * \param[in] name Name displayed in diagnostic output
+ * \type_id{src_id} of source datatype
+ * \type_id{dst_id} of destination datatype
+ * \param[in] func Function to convert between source and destination datatypes
+ *
+ * \return \herr_t
+ *
+ * \details H5Tunregister() removes a conversion function matching criteria
+ *          such as soft or hard conversion, source and destination types, and
+ *          the conversion function.
+ *
+ *          If a user is trying to remove a conversion function he registered,
+ *          all parameters can be used. If he is trying to remove a library’s
+ *          default conversion function, there is no guarantee the \p name and
+ *          \p func parameters will match the user’s chosen values. Passing in
+ *          some values may cause this function to fail. A good practice is to
+ *          pass in NULL as their values.
+ *
+ *          All parameters are optional. The missing parameters will be used to
+ *          generalize the search criteria.
+ *
+ *          The conversion function pointer type declaration is described in
+ *          H5Tregister().
+ *
+ * \version 1.6.3 The following change occurred in the \ref H5T_conv_t function:
+ *                the \c nelmts parameter type changed to size_t.
+ *
+ */
+H5_DLL herr_t H5Tunregister(H5T_pers_t pers, const char *name, hid_t src_id, hid_t dst_id, H5T_conv_t func);
+/**
+ * \ingroup CONV
+ *
+ * \brief Finds a conversion function
+ *
+ * \type_id{src_id} of source datatype
+ * \type_id{dst_id} of destination datatype
+ * \param[out] pcdata Pointer to type conversion data
+ *
+ * \return Returns a pointer to a suitable conversion function if successful.
+ *         Otherwise returns NULL.
+ *
+ * \details H5Tfind() finds a conversion function that can handle a conversion
+ *          from type \p src_id to type \p dst_id. The \p pcdata argument is a
+ *          pointer to a pointer to type conversion data which was created and
+ *          initialized by the soft type conversion function of this path when
+ *          the conversion function was installed on the path.
+ *
+ */
+H5_DLL H5T_conv_t H5Tfind(hid_t src_id, hid_t dst_id, H5T_cdata_t **pcdata);
+/**
+ * \ingroup CONV
+ *
+ * \brief Check whether the library’s default conversion is hard conversion
+ *
+ * \type_id{src_id} of source datatype
+ * \type_id{dst_id} of destination datatype
+ *
+ * \return \htri_t
+ *
+ * \details H5Tcompiler_conv() determines whether the library’s conversion
+ *          function from type \p src_id to type \p dst_id is a compiler (hard)
+ *          conversion or not. A compiler conversion uses compiler’s casting; a
+ *          library (soft) conversion uses the library’s own conversion
+ *          function.
+ *
+ * \since 1.8.0
+ *
+ */
+H5_DLL htri_t H5Tcompiler_conv(hid_t src_id, hid_t dst_id);
+/**
  * --------------------------------------------------------------------------
  * \ingroup CONV
  *
@@ -2740,21 +2874,6 @@ H5_DLL herr_t H5Treclaim(hid_t type_id, hid_t space_id, hid_t plist_id, void *bu
  * Use of these symbols is deprecated.
  */
 
-/* API Wrappers for async routines */
-/* (Must be defined _after_ the function prototype) */
-/* (And must only defined when included in application code, not the library) */
-#ifndef H5T_MODULE
-#define H5Tcommit_async(...) H5Tcommit_async(__FILE__, __func__, __LINE__, __VA_ARGS__)
-#define H5Topen_async(...)   H5Topen_async(__FILE__, __func__, __LINE__, __VA_ARGS__)
-#define H5Tclose_async(...)  H5Tclose_async(__FILE__, __func__, __LINE__, __VA_ARGS__)
-
-/* Define "wrapper" versions of function calls, to allow compile-time values to
- * be passed in by language wrapper or library layer on top of HDF5. */
-#define H5Tcommit_async_wrap H5_NO_EXPAND(H5Tcommit_async)
-#define H5Topen_async_wrap   H5_NO_EXPAND(H5Topen_async)
-#define H5Tclose_async_wrap  H5_NO_EXPAND(H5Tclose_async)
-#endif /* H5T_MODULE */
-
 #ifndef H5_NO_DEPRECATED_SYMBOLS
 
 /* Macros */
@@ -2765,7 +2884,7 @@ H5_DLL herr_t H5Treclaim(hid_t type_id, hid_t space_id, hid_t plist_id, void *bu
 /**
  * \ingroup H5T
  *
- * \brief Commits a transient datatype to a file, creating a newly named datatype
+ * \brief Commits a transient datatype to a file, creating a new named datatype
  *
  * \fg_loc_id
  * \param[in] name Name given to committed datatype

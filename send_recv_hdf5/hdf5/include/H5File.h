@@ -30,8 +30,6 @@ class H5_DLLCPP H5File : public Group {
     H5File(const H5std_string &name, unsigned int flags,
            const FileCreatPropList &create_plist = FileCreatPropList::DEFAULT,
            const FileAccPropList   &access_plist = FileAccPropList::DEFAULT);
-    H5File(const char *name, unsigned int flags, const FileAccPropList &access_plist);
-    H5File(const H5std_string &name, unsigned int flags, const FileAccPropList &access_plist);
 
     // Open the file
     void openFile(const H5std_string &name, unsigned int flags,
@@ -40,7 +38,7 @@ class H5_DLLCPP H5File : public Group {
                   const FileAccPropList &access_plist = FileAccPropList::DEFAULT);
 
     // Close this file.
-    virtual void close() override;
+    virtual void close() H5_OVERRIDE;
 
     // Gets a copy of the access property list of this file.
     FileAccPropList getAccessPlist() const;
@@ -97,16 +95,16 @@ class H5_DLLCPP H5File : public Group {
 
     ///\brief Returns this class name.
     virtual H5std_string
-    fromClass() const override
+    fromClass() const H5_OVERRIDE
     {
         return ("H5File");
     }
 
     // Throw file exception.
-    virtual void throwException(const H5std_string &func_name, const H5std_string &msg) const override;
+    virtual void throwException(const H5std_string &func_name, const H5std_string &msg) const H5_OVERRIDE;
 
     // For CommonFG to get the file id.
-    virtual hid_t getLocId() const override;
+    virtual hid_t getLocId() const H5_OVERRIDE;
 
     // Default constructor
     H5File();
@@ -115,15 +113,15 @@ class H5_DLLCPP H5File : public Group {
     H5File(const H5File &original);
 
     // Gets the HDF5 file id.
-    virtual hid_t getId() const override;
+    virtual hid_t getId() const H5_OVERRIDE;
 
     // H5File destructor.
-    virtual ~H5File() override;
+    virtual ~H5File() H5_OVERRIDE;
 
   protected:
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     // Sets the HDF5 file id.
-    virtual void p_setId(const hid_t new_id) override;
+    virtual void p_setId(const hid_t new_id) H5_OVERRIDE;
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 
   private:

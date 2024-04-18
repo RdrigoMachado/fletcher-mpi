@@ -11,31 +11,31 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
- * Purpose:	The public header file for the sec2 driver
+ * Programmer:  Robb Matzke
+ *              Monday, August  2, 1999
+ *
+ * Purpose:	The public header file for the sec2 driver.
  */
 #ifndef H5FDsec2_H
 #define H5FDsec2_H
 
-#define H5FD_SEC2       (H5FDperform_init(H5FD_sec2_init))
-#define H5FD_SEC2_VALUE H5_VFD_SEC2
+#define H5FD_SEC2 (H5FD_sec2_init())
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 H5_DLL hid_t H5FD_sec2_init(void);
-
 /**
  * \ingroup FAPL
  *
- * \brief Modifies the file access property list to use the #H5FD_SEC2 driver
+ * \brief Sets the sec2 driver
  *
  * \fapl_id
- *
  * \returns \herr_t
  *
- * \details H5Pset_fapl_sec2() modifies the file access property list to use the
- *          #H5FD_SEC2 driver.
+ * \details H5Pset_fapl_sec2() modifies the file access property list to use
+ *          the sec2 driver, H5FDsec2.
  *
  * \since 1.4.0
  *

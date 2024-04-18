@@ -40,7 +40,7 @@ class H5_DLLCPP EnumType : public DataType {
 
     // Returns an EnumType object via DataType* by decoding the
     // binary object description of this type.
-    virtual DataType *decode() const override;
+    virtual DataType *decode() const H5_OVERRIDE;
 
     // Returns the number of members in this enumeration datatype.
     int getNmembers() const;
@@ -67,7 +67,7 @@ class H5_DLLCPP EnumType : public DataType {
 
     ///\brief Returns this class name.
     virtual H5std_string
-    fromClass() const override
+    fromClass() const H5_OVERRIDE
     {
         return ("EnumType");
     }
@@ -81,7 +81,7 @@ class H5_DLLCPP EnumType : public DataType {
     // Copy constructor: same as the original EnumType.
     EnumType(const EnumType &original);
 
-    virtual ~EnumType() override;
+    virtual ~EnumType() H5_OVERRIDE;
 
 }; // end of EnumType
 } // namespace H5

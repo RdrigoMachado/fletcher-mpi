@@ -36,7 +36,7 @@ class H5_DLLCPP ArrayType : public DataType {
 
     // Returns an ArrayType object via DataType* by decoding the
     // binary object description of this type.
-    virtual DataType *decode() const override;
+    virtual DataType *decode() const H5_OVERRIDE;
 
     // Returns the number of dimensions of this array datatype.
     int getArrayNDims() const;
@@ -48,7 +48,7 @@ class H5_DLLCPP ArrayType : public DataType {
 
     ///\brief Returns this class name.
     virtual H5std_string
-    fromClass() const override
+    fromClass() const H5_OVERRIDE
     {
         return ("ArrayType");
     }
@@ -60,7 +60,7 @@ class H5_DLLCPP ArrayType : public DataType {
     ArrayType(const hid_t existing_id);
 
     // Noop destructor
-    virtual ~ArrayType() override;
+    virtual ~ArrayType() H5_OVERRIDE;
 
     // Default constructor
     ArrayType();

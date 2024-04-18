@@ -11,17 +11,18 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*
+ * Programmer:  Raymond Lu
+ *              Wednesday, 20 September 2006
+ *
  * Purpose:	The public header file for the direct driver.
  */
 #ifndef H5FDdirect_H
 #define H5FDdirect_H
 
 #ifdef H5_HAVE_DIRECT
-#define H5FD_DIRECT       (H5FDperform_init(H5FD_direct_init))
-#define H5FD_DIRECT_VALUE H5_VFD_DIRECT
+#define H5FD_DIRECT (H5FD_direct_init())
 #else
-#define H5FD_DIRECT       (H5I_INVALID_HID)
-#define H5FD_DIRECT_VALUE H5_VFD_INVALID
+#define H5FD_DIRECT (H5I_INVALID_HID)
 #endif /* H5_HAVE_DIRECT */
 
 #ifdef H5_HAVE_DIRECT
@@ -54,7 +55,7 @@ H5_DLL hid_t H5FD_direct_init(void);
  *          cached by the system.
  *
  *          File systems usually require the data address in memory, the file
- *          address, and the size of the data to be aligned. The HDF5 library's
+ *          address, and the size of the data to be aligned. The HDF5 library’s
  *          direct I/O driver is able to handle unaligned data, though that will
  *          consume some additional memory resources and may slow
  *          performance. To get better performance, use the system function \p
@@ -67,7 +68,7 @@ H5_DLL hid_t H5FD_direct_init(void);
  *          \p alignment specifies the required alignment boundary in memory.
  *
  *          \p block_size specifies the file system block size. A value of 0
- *          (zero) means to use HDF5 library's default value of 4KB.
+ *          (zero) means to use HDF5 library’s default value of 4KB.
  *
  *          \p cbuf_size specifies the copy buffer size.
  *

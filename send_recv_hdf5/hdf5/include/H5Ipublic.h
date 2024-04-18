@@ -17,7 +17,8 @@
 #ifndef H5Ipublic_H
 #define H5Ipublic_H
 
-#include "H5public.h" /* Generic Functions                        */
+/* Public headers needed by this file */
+#include "H5public.h"
 
 /**
  * Library type values.
@@ -49,7 +50,6 @@ typedef enum H5I_type_t {
     H5I_ERROR_MSG,      /**< type ID for error messages                */
     H5I_ERROR_STACK,    /**< type ID for error stacks                  */
     H5I_SPACE_SEL_ITER, /**< type ID for dataspace selection iterator  */
-    H5I_EVENTSET,       /**< type ID for event sets                    */
     H5I_NTYPES          /**< number of library types, MUST BE LAST!    */
 } H5I_type_t;
 //! <!-- [H5I_type_t_snip] -->
@@ -75,15 +75,13 @@ typedef int64_t hid_t;
 #define H5I_INVALID_HID (-1)
 
 /**
- * A function for freeing objects. This function will be called with a pointer
- * to the object and a pointer to a pointer to the asynchronous request object.
- * The function should free the object and return non-negative to indicate that
- * the object can be removed from the ID type. If the function returns negative
- * (failure) then the object will remain in the ID type. For asynchronous
- * operations and handling the request parameter, see the HDF5 user guide and
- * VOL connector author guide.
+ * A function for freeing objects. This function will be called with an object
+ * ID type number and a pointer to the object. The function should free the
+ * object and return non-negative to indicate that the object
+ * can be removed from the ID type. If the function returns negative
+ * (failure) then the object will remain in the ID type.
  */
-typedef herr_t (*H5I_free_t)(void *obj, void **request);
+typedef herr_t (*H5I_free_t)(void *);
 
 /**
  * The type of a function to compare objects & keys
@@ -144,7 +142,7 @@ H5_DLL hid_t H5Iregister(H5I_type_t type, const void *object);
  *
  * \note H5Iobject_verify() does not change the ID it is called on in any way
  *       (as opposed to H5Iremove_verify(), which removes the ID from its
- *       type's hash table).
+ *       type’s hash table).
  *
  * \see H5Iregister()
  *
@@ -234,7 +232,7 @@ H5_DLL hid_t H5Iget_file_id(hid_t id);
  * \brief Retrieves a name of an object based on the object identifier
  *
  * \obj_id{id}
- * \param[out] name A buffer for the name associated with the identifier
+ * \param[out] name A buffer for thename associated with the identifier
  * \param[in] size The size of the \p name buffer; usually the size of
  *                 the name in bytes plus 1 for a NULL terminator
  *
@@ -335,27 +333,27 @@ H5_DLL int H5Iinc_ref(hid_t id);
  *
  *          The reference count for a newly created object will be 1. Reference
  *          counts for objects may be explicitly modified with this function or
- *          with H5Iinc_ref(). When an object identifier's reference count
+ *          with H5Iinc_ref(). When an object identifier’s reference count
  *          reaches zero, the object will be closed. Calling an object
- *          identifier's \c close function decrements the reference count for
- *          the identifier, which normally closes the object, but if the
+ *          identifier’s \c close function decrements the reference count for
+ *          the identifier which normally closes the object, but if the
  *          reference count for the identifier has been incremented with
  *          H5Iinc_ref(), the object will only be closed when the reference
  *          count reaches zero with further calls to this function or the
- *          object identifier's \c close function.
+ *          object identifier’s \c close function.
  *
  *          If the object ID was created by a collective parallel call (such as
  *          H5Dcreate(), H5Gopen(), etc.), the reference count should be
  *          modified by all the processes which have copies of the ID.
- *          Generally, this means that group, dataset, attribute, file and named
+ *          Generally this means that group, dataset, attribute, file and named
  *          datatype IDs should be modified by all the processes and that all
  *          other types of IDs are safe to modify by individual processes.
  *
- *          This function is of particular value when an application
- *          maintains multiple copies of an object ID. The object ID can be
+ *          This function is of particular value when an application is
+ *          maintaining multiple copies of an object ID. The object ID can be
  *          incremented when a copy is made. Each copy of the ID can then be
  *          safely closed or decremented and the HDF5 object will be closed
- *          when the reference count for that object drops to zero.
+ *          when the reference count for that that object drops to zero.
  *
  * \since 1.6.2
  *
@@ -454,9 +452,9 @@ H5_DLL herr_t H5Iclear_type(H5I_type_t type, hbool_t force);
  *          identifiers of this type are destroyed and no new identifiers of
  *          this type can be registered.
  *
- *          The type's free function is called on all of the identifiers which
+ *          The type’s free function is called on all of the identifiers which
  *          are deleted by this function, freeing their memory. In addition,
- *          all memory used by this type's hash table is freed.
+ *          all memory used by this type’s hash table is freed.
  *
  *          Since the H5I_type_t values of destroyed identifier types are
  *          reused when new types are registered, it is a good idea to set the
@@ -588,9 +586,6 @@ H5_DLL void *H5Isearch(H5I_type_t type, H5I_search_func_t func, void *key);
  *          to continue, as long as there are other identifiers remaining in
  *          type.
  *
- * \warning  Adding or removing members of the identifier type during iteration
- *           will lead to undefined behavior.
- *
  * \since 1.12.0
  *
  */
@@ -645,7 +640,7 @@ H5_DLL htri_t H5Itype_exists(H5I_type_t type);
  * \details Valid identifiers are those that have been obtained by an
  *          application and can still be used to access the original target.
  *          Examples of invalid identifiers include:
- *          \li Out-of-range values: negative, for example
+ *          \li Out of range values: negative, for example
  *          \li Previously-valid identifiers that have been released:
  *              for example, a dataset identifier for which the dataset has
  *              been closed
@@ -653,7 +648,7 @@ H5_DLL htri_t H5Itype_exists(H5I_type_t type);
  *          H5Iis_valid() can be used with any type of identifier: object
  *          identifier, property list identifier, attribute identifier, error
  *          message identifier, etc. When necessary, a call to H5Iget_type()
- *          can determine the type of object that the \p id identifies.
+ *          can determine the type of the object that \p id identifies.
  *
  * \since 1.8.3
  *

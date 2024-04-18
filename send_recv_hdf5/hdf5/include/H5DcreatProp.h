@@ -127,7 +127,7 @@ class H5_DLLCPP DSetCreatPropList : public ObjCreatPropList {
 
     ///\brief Returns this class name.
     virtual H5std_string
-    fromClass() const override
+    fromClass() const H5_OVERRIDE
     {
         return ("DSetCreatPropList");
     }
@@ -140,7 +140,7 @@ class H5_DLLCPP DSetCreatPropList : public ObjCreatPropList {
     DSetCreatPropList(const hid_t plist_id);
 
     // Noop destructor.
-    virtual ~DSetCreatPropList() override;
+    virtual ~DSetCreatPropList() H5_OVERRIDE;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

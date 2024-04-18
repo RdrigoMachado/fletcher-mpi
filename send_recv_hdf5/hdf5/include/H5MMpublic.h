@@ -22,7 +22,8 @@
 #ifndef H5MMpublic_H
 #define H5MMpublic_H
 
-#include "H5public.h" /* Generic Functions                        */
+/* Public headers needed by this file */
+#include "H5public.h"
 
 /* These typedefs are currently used for VL datatype allocation/freeing */
 //! <!-- [H5MM_allocate_t_snip] -->
@@ -33,4 +34,11 @@ typedef void *(*H5MM_allocate_t)(size_t size, void *alloc_info);
 typedef void (*H5MM_free_t)(void *mem, void *free_info);
 //! <!-- [H5MM_free_t_snip] -->
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+}
+#endif
 #endif /* H5MMpublic_H */

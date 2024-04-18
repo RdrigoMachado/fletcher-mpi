@@ -99,7 +99,7 @@ class H5_DLLCPP DSetMemXferPropList : public PropList {
 
     ///\brief Returns this class name.
     virtual H5std_string
-    fromClass() const override
+    fromClass() const H5_OVERRIDE
     {
         return ("DSetMemXferPropList");
     }
@@ -112,7 +112,7 @@ class H5_DLLCPP DSetMemXferPropList : public PropList {
     DSetMemXferPropList(const hid_t plist_id);
 
     // Noop destructor
-    virtual ~DSetMemXferPropList() override;
+    virtual ~DSetMemXferPropList() H5_OVERRIDE;
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 

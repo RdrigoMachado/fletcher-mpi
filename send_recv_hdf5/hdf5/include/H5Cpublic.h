@@ -12,16 +12,19 @@
 
 /*-------------------------------------------------------------------------
  *
- * Created:     H5Cpublic.h
+ * Created:	H5Cpublic.h
+ *              June 4, 2005
+ *              John Mainzer
  *
- * Purpose:     Public header file for cache functions
+ * Purpose:     Public include file for cache functions.
  *
  *-------------------------------------------------------------------------
  */
 #ifndef H5Cpublic_H
 #define H5Cpublic_H
 
-#include "H5public.h" /* Generic Functions                        */
+/* Public headers needed by this file */
+#include "H5public.h"
 
 enum H5C_cache_incr_mode {
     H5C_incr__off,
