@@ -8,7 +8,7 @@ rm bin/*.x
 rm bin/*.rsf*
 backend=CUDA
 
-for version in send_time; do
+for version in send_recv isend_recv; do
 
     cd ../$version/
     echo "-----------------------------------------------------"

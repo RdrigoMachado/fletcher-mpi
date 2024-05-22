@@ -1,94 +1,82 @@
-        SUMMARY OF THE HDF5 CONFIGURATION
-        =================================
+	    SUMMARY OF THE HDF5 CONFIGURATION
+	    =================================
 
 General Information:
 -------------------
                    HDF5 Version: 1.12.3
-                  Configured on: 2023-11-07
-                  Configured by: Unix Makefiles
-                    Host system: Linux-5.15.0-1037-aws
-              Uname information: Linux
+                  Configured on: Thu Apr 18 20:44:47 -03 2024
+                  Configured by: rodrigo@magi
+                    Host system: x86_64-pc-linux-gnu
+              Uname information: Linux magi 6.5.0-27-generic #28~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar 15 10:51:06 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
                        Byte sex: little-endian
-             Installation point: /opt/HDF_Group/HDF5/1.12.3
+             Installation point: /media/rodrigo/Dados/hdf5_1_12_3
 
 Compiling Options:
 ------------------
-                     Build Mode: RelWithDebInfo
-              Debugging Symbols: OFF
-                        Asserts: OFF
-                      Profiling: OFF
-             Optimization Level: OFF
+                     Build Mode: production
+              Debugging Symbols: no
+                        Asserts: no
+                      Profiling: no
+             Optimization Level: high
 
 Linking Options:
 ----------------
-                      Libraries: 
-  Statically Linked Executables: OFF
+                      Libraries: static, shared
+  Statically Linked Executables: 
                         LDFLAGS: 
                      H5_LDFLAGS: 
                      AM_LDFLAGS: 
-                Extra libraries: m;dl
-                       Archiver: /usr/bin/ar
-                       AR_FLAGS: 
-                         Ranlib: /usr/bin/ranlib
+                Extra libraries: -ldl -lm 
+                       Archiver: ar
+                       AR_FLAGS: cr
+                         Ranlib: ranlib
 
 Languages:
 ----------
-                              C: YES
-                     C Compiler: /usr/bin/gcc 9.4.0
+                              C: yes
+                     C Compiler: /usr/bin/mpicc ( MPICH version 4.0 Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-XeT9lY/gcc-11-11.4.0/debian/tmp-nvptx/usr,amdgcn-amdhsa=/build/gcc-11-XeT9lY/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2 built with gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04))
                        CPPFLAGS: 
-                    H5_CPPFLAGS: 
+                    H5_CPPFLAGS: -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L   -DNDEBUG -UH5_DEBUG_API
                     AM_CPPFLAGS: 
-                         CFLAGS:   -std=c99  -fstdarg-opt -fmessage-length=0
-                      H5_CFLAGS: -Wall;-Wcast-qual;-Wconversion;-Wextra;-Wfloat-equal;-Wformat=2;-Winit-self;-Winvalid-pch;-Wmissing-include-dirs;-Wshadow;-Wundef;-Wwrite-strings;-pedantic;-Wno-c++-compat;-Wbad-function-cast;-Wcast-align;-Wformat;-Wimplicit-function-declaration;-Wint-to-pointer-cast;-Wmissing-declarations;-Wmissing-prototypes;-Wnested-externs;-Wold-style-definition;-Wpacked;-Wpointer-sign;-Wpointer-to-int-cast;-Wredundant-decls;-Wstrict-prototypes;-Wswitch;-Wunused-but-set-variable;-Wunused-variable;-Wunused-function;-Wunused-parameter;-finline-functions;-Wno-aggregate-return;-Wno-inline;-Wno-missing-format-attribute;-Wno-missing-noreturn;-Wno-overlength-strings;-Wlarger-than=2560;-Wlogical-op;-Wframe-larger-than=16384;-Wpacked-bitfield-compat;-Wsync-nand;-Wno-unsuffixed-float-constants;-Wdouble-promotion;-Wtrampolines;-Wstack-usage=8192;-Wmaybe-uninitialized;-Wno-jump-misses-init;-Wstrict-overflow=2;-Wno-suggest-attribute=const;-Wno-suggest-attribute=noreturn;-Wno-suggest-attribute=pure;-Wno-suggest-attribute=format;-Wdate-time;-Warray-bounds=2;-Wc99-c11-compat;-Wincompatible-pointer-types;-Wint-conversion;-Wshadow;-Wduplicated-cond;-Whsa;-Wnormalized;-Wnull-dereference;-Wunused-const-variable;-Walloca;-Walloc-zero;-Wduplicated-branches;-Wformat-overflow=2;-Wformat-truncation=1;-Wrestrict;-Wattribute-alias;-Wcast-align=strict;-Wshift-overflow=2;-Wcast-function-type;-Wmaybe-uninitialized;-Wno-suggest-attribute=cold;-Wno-suggest-attribute=malloc;-Wattribute-alias=2;-Wmissing-profile;-Wc11-c2x-compat
-                      AM_CFLAGS: 
-               Shared C Library: YES
-               Static C Library: YES
+                        C Flags: 
+                     H5 C Flags:  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wcast-align=strict -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt -fdiagnostics-urls=never -fno-diagnostics-color -s  -Wbad-function-cast -Wcast-align -Wformat -Wimplicit-function-declaration -Wint-to-pointer-cast -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpacked -Wpointer-sign -Wpointer-to-int-cast -Wredundant-decls -Wstrict-prototypes -Wswitch -Wunused-but-set-variable -Wunused-variable -Wunused-function -Wunused-parameter -Wincompatible-pointer-types -Wint-conversion -Wshadow -Wrestrict -Wcast-function-type -Wmaybe-uninitialized -Wno-aggregate-return -Wno-inline -Wno-missing-format-attribute -Wno-missing-noreturn -Wno-overlength-strings -Wno-jump-misses-init -Wstrict-overflow=2 -Wno-suggest-attribute=const -Wno-suggest-attribute=noreturn -Wno-suggest-attribute=pure -Wno-suggest-attribute=format -Wno-suggest-attribute=cold -Wno-suggest-attribute=malloc -O3
+                     AM C Flags: 
+               Shared C Library: yes
+               Static C Library: yes
 
-                        Fortran: True
-               Fortran Compiler: /usr/bin/gfortran 9.4.0
-                  Fortran Flags: 
-               H5 Fortran Flags: -Waliasing;-Wall;-Wcharacter-truncation;-Wextra;-Wimplicit-interface;-Wsurprising;-Wunderflow;-pedantic;-Wno-unused-dummy-argument;-ffree-form;-fimplicit-none;-std=f2008;-Wintrinsics-std;-Wimplicit-procedure;-Wreal-q-constant;-Wfunction-elimination;-Wrealloc-lhs;-Wrealloc-lhs-all;-Wno-c-binding-type;-Wno-array-temporaries;-Winteger-division;-Wfrontend-loop-interchange
-               AM Fortran Flags: 
-         Shared Fortran Library: YES
-         Static Fortran Library: YES
-               Module Directory: /home/buildbot/worker/hdf5112-StdRelease-dist-ubuntu2004/build/ctest/hdfbld/mod
 
-                            C++: True
-                   C++ Compiler: /usr/bin/g++ 9.4.0
-                      C++ Flags:    -fstdarg-opt -fmessage-length=0
-                   H5 C++ Flags: -Wall;-Wcast-qual;-Wconversion;-Wctor-dtor-privacy;-Weffc++;-Wextra;-Wfloat-equal;-Wformat=2;-Winit-self;-Winvalid-pch;-Wmissing-include-dirs;-Wnon-virtual-dtor;-Wold-style-cast;-Woverloaded-virtual;-Wreorder;-Wshadow;-Wsign-promo;-Wundef;-Wwrite-strings;-pedantic;-Wcast-align;-Wmissing-declarations;-Wpacked;-Wredundant-decls;-Wswitch;-Wunused-but-set-variable;-Wunused-function;-Wunused-variable;-Wunused-parameter;-Wno-aggregate-return;-Wno-inline;-Wno-missing-format-attribute;-Wno-missing-noreturn;-Wno-overlength-strings;-Wlarger-than=2560;-Wlogical-op;-Wframe-larger-than=16384;-Wpacked-bitfield-compat;-Wsync-nand;-Wdouble-promotion;-Wtrampolines;-Wstack-usage=8192;-Wmaybe-uninitialized;-Wstrict-overflow=2;-Wno-suggest-attribute=const;-Wno-suggest-attribute=noreturn;-Wno-suggest-attribute=pure;-Wno-suggest-attribute=format;-Wdate-time;-Wopenmp-simd;-Warray-bounds=2;-Wshadow;-Wduplicated-cond;-Whsa;-Wnormalized;-Wnull-dereference;-Wunused-const-variable;-Wattribute-alias;-Wcast-align=strict;-Wshift-overflow=2;-Wcast-function-type;-Wmaybe-uninitialized;-Wno-suggest-attribute=cold;-Wno-suggest-attribute=malloc;-Wattribute-alias=2;-Wmissing-profile;-Wno-deprecated-copy
-                   AM C++ Flags: 
-             Shared C++ Library: YES
-             Static C++ Library: YES
+                        Fortran: no
 
-                           JAVA: True
-                  JAVA Compiler: /usr/bin/javac 
+                            C++: no
+
+                           Java: no
+
 
 Features:
 ---------
-                     Parallel HDF5: OFF
-  Parallel Filtered Dataset Writes: 
-                Large Parallel I/O: 
-                High-level library: ON
-Dimension scales w/ new references: 
-                  Build HDF5 Tests: True
-                  Build HDF5 Tools: ON
-                   Build GIF Tools: OFF
-                      Threadsafety: OFF
+                     Parallel HDF5: yes
+  Parallel Filtered Dataset Writes: yes
+                Large Parallel I/O: yes
+                High-level library: yes
+Dimension scales w/ new references: no
+                  Build HDF5 Tests: yes
+                  Build HDF5 Tools: yes
+                      Threadsafety: no
                Default API mapping: v112
-    With deprecated public symbols: ON
-            I/O filters (external):  DECODE ENCODE
+    With deprecated public symbols: yes
+            I/O filters (external): 
                                MPE: 
-                        Direct VFD: 
-                        Mirror VFD: 
-                (Read-Only) S3 VFD: 
-              (Read-Only) HDFS VFD: 
-                           dmalloc: 
-    Packages w/ extra debug output: 
-                       API Tracing: OFF
-              Using memory checker: OFF
-   Memory allocation sanity checks: OFF
-            Function Stack Tracing: OFF
+                     Map (H5M) API: no
+                        Direct VFD: no
+                        Mirror VFD: no
+                (Read-Only) S3 VFD: no
+              (Read-Only) HDFS VFD: no
+                           dmalloc: no
+    Packages w/ extra debug output: none
+                       API tracing: no
+              Using memory checker: no
+   Memory allocation sanity checks: no
+            Function stack tracing: no
                   Use file locking: best-effort
-         Strict File Format Checks: OFF
-      Optimization Instrumentation: 
+         Strict file format checks: no
+      Optimization instrumentation: no

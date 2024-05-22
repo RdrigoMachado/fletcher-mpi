@@ -29,18 +29,6 @@ int main(int argc, char** argv) {
   //rank do procsso atual
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 
-
-  // //Pra confirmar que esta rodando em mais de uma maquina
-  // char hostbuffer[256];
-  // struct hostent *host_entry;
-  // int hostname;
-  // hostname = gethostname(hostbuffer, sizeof(hostbuffer));
-  
-  // if (hostname != -1) {
-  //   printf("***RANK1 Hostname: %s\n", hostbuffer);
-  // }
-  // //----------------------------------------------------
-
   enum Form prob;        // problem formulation
   int nx;                // grid points in x
   int ny;                // grid points in y
@@ -121,7 +109,7 @@ int main(int argc, char** argv) {
 
 //MPI ESCRITA
   if(rank == 1){
-    MPI_escrita_disco(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz);
+    MPI_escrita_disco(sx, sy, sz, st, dtOutput, dt);
   }
 
 
@@ -268,7 +256,7 @@ int main(int argc, char** argv) {
   double walltime=0.0;
   const double t0=wtime();
 
-  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+  MPI_enviar_onda(sx,sy,sz,pc);
   
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,

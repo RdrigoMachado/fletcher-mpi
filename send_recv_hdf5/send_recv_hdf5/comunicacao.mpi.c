@@ -30,6 +30,7 @@ void MPI_escrita_disco(int sx, int sy, int sz, const int st,  const float dtOutp
   hid_t dcpl  = H5I_INVALID_HID;
 
   hsize_t dims[1] = {sx * sy * sz};
+  hsize_t chunk_dims[1] = {sx * sy};
 
   if((file = H5Fcreate(FILE_H5, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT)) == H5I_INVALID_HID){
     printf("Erro ao criar arquivo hd5\n");
@@ -41,16 +42,21 @@ void MPI_escrita_disco(int sx, int sy, int sz, const int st,  const float dtOutp
   }
   
   dcpl = H5Pcreate(H5P_DATASET_CREATE);
+  // GZIP
   H5Pset_chunk(dcpl, 1, dims);
-  H5Pset_deflate(dcpl, 3);
+  H5Pset_deflate(dcpl, 1);
 
-  dcpl = H5P_DEFAULT;
+  // SZIP
+  // unsigned int options_mask = H5_SZIP_NN_OPTION_MASK; // Select options (here: nearest neighbor)
+  // unsigned int pixels_per_block = 2; // Choose pixels per block (typical values are 2, 4, 8, 16)
+  // H5Pset_szip(dcpl, options_mask, pixels_per_block);
+
   strcpy(nome_arquivo, DATASET_BASE);
   sprintf(parte, "%d", ordem);
   strcat(nome_arquivo, parte);
 
   MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-  dset   = H5Dcreate(file, nome_arquivo, H5T_NATIVE_FLOAT, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
+  dset   = H5Dcreate2(file, nome_arquivo, H5T_NATIVE_FLOAT, space, H5P_DEFAULT, dcpl, H5P_DEFAULT);
   H5Dwrite(dset, H5T_NATIVE_FLOAT, H5S_ALL, H5S_ALL, H5P_DEFAULT, onda);
   H5Dclose(dset);
 

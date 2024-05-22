@@ -64,7 +64,6 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
     // Calculate / obtain source value on i timestep
     float src = Source(dt, it-1);
-    
     DRIVER_InsertSource(dt,it-1,iSource,pc,qc,src);
 
     const double t0=wtime();
@@ -80,16 +79,16 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
       DRIVER_Update_pointers(sx,sy,sz,pc);
       
       const double send0=wtime();
-      MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+      MPI_enviar_onda(sx,sy,sz,pc);
+      sPtr->itCnt++;
       send+=wtime()-send0;
-
       tOut=(++nOut)*dtOutput;
     }
   }
   fflush(stdout);
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
-
+  CloseSliceFile(sPtr);
   printf("%lf;%lf;", computacao, send);
 }
 
