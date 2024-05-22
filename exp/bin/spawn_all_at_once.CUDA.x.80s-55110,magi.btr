@@ -1,0 +1,7 @@
+
+spawn_all_at_once.CUDA.x:55110 terminated with signal 11 at PC=778f0cc4b783 SP=7ffc3a3b8990.  Backtrace:
+/lib/x86_64-linux-gnu/libc.so.6(+0x4b783)[0x778f0cc4b783]
+./spawn_all_at_once.CUDA.x(+0x2c66)[0x5ddb37c7dc66]
+/lib/x86_64-linux-gnu/libc.so.6(+0x29d90)[0x778f0cc29d90]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80)[0x778f0cc29e40]
+./spawn_all_at_once.CUDA.x(+0x3165)[0x5ddb37c7e165]

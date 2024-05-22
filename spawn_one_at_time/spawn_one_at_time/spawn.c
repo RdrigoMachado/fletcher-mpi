@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
     MPI_Recv(&tamanho, 1, MPI_INT, 0, MSG_CONTROLE, parentcomm, MPI_STATUS_IGNORE);
     onda = malloc(sizeof(float) * tamanho); 
 
-    strcpy(nome_base, "TTI.rsf");
+    strcpy(nome_base, "TTI.rsf@");
 
     while(1)
     {   

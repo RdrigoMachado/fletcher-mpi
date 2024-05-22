@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
         return 0;
     }
        
-    sucesso = MPI_File_open(MPI_COMM_WORLD, "TTI.rsf",
+    sucesso = MPI_File_open(MPI_COMM_WORLD, "TTI.rsf@",
                 MPI_MODE_CREATE | MPI_MODE_WRONLY,
                 MPI_INFO_NULL, &arquivo);
     if(sucesso != MPI_SUCCESS)

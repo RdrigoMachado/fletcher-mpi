@@ -80,17 +80,15 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
 
       const double send0=wtime();
       MPI_enviar_onda(sx,sy,sz,pc,sPtr);
-      send+=wtime()-send0;
-      
-      
+      sPtr->itCnt++;
+      send+=wtime()-send0;      
       tOut=(++nOut)*dtOutput;
     }
   }
   fflush(stdout);
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
-
-//  printf("computacao;send;total\n");
+  CloseSliceFile(sPtr);
   printf("%lf;%lf;", computacao, send);
 }
 

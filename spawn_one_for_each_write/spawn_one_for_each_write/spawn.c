@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
 
     char nome_arquivo[128];
-    strcpy(nome_arquivo, "TTI.rsf");
+    strcpy(nome_arquivo, "TTI.rsf@");
     
     char parte[5];
     sprintf(parte, "%d", numero_processo);
