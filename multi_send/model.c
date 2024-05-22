@@ -85,7 +85,8 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
     if (tSim >= tOut) {
       DRIVER_Update_pointers(sx,sy,sz,pc);
       const double send0=wtime();
-      MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+      MPI_enviar_onda(sx,sy,sz,pc);
+      sPtr->itCnt++;
       send+= wtime()-send0;
       tOut=(++nOut)*dtOutput;
     }
@@ -93,8 +94,7 @@ void Model(const int st, const int iSource, const float dtOutput, SlicePtr sPtr,
   fflush(stdout);
   // DRIVER_Finalize deallocate data, clean-up things etc 
   DRIVER_Finalize();
-
-  printf("computacao;send;total\n");
+  CloseSliceFile(sPtr);
   printf("%lf;%lf;", computacao, send);
 }
 

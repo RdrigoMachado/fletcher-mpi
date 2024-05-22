@@ -13,7 +13,7 @@ void inicializar_envio(int sx, int sy, int sz, int groupSize)
 
 //#############################    MPI  SEND   ##################################
 
-void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
+void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr)
 {
   int destino = ordem % (tamanho_grupo_escrita - 1);
   if(destino == 0)
@@ -22,6 +22,5 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr, SlicePtr p)
 
   MPI_Send((void *) ondaPtr, tamanho , MPI_FLOAT, destino, ordem, MPI_COMM_WORLD);
   ordem++;
-  p->itCnt++;
 }
 

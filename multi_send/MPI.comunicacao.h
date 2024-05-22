@@ -10,6 +10,7 @@
 #define MSG_CONTROLE  100
 #define FLAG_FINALIZAR -1
 #define FLAG_ONDA 1
+#define NOME_ARQUIVO "TTI.rsf@"
 
 #define LIVRE               0
 #define TRANSFERINDO        1

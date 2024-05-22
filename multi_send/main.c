@@ -30,7 +30,6 @@ int main(int argc, char** argv) {
   MPI_Comm_size(MPI_COMM_WORLD, &cluster_size);
   //rank do procsso atual
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-  printf("cluster size %d\n", cluster_size);
   enum Form prob;        // problem formulation
   int nx;                // grid points in x
   int ny;                // grid points in y
@@ -110,7 +109,7 @@ int main(int argc, char** argv) {
 //MPI ESCRITA
   if(rank != 0)
   {
-    MPI_recebimento(sx, sy, sz, fNameSec, st, dtOutput, dt, dx, dy, dz, rank, cluster_size);
+    MPI_recebimento(sx, sy, sz, st, dtOutput, dt, rank, cluster_size);
   }
 
   ixSource=sx/2;
@@ -255,7 +254,7 @@ int main(int argc, char** argv) {
   const double t0=wtime();
 
   inicializar_envio(sx, sy, sz, cluster_size); 
-  MPI_enviar_onda(sx,sy,sz,pc,sPtr);
+  MPI_enviar_onda(sx,sy,sz,pc);
 
   Model(st,     iSource, dtOutput, sPtr,
         sx,     sy,      sz,       bord,
