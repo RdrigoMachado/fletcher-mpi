@@ -31,14 +31,14 @@ void MPI_escrita_disco(int sx, int sy, int sz, const int st, const float dtOutpu
   int nOut=1;
   float tOut=nOut*dtOutput;
 
-  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD);
+  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
   fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
   for (int it=1; it<=st; it++) {
     tSim=it*dt;
     if (tSim >= tOut) {
 
-      MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD);
+      MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
       tOut=(++nOut)*dtOutput;
