@@ -9,12 +9,13 @@ void MPI_enviar_onda(int sx, int sy, int sz, float *ondaPtr)
   int tamanho = sx * sy * sz;
   float *onda = malloc(sizeof(float) * tamanho);
   memcpy(onda, ondaPtr, tamanho * sizeof(float));
-  
-  MPI_Send((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD);  
+  MPI_Wait(&request, MPI_STATUS_IGNORE);
+  MPI_Isend((void *) onda, tamanho , MPI_FLOAT, 1, MSG_ONDA, MPI_COMM_WORLD, &request);  
 }
 
 void  finalizar_comunicacao()
 {
+  MPI_Wait(&request, MPI_STATUS_IGNORE);
   MPI_Finalize();
 }
 
@@ -30,16 +31,14 @@ void MPI_escrita_disco(int sx, int sy, int sz, const int st, const float dtOutpu
   int nOut=1;
   float tOut=nOut*dtOutput;
 
-  MPI_Irecv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, &request);
-  MPI_Wait(&request, &status);
+  MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD;
   fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
   for (int it=1; it<=st; it++) {
     tSim=it*dt;
     if (tSim >= tOut) {
 
-      MPI_Irecv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD, &request);
-      MPI_Wait(&request, &status);
+      MPI_Recv((void *) onda, tamanho, MPI_FLOAT, 0, MSG_ONDA, MPI_COMM_WORLD);
       fwrite((void *) onda, sizeof(float), tamanho, arquivo);
 
       tOut=(++nOut)*dtOutput;
