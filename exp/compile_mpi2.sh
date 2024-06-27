@@ -6,7 +6,7 @@ clear
 mkdir -p bin/
 backend=CUDA
 
-for version in spawn_all_at_once spawn_one_at_time spawn_one_for_each_write; do
+for version in spawn_all_at_once_isend; do
     cd ../$version/$version
     mpicc -o $version.x spawn.c
     mv $version.x ../../exp/bin/$version.x
