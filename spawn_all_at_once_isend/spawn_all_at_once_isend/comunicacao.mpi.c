@@ -13,7 +13,7 @@ void MPI_inicializacao(int sx, int sy, int sz, int qtdChilds)
   tamanho = sx * sy * sz;
   qtdProcessos = qtdChilds;
   requests = (MPI_Request *) malloc( qtdChilds * sizeof(MPI_Request));
-  MPI_Comm_spawn("./spawn_all_at_once.x", MPI_ARGV_NULL, qtdChilds, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm, MPI_ERRCODES_IGNORE);
+  MPI_Comm_spawn("./spawn_all_at_once_isend.x", MPI_ARGV_NULL, qtdChilds, MPI_INFO_NULL, 0, MPI_COMM_SELF, &childcomm, MPI_ERRCODES_IGNORE);
   for(int i = 0; i < qtdProcessos; i++)
   {
     requests[i] = MPI_REQUEST_NULL;
